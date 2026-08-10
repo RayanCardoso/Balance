@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: __PROJECT_NAME___test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        # Without this the first migration can race the database's startup.
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Test
+        run: dotnet test --no-build --configuration Release --verbosity normal
+        env:
+          ConnectionStrings__Connection: "Host=localhost;Port=5432;Database=__PROJECT_NAME___test;Username=postgres;Password=postgres"
+          Settings__Jwt__SigningKey: "ci-only-signing-key-not-used-outside-this-job"
+          Settings__Jwt__ExpiresMinutes: "60"
+
+      - name: Check architecture rules
+        shell: pwsh
+        run: ./.claude/skills/dotnet-arch-guard/scripts/check-architecture.ps1 -Root .
