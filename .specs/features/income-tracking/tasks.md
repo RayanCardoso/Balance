@@ -230,7 +230,7 @@ T19
 **Commit**: `feat(application): add RegisterPerson use case`
 **Status**: ✅ Complete - UseCases.Test 3 passed, Validators.Tests 3 passed
 
-#### T8: GetAllPeople use case
+#### T8: GetAllPeople use case ✅
 
 **What**: The use case and its response contract, returning only the logged user's People.
 **Where**: `src/Balance.Application/UseCases/People/GetAll/GetAllPeopleUseCase.cs`
@@ -240,14 +240,15 @@ T19
 
 **Done when**:
 
-- [ ] Returns the People of the logged user
-- [ ] A second user's People are not returned (ownership test)
-- [ ] Gate check passes: `dotnet test tests/UseCases.Test; dotnet test tests/Validators.Tests`
-- [ ] Test count: 7 tests pass
+- [x] Returns the People of the logged user
+- [x] A second user's People are not returned (ownership test)
+- [x] Gate check passes: `dotnet test tests/UseCases.Test; dotnet test tests/Validators.Tests`
+- [x] Test count: 9 tests pass (6 UseCases.Test + 3 Validators.Tests)
 
 **Tests**: unit
 **Gate**: quick
 **Commit**: `feat(application): add GetAllPeople use case`
+**Status**: ✅ Complete - 9 unit tests green
 
 #### T9: Expose People over HTTP and seed the owner
 
