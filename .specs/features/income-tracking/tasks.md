@@ -562,3 +562,27 @@ Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 5 → Phase 6
 19 tasks. Executed inline in the main window: the user delegated the run without review and sub-agents
 are offer-then-confirm, which no longer has an answering party. The Verifier therefore runs as the
 standalone fresh-eyes pass described in `validate.md`.
+
+---
+
+### Phase 7: Verifier fix tasks
+
+#### T20: Cover the mid-month raise the sensor exposed ✅
+
+**What**: A test where two versions overlap the same reference month, so `VersionInEffect`'s ordering is actually discriminated.
+**Where**: `tests/UseCases.Test/Incomes/GetMonthly/GetMonthlyIncomeUseCaseTest.cs`
+**Depends on**: T17
+**Reuses**: the existing closed-version test shape
+**Requirement**: INC-07
+
+**Done when**:
+
+- [x] A source whose old version ends on the 14th and whose new version starts on the 15th reports the new amount for that month
+- [x] Mutating `OrderByDescending` to `OrderBy` in `VersionInEffect` fails the suite
+- [x] Gate check passes: `dotnet test`
+- [x] Test count: 82 tests pass
+
+**Tests**: unit
+**Gate**: quick
+**Commit**: `test(incomes): cover a mid-month raise in the monthly view`
+**Status**: ✅ Complete - closes the one mutant that survived the discrimination sensor.

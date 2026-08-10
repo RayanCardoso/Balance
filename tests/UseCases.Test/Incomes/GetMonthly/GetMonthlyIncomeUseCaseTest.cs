@@ -152,6 +152,33 @@ public class GetMonthlyIncomeUseCaseTest
     }
 
     [Fact]
+    public async Task A_Raise_Starting_Mid_Month_Takes_Effect_That_Same_Month()
+    {
+        var user = UserBuilder.Build();
+        var source = IncomeSourceBuilder.Recurring(
+            PersonBuilder.Build(user), amount: 3000m, expectedDay: 5, validityStart: new DateOnly(2026, 1, 1));
+
+        // Both versions overlap March: the old one until the 14th, the new one from the 15th.
+        source.Versions[0].ValidityEnd = new DateOnly(2026, 3, 14);
+        source.Versions.Add(new IncomeSourceVersion
+        {
+            Id = Guid.NewGuid(),
+            IncomeSourceId = source.Id,
+            Amount = 4500m,
+            ExpectedDay = 10,
+            ValidityStart = new DateOnly(2026, 3, 15),
+            ValidityEnd = null,
+            ChangeReason = "mid-month raise"
+        });
+
+        var result = await CreateUseCase(user, [source]).Execute(2026, 3);
+
+        var line = result.Lines.ShouldHaveSingleItem();
+        line.ExpectedAmount.ShouldBe(4500m);
+        line.ExpectedDay.ShouldBe(10);
+    }
+
+    [Fact]
     public async Task A_Month_Before_Every_Version_Reports_Null_Expected()
     {
         var user = UserBuilder.Build();
