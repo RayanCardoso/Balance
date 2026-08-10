@@ -210,7 +210,7 @@ T19
 **Commit**: `feat(infrastructure): persist Person with ownership-scoped reads`
 **Status**: ✅ Complete - build clean, 12 tests still green
 
-#### T7: RegisterPerson use case
+#### T7: RegisterPerson use case ✅
 
 **What**: The use case, its request and response contracts, its validator and its message keys.
 **Where**: `src/Balance.Application/UseCases/People/Register/RegisterPersonUseCase.cs`
@@ -220,14 +220,15 @@ T19
 
 **Done when**:
 
-- [ ] A created Person is linked to the logged user with `IsAccountOwner` false
-- [ ] An empty name raises `ErrorOnValidationException` carrying `NAME_REQUIRED`
-- [ ] Gate check passes: `dotnet test tests/UseCases.Test; dotnet test tests/Validators.Tests`
-- [ ] Test count: 5 tests pass
+- [x] A created Person is linked to the logged user with `IsAccountOwner` false
+- [x] An empty name raises `ErrorOnValidationException` carrying `NAME_REQUIRED`
+- [x] Gate check passes: `dotnet test tests/UseCases.Test; dotnet test tests/Validators.Tests`
+- [x] Test count: 6 tests pass (planned 5; an ownership-linking assertion was added)
 
 **Tests**: unit
 **Gate**: quick
 **Commit**: `feat(application): add RegisterPerson use case`
+**Status**: ✅ Complete - UseCases.Test 3 passed, Validators.Tests 3 passed
 
 #### T8: GetAllPeople use case
 
