@@ -470,7 +470,7 @@ T19
 
 ### Phase 6: Schema
 
-#### T19: Regenerate the initial migration
+#### T19: Regenerate the initial migration ✅
 
 **What**: Delete the stale `InitialCreate` and generate one covering all five tables.
 **Where**: `src/Balance.Infrastructure/Migrations/`
@@ -480,14 +480,15 @@ T19
 
 **Done when**:
 
-- [ ] Exactly one migration exists and it creates Users, People, IncomeSources, IncomeSourceVersions and IncomePayments
-- [ ] `Users.Id` is `uuid` and `Users.Email` keeps its unique index
-- [ ] `dotnet build` then `dotnet test` both pass
-- [ ] Test count: 60 tests pass
+- [x] Exactly one migration exists and it creates Users, People, IncomeSources, IncomeSourceVersions and IncomePayments
+- [x] `Users.Id` is `uuid` and `Users.Email` keeps its unique index
+- [x] `dotnet build` then `dotnet test` both pass
+- [x] Test count: 81 tests pass
 
 **Tests**: none
 **Gate**: build
 **Commit**: `feat(infrastructure): regenerate initial migration for the income schema`
+**Status**: ✅ Complete - all 19 tasks done. Money columns are `numeric(18,2)`, `IX_IncomePayments_IncomeSourceId_ReferenceMonth` exists, no `UserIdentifier` column remains.
 
 ---
 
