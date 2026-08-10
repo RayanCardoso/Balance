@@ -332,7 +332,7 @@ T19
 **Commit**: `feat(infrastructure): map income tables with precision and indexes`
 **Status**: ✅ Complete - build clean, 28 tests still green
 
-#### T13: Income repositories
+#### T13: Income repositories ✅
 
 **What**: The read-only and write-only repository pair for income, with ownership filtering and the month query.
 **Where**: `src/Balance.Infrastructure/DataAccess/Repositories/Incomes/IncomeSourceRepository.cs`
@@ -342,14 +342,15 @@ T19
 
 **Done when**:
 
-- [ ] `GetById(User, Guid)` includes versions and filters through `Person.UserId`
-- [ ] `GetForMonth(User, DateOnly)` includes versions and that month's payments and excludes archived sources
-- [ ] Repositories are registered in `AddRepositories`
-- [ ] `dotnet build` reports 0 errors and 0 warnings
+- [x] `GetById(User, Guid)` includes versions and filters through `Person.UserId`
+- [x] `GetForMonth(User, DateOnly)` includes versions and that month's payments and excludes archived sources
+- [x] Repositories are registered in `AddRepositories`
+- [x] `dotnet build` reports 0 errors and 0 warnings
 
 **Tests**: none
 **Gate**: build
 **Commit**: `feat(infrastructure): add income repositories with month query`
+**Status**: ✅ Complete - Phase 3 done. Build clean, 28 tests green. A third interface, `IIncomeSourceUpdateOnlyRepository`, was added for the tracked read the value change needs.
 
 ---
 
