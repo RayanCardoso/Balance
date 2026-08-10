@@ -398,7 +398,7 @@ T19
 **Commit**: `feat(application): add RegisterIncomePayment use case`
 **Status**: ✅ Complete - 31 unit tests green. The shared `VersionInEffect` rule landed in `Balance.Domain/Extensions/IncomeSourceExtensions.cs`, as T17 needs the identical rule.
 
-#### T16: ChangeIncomeSourceValue use case
+#### T16: ChangeIncomeSourceValue use case ✅
 
 **What**: Closes the version in effect and opens a new one carrying the change reason.
 **Where**: `src/Balance.Application/UseCases/Incomes/ChangeValue/ChangeIncomeSourceValueUseCase.cs`
@@ -408,15 +408,16 @@ T19
 
 **Done when**:
 
-- [ ] The old version's `ValidityEnd` is the day before the new `ValidityStart`
-- [ ] A Variable source raises `VARIABLE_SOURCE_HAS_NO_VERSION`
-- [ ] A start not later than the current version's start raises a validation error
-- [ ] Gate check passes: `dotnet test tests/UseCases.Test; dotnet test tests/Validators.Tests`
-- [ ] Test count: 36 tests pass
+- [x] The old version's `ValidityEnd` is the day before the new `ValidityStart`
+- [x] A Variable source raises `VARIABLE_SOURCE_HAS_NO_VERSION`
+- [x] A start not later than the current version's start raises a validation error
+- [x] Gate check passes: `dotnet test tests/UseCases.Test; dotnet test tests/Validators.Tests`
+- [x] Test count: 37 tests pass (24 UseCases + 13 Validators)
 
 **Tests**: unit
 **Gate**: quick
 **Commit**: `feat(application): add ChangeIncomeSourceValue use case`
+**Status**: ✅ Complete - Phase 4 done. The current version is located by `ValidityEnd is null` (the open one) rather than by month, which is more precise for a value change.
 
 ---
 

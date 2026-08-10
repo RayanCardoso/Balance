@@ -57,4 +57,13 @@
   <data name="NO_VERSION_IN_EFFECT" xml:space="preserve">
     <value>No version of this income source is in effect for the reference month.</value>
   </data>
+  <data name="CHANGE_REASON_REQUIRED" xml:space="preserve">
+    <value>The reason for the change is required.</value>
+  </data>
+  <data name="VALIDITY_START_MUST_BE_LATER" xml:space="preserve">
+    <value>The new validity start must be later than the current version's.</value>
+  </data>
+  <data name="REFERENCE_MONTH_INVALID" xml:space="preserve">
+    <value>The reference month is invalid.</value>
+  </data>
 </root>

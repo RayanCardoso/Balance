@@ -26,6 +26,9 @@ public static class ResourceErrorMessages
     public static string INCOME_SOURCE_NOT_FOUND => Get(nameof(INCOME_SOURCE_NOT_FOUND));
     public static string INCOME_SOURCE_ARCHIVED => Get(nameof(INCOME_SOURCE_ARCHIVED));
     public static string NO_VERSION_IN_EFFECT => Get(nameof(NO_VERSION_IN_EFFECT));
+    public static string CHANGE_REASON_REQUIRED => Get(nameof(CHANGE_REASON_REQUIRED));
+    public static string VALIDITY_START_MUST_BE_LATER => Get(nameof(VALIDITY_START_MUST_BE_LATER));
+    public static string REFERENCE_MONTH_INVALID => Get(nameof(REFERENCE_MONTH_INVALID));
 
     private static string Get(string key) =>
         ResourceManager.GetString(key, CultureInfo.CurrentUICulture) ?? key;

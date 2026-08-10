@@ -57,4 +57,13 @@
   <data name="NO_VERSION_IN_EFFECT" xml:space="preserve">
     <value>Nenhuma versão desta receita está vigente no mês de referência.</value>
   </data>
+  <data name="CHANGE_REASON_REQUIRED" xml:space="preserve">
+    <value>A razão da mudança é obrigatória.</value>
+  </data>
+  <data name="VALIDITY_START_MUST_BE_LATER" xml:space="preserve">
+    <value>A nova validade inicial deve ser posterior à da versão vigente.</value>
+  </data>
+  <data name="REFERENCE_MONTH_INVALID" xml:space="preserve">
+    <value>O mês de referência é inválido.</value>
+  </data>
 </root>
