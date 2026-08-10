@@ -423,7 +423,7 @@ T19
 
 ### Phase 5: Monthly view and API surface
 
-#### T17: GetMonthlyIncome use case
+#### T17: GetMonthlyIncome use case ✅
 
 **What**: Reconciles expected against received per source and returns the month totals.
 **Where**: `src/Balance.Application/UseCases/Incomes/GetMonthly/GetMonthlyIncomeUseCase.cs`
@@ -433,16 +433,17 @@ T19
 
 **Done when**:
 
-- [ ] Recurring reports expected amount and day from the version in effect; Variable reports null
-- [ ] Status resolves Pending, Received and Divergent per the design's ordering
-- [ ] Totals equal the sum of the lines; an empty account returns zeroed totals
-- [ ] A month inside a closed version's range reports that closed version's amount
-- [ ] Gate check passes: `dotnet test tests/UseCases.Test; dotnet test tests/Validators.Tests`
-- [ ] Test count: 48 tests pass
+- [x] Recurring reports expected amount and day from the version in effect; Variable reports null
+- [x] Status resolves Pending, Received and Divergent per the design's ordering
+- [x] Totals equal the sum of the lines; an empty account returns zeroed totals
+- [x] A month inside a closed version's range reports that closed version's amount
+- [x] Gate check passes: `dotnet test tests/UseCases.Test; dotnet test tests/Validators.Tests`
+- [x] Test count: 50 tests pass (37 UseCases + 13 Validators)
 
 **Tests**: unit
 **Gate**: quick
 **Commit**: `feat(application): add GetMonthlyIncome use case`
+**Status**: ✅ Complete - 50 unit tests green
 
 #### T18: Expose income over HTTP
 
