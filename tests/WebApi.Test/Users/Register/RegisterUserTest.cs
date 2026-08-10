@@ -1,5 +1,8 @@
+using Balance.Exception;
+using CommonTestUtilities.Culture;
 using CommonTestUtilities.Requests;
 using Shouldly;
+using System.Globalization;
 using System.Net;
 using System.Text.Json;
 
@@ -29,13 +32,14 @@ public class RegisterUserTest : BalanceClassFixture
         responseData.RootElement.GetProperty("token").GetString().ShouldNotBeNullOrWhiteSpace();
     }
 
-    [Fact]
-    public async Task Error_Name_Empty()
+    [Theory]
+    [ClassData(typeof(CultureInlineDataTest))]
+    public async Task Error_Name_Empty(string culture)
     {
         var request = RequestRegisterUserJsonBuilder.Build();
         request.Name = string.Empty;
 
-        var response = await DoPost(METHOD, request, culture: "pt-BR");
+        var response = await DoPost(METHOD, request, culture: culture);
 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
@@ -44,6 +48,9 @@ public class RegisterUserTest : BalanceClassFixture
 
         var errors = responseData.RootElement.GetProperty("errorMessages").EnumerateArray();
 
-        errors.ShouldContain(error => error.GetString()!.Equals("O nome é obrigatório."));
+        var expected = ResourceErrorMessages.ResourceManager.GetString(
+            nameof(ResourceErrorMessages.NAME_REQUIRED), new CultureInfo(culture));
+
+        errors.ShouldHaveSingleItem().GetString().ShouldBe(expected);
     }
 }

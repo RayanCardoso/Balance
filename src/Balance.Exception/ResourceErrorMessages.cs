@@ -5,7 +5,7 @@ namespace Balance.Exception;
 
 public static class ResourceErrorMessages
 {
-    private static readonly ResourceManager _resourceManager = new(
+    public static ResourceManager ResourceManager { get; } = new(
         baseName: "Balance.Exception.ResourceErrorMessages",
         assembly: typeof(ResourceErrorMessages).Assembly);
 
@@ -20,5 +20,5 @@ public static class ResourceErrorMessages
     public static string EMAIL_OR_PASSWORD_INVALID => Get(nameof(EMAIL_OR_PASSWORD_INVALID));
 
     private static string Get(string key) =>
-        _resourceManager.GetString(key, CultureInfo.CurrentUICulture) ?? key;
+        ResourceManager.GetString(key, CultureInfo.CurrentUICulture) ?? key;
 }

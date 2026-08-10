@@ -105,7 +105,7 @@ T19
 **Commit**: `feat(domain): add BaseEntity with id and audit timestamps`
 **Status**: ✅ Complete - build clean, 0 errors 0 warnings
 
-#### T2: Adopt the repo's test message convention
+#### T2: Adopt the repo's test message convention ✅
 
 **What**: Expose `ResourceErrorMessages.ResourceManager`, add the `CultureInlineDataTest` class data, and convert the two existing tests that assert hardcoded Portuguese strings.
 **Where**: `tests/CommonTestUtilities/Culture/CultureInlineDataTest.cs`
@@ -115,15 +115,16 @@ T19
 
 **Done when**:
 
-- [ ] `ResourceErrorMessages.ResourceManager` is public and the private field is gone
-- [ ] `CultureInlineDataTest` yields `en` and `pt-BR`
-- [ ] `RegisterUserTest` and `DoLoginTest` assert through `ResourceManager.GetString(key, culture)` as `[Theory]`
-- [ ] Gate check passes: `dotnet test`
-- [ ] Test count: 8 tests pass (5 existing, converted to 8 by the culture theories)
+- [x] `ResourceErrorMessages.ResourceManager` is public and the private field is gone
+- [x] `CultureInlineDataTest` yields `en` and `pt-BR`
+- [x] `RegisterUserTest` and `DoLoginTest` assert through `ResourceManager.GetString(key, culture)` as `[Theory]`
+- [x] Gate check passes: `dotnet test`
+- [x] Test count: 8 tests pass (5 existing, converted to 8 by the culture theories)
 
 **Tests**: integration
 **Gate**: full
 **Commit**: `test: assert error messages through ResourceManager per repo convention`
+**Status**: ✅ Complete - 8 passed, 0 failed
 
 #### T3: Migrate User and its consumers to the Guid identity
 

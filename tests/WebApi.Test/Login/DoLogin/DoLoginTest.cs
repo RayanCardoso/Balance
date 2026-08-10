@@ -1,5 +1,8 @@
 using Balance.Communication.Requests;
+using Balance.Exception;
+using CommonTestUtilities.Culture;
 using Shouldly;
+using System.Globalization;
 using System.Net;
 using System.Text.Json;
 
@@ -37,8 +40,9 @@ public class DoLoginTest : BalanceClassFixture
         responseData.RootElement.GetProperty("token").GetString().ShouldNotBeNullOrWhiteSpace();
     }
 
-    [Fact]
-    public async Task Error_Wrong_Password()
+    [Theory]
+    [ClassData(typeof(CultureInlineDataTest))]
+    public async Task Error_Wrong_Password(string culture)
     {
         var request = new RequestLoginJson
         {
@@ -46,20 +50,16 @@ public class DoLoginTest : BalanceClassFixture
             Password = "wrong-password"
         };
 
-        var response = await DoPost(METHOD, request, culture: "pt-BR");
+        var response = await DoPost(METHOD, request, culture: culture);
 
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
 
-        var body = await response.Content.ReadAsStreamAsync();
-        var responseData = await JsonDocument.ParseAsync(body);
-
-        var errors = responseData.RootElement.GetProperty("errorMessages").EnumerateArray();
-
-        errors.ShouldContain(error => error.GetString()!.Equals("E-mail e/ou senha inválidos."));
+        await AssertInvalidLoginMessage(response, culture);
     }
 
-    [Fact]
-    public async Task Error_Unknown_Email_Uses_The_Same_Message()
+    [Theory]
+    [ClassData(typeof(CultureInlineDataTest))]
+    public async Task Error_Unknown_Email_Uses_The_Same_Message(string culture)
     {
         var request = new RequestLoginJson
         {
@@ -67,15 +67,23 @@ public class DoLoginTest : BalanceClassFixture
             Password = _password
         };
 
-        var response = await DoPost(METHOD, request, culture: "pt-BR");
+        var response = await DoPost(METHOD, request, culture: culture);
 
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
 
+        await AssertInvalidLoginMessage(response, culture);
+    }
+
+    private static async Task AssertInvalidLoginMessage(HttpResponseMessage response, string culture)
+    {
         var body = await response.Content.ReadAsStreamAsync();
         var responseData = await JsonDocument.ParseAsync(body);
 
         var errors = responseData.RootElement.GetProperty("errorMessages").EnumerateArray();
 
-        errors.ShouldContain(error => error.GetString()!.Equals("E-mail e/ou senha inválidos."));
+        var expected = ResourceErrorMessages.ResourceManager.GetString(
+            nameof(ResourceErrorMessages.EMAIL_OR_PASSWORD_INVALID), new CultureInfo(culture));
+
+        errors.ShouldHaveSingleItem().GetString().ShouldBe(expected);
     }
 }
