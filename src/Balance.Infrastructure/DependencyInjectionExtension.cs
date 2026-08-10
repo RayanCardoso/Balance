@@ -1,9 +1,11 @@
 using Balance.Domain.Repositories;
+using Balance.Domain.Repositories.People;
 using Balance.Domain.Repositories.Users;
 using Balance.Domain.Security.Cryptography;
 using Balance.Domain.Security.Tokens;
 using Balance.Domain.Services.LoggedUser;
 using Balance.Infrastructure.DataAccess;
+using Balance.Infrastructure.DataAccess.Repositories.People;
 using Balance.Infrastructure.DataAccess.Repositories.Users;
 using Balance.Infrastructure.Extensions;
 using Balance.Infrastructure.Security.Cryptography;
@@ -36,6 +38,8 @@ public static class DependencyInjectionExtension
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserReadOnlyRepository, UserRepository>();
         services.AddScoped<IUserWriteOnlyRepository, UserRepository>();
+        services.AddScoped<IPersonReadOnlyRepository, PersonRepository>();
+        services.AddScoped<IPersonWriteOnlyRepository, PersonRepository>();
     }
 
     private static void AddToken(IServiceCollection services, IConfiguration configuration)

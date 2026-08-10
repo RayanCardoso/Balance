@@ -10,12 +10,23 @@ public class BalanceDbContext : DbContext
     }
 
     public DbSet<User> Users { get; set; }
+    public DbSet<Person> People { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<User>().HasIndex(user => user.Email).IsUnique();
+
+        modelBuilder.Entity<Person>(person =>
+        {
+            person.HasIndex(p => p.UserId);
+
+            person.HasOne(p => p.User)
+                .WithMany()
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
     }
 
     public override int SaveChanges()

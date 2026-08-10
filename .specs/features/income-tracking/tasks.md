@@ -191,7 +191,7 @@ T19
 **Commit**: `feat(domain): add Person entity owned by a user`
 **Status**: ✅ Complete - build clean
 
-#### T6: Persist Person
+#### T6: Persist Person ✅
 
 **What**: `DbSet<Person>`, its mapping and index, and the read-only / write-only repository pair with ownership filtering.
 **Where**: `src/Balance.Infrastructure/DataAccess/Repositories/People/PersonRepository.cs`
@@ -201,13 +201,14 @@ T19
 
 **Done when**:
 
-- [ ] `GetAll(User)` and `GetById(User, Guid)` filter on `UserId`
-- [ ] Repositories are registered in `AddRepositories`
-- [ ] `dotnet build` reports 0 errors and 0 warnings
+- [x] `GetAll(User)` and `GetById(User, Guid)` filter on `UserId`
+- [x] Repositories are registered in `AddRepositories`
+- [x] `dotnet build` reports 0 errors and 0 warnings
 
 **Tests**: none
 **Gate**: build
 **Commit**: `feat(infrastructure): persist Person with ownership-scoped reads`
+**Status**: ✅ Complete - build clean, 12 tests still green
 
 #### T7: RegisterPerson use case
 
