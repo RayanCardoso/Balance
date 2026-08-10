@@ -1,4 +1,8 @@
 using Balance.Application.AutoMapper;
+using Balance.Application.UseCases.Incomes.ChangeValue;
+using Balance.Application.UseCases.Incomes.GetMonthly;
+using Balance.Application.UseCases.Incomes.Register;
+using Balance.Application.UseCases.Incomes.RegisterPayment;
 using Balance.Application.UseCases.Login.DoLogin;
 using Balance.Application.UseCases.People.GetAll;
 using Balance.Application.UseCases.People.Register;
@@ -26,5 +30,9 @@ public static class DependencyInjectionExtension
         services.AddScoped<IDoLoginUseCase, DoLoginUseCase>();
         services.AddScoped<IRegisterPersonUseCase, RegisterPersonUseCase>();
         services.AddScoped<IGetAllPeopleUseCase, GetAllPeopleUseCase>();
+        services.AddScoped<IRegisterIncomeSourceUseCase, RegisterIncomeSourceUseCase>();
+        services.AddScoped<IRegisterIncomePaymentUseCase, RegisterIncomePaymentUseCase>();
+        services.AddScoped<IChangeIncomeSourceValueUseCase, ChangeIncomeSourceValueUseCase>();
+        services.AddScoped<IGetMonthlyIncomeUseCase, GetMonthlyIncomeUseCase>();
     }
 }

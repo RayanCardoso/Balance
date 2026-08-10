@@ -445,7 +445,7 @@ T19
 **Commit**: `feat(application): add GetMonthlyIncome use case`
 **Status**: ✅ Complete - 50 unit tests green
 
-#### T18: Expose income over HTTP
+#### T18: Expose income over HTTP ✅
 
 **What**: `IncomeController` with the four routes and DI registration for all four use cases.
 **Where**: `src/Balance.Api/Controllers/IncomeController.cs`
@@ -455,15 +455,16 @@ T19
 
 **Done when**:
 
-- [ ] All four routes carry `[Authorize]` and answer 401 without a token
-- [ ] Registering, paying and reading a month works end to end for a seeded user
-- [ ] A second account does not see the first account's sources
-- [ ] Gate check passes: `dotnet test`
-- [ ] Test count: 60 tests pass
+- [x] All four routes carry `[Authorize]` and answer 401 without a token
+- [x] Registering, paying and reading a month works end to end for a seeded user
+- [x] A second account does not see the first account's sources
+- [x] Gate check passes: `dotnet test`
+- [x] Test count: 81 tests pass (13 Validators + 37 UseCases + 31 WebApi)
 
 **Tests**: integration
 **Gate**: full
 **Commit**: `feat(api): add IncomeController`
+**Status**: ✅ Complete - Phase 5 done. 81 tests green.
 
 ---
 
