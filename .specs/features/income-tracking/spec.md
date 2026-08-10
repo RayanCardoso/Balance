@@ -199,29 +199,29 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 
 | Requirement ID | Story | Phase | Status |
 | -------------- | ----- | ----- | ------ |
-| CORE-01 | P1: Shared entity identity and audit trail | Design | Pending |
-| CORE-02 | P1: Shared entity identity and audit trail | Design | Pending |
-| CORE-03 | P1: Shared entity identity and audit trail | Design | Pending |
-| PRSN-01 | P1: Manage the people of my account | Design | Pending |
-| PRSN-02 | P1: Manage the people of my account | Design | Pending |
-| PRSN-03 | P1: Manage the people of my account | Design | Pending |
-| INC-01 | P1: Register an income source | Design | Pending |
-| INC-02 | P1: Register an income source | Design | Pending |
-| INC-03 | P1: Register an income source | Design | Pending |
-| INC-04 | P1: Record a payment received | Design | Pending |
-| INC-05 | P1: Record a payment received | Design | Pending |
-| INC-06 | P1: Record a payment received | Design | Pending |
-| INC-07 | P1: View the income of a given month | Design | Pending |
-| INC-08 | P1: View the income of a given month | Design | Pending |
-| INC-09 | P1: View the income of a given month | Design | Pending |
-| INC-10 | P1: View the income of a given month | Design | Pending |
-| INC-11 | P2: Change the value of a recurring income source | Design | Pending |
-| INC-12 | P2: Change the value of a recurring income source | Design | Pending |
-| INC-13 | P2: Change the value of a recurring income source | Design | Pending |
+| CORE-01 | P1: Shared entity identity and audit trail | Verified | ✅ Verified |
+| CORE-02 | P1: Shared entity identity and audit trail | Verified | ✅ Verified |
+| CORE-03 | P1: Shared entity identity and audit trail | Verified | ✅ Verified |
+| PRSN-01 | P1: Manage the people of my account | Verified | ✅ Verified |
+| PRSN-02 | P1: Manage the people of my account | Verified | ✅ Verified |
+| PRSN-03 | P1: Manage the people of my account | Verified | ✅ Verified |
+| INC-01 | P1: Register an income source | Verified | ✅ Verified |
+| INC-02 | P1: Register an income source | Verified | ✅ Verified |
+| INC-03 | P1: Register an income source | Verified | ✅ Verified |
+| INC-04 | P1: Record a payment received | Verified | ✅ Verified |
+| INC-05 | P1: Record a payment received | Verified | ✅ Verified |
+| INC-06 | P1: Record a payment received | Verified | ✅ Verified |
+| INC-07 | P1: View the income of a given month | Verified | ✅ Verified |
+| INC-08 | P1: View the income of a given month | Verified | ✅ Verified |
+| INC-09 | P1: View the income of a given month | Verified | ✅ Verified |
+| INC-10 | P1: View the income of a given month | Verified | ✅ Verified |
+| INC-11 | P2: Change the value of a recurring income source | Verified | ✅ Verified |
+| INC-12 | P2: Change the value of a recurring income source | Verified | ✅ Verified |
+| INC-13 | P2: Change the value of a recurring income source | Verified | ✅ Verified |
 
 **Status values:** Pending → In Design → In Tasks → Implementing → Verified
 
-**Coverage:** 19 total, 0 mapped to tasks, 19 unmapped ⚠️ (expected before the Tasks phase)
+**Coverage:** 19 total, 19 mapped to tasks, 0 unmapped. All verified - see `validation.md`.
 
 ### Requirement coverage map
 

@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "promote_threshold": 2,
+  "window_days": 45,
+  "quarantine_threshold": 2,
+  "next_id": 3,
+  "lessons": [
+    {
+      "id": "L-001",
+      "key": "surviving_mutant::when a selector picks one row out of an overlapping set add a fixture where two rows genuinely overlap a single match fixture never exercises the ordering",
+      "text": "When a selector picks one row out of an overlapping set, add a fixture where two rows genuinely overlap; a single-match fixture never exercises the ordering.",
+      "signal": "surviving_mutant",
+      "scope": "domain/date-ranges",
+      "status": "candidate",
+      "features": [
+        "income-tracking"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "IncomeSourceExtensions.cs VersionInEffect / mutant 2 (domain/date-ranges)"
+      ],
+      "created": "2026-08-10T23:28:52Z",
+      "last_seen": "2026-08-10T23:28:52Z"
+    },
+    {
+      "id": "L-002",
+      "key": "spec_precision_gap::do not specify behaviour for a state no shipped operation can produce either include the operation that sets it or record the rule as untestable until it ships",
+      "text": "Do not specify behaviour for a state no shipped operation can produce; either include the operation that sets it or record the rule as untestable until it ships.",
+      "signal": "spec_precision_gap",
+      "scope": "spec/state-flags",
+      "status": "candidate",
+      "features": [
+        "income-tracking"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "spec.md Edge Cases / archived source (spec/state-flags)"
+      ],
+      "created": "2026-08-10T23:28:52Z",
+      "last_seen": "2026-08-10T23:28:52Z"
+    }
+  ]
+}
