@@ -149,7 +149,7 @@ T19
 **Commit**: `refactor(domain)!: move User onto BaseEntity Guid identity`
 **Status**: ✅ Complete - 10 passed, 0 failed. Only the stale migration still names `UserIdentifier`; T19 regenerates it.
 
-#### T4: Stamp audit timestamps centrally
+#### T4: Stamp audit timestamps centrally ✅
 
 **What**: Override `SaveChanges` and `SaveChangesAsync` so `Added` entries get `CreatedAt` and `Modified` entries get `UpdatedAt`.
 **Where**: `src/Balance.Infrastructure/DataAccess/BalanceDbContext.cs`
@@ -159,14 +159,15 @@ T19
 
 **Done when**:
 
-- [ ] A newly added entity has `CreatedAt` set and `UpdatedAt` null after save
-- [ ] A modified entity has `UpdatedAt` set after save
-- [ ] Gate check passes: `dotnet test`
-- [ ] Test count: 12 tests pass
+- [x] A newly added entity has `CreatedAt` set and `UpdatedAt` null after save
+- [x] A modified entity has `UpdatedAt` set after save
+- [x] Gate check passes: `dotnet test`
+- [x] Test count: 12 tests pass
 
 **Tests**: integration
 **Gate**: full
 **Commit**: `feat(infrastructure): stamp CreatedAt and UpdatedAt on save`
+**Status**: ✅ Complete - 12 passed, 0 failed. Phase 1 done.
 
 ---
 
