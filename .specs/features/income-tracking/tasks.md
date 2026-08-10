@@ -250,7 +250,7 @@ T19
 **Commit**: `feat(application): add GetAllPeople use case`
 **Status**: ✅ Complete - 9 unit tests green
 
-#### T9: Expose People over HTTP and seed the owner
+#### T9: Expose People over HTTP and seed the owner ✅
 
 **What**: `PersonController` with create and list, DI registration for both use cases, and the owner Person created inside `RegisterUserUseCase`.
 **Where**: `src/Balance.Api/Controllers/PersonController.cs` plus `RegisterUserUseCase.cs` and both `DependencyInjectionExtension.cs`
@@ -260,15 +260,16 @@ T19
 
 **Done when**:
 
-- [ ] Both endpoints carry `[Authorize]` and answer 401 without a token
-- [ ] Registering a user creates exactly one Person flagged `IsAccountOwner`
-- [ ] Creating a Person answers 201; listing returns only the caller's People
-- [ ] Gate check passes: `dotnet test`
-- [ ] Test count: 14 tests pass
+- [x] Both endpoints carry `[Authorize]` and answer 401 without a token
+- [x] Registering a user creates exactly one Person flagged `IsAccountOwner`
+- [x] Creating a Person answers 201; listing returns only the caller's People
+- [x] Gate check passes: `dotnet test`
+- [x] Test count: 28 tests pass (3 Validators + 6 UseCases + 19 WebApi)
 
 **Tests**: integration
 **Gate**: full
 **Commit**: `feat(api): add PersonController and seed the owner person`
+**Status**: ✅ Complete - Phase 2 done. 28 tests green.
 
 ---
 

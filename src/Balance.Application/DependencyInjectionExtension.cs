@@ -1,5 +1,7 @@
 using Balance.Application.AutoMapper;
 using Balance.Application.UseCases.Login.DoLogin;
+using Balance.Application.UseCases.People.GetAll;
+using Balance.Application.UseCases.People.Register;
 using Balance.Application.UseCases.Users.Register;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,5 +24,7 @@ public static class DependencyInjectionExtension
     {
         services.AddScoped<IRegisterUserUseCase, RegisterUserUseCase>();
         services.AddScoped<IDoLoginUseCase, DoLoginUseCase>();
+        services.AddScoped<IRegisterPersonUseCase, RegisterPersonUseCase>();
+        services.AddScoped<IGetAllPeopleUseCase, GetAllPeopleUseCase>();
     }
 }
