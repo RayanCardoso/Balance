@@ -293,7 +293,7 @@ T19
 **Commit**: `feat(domain): add income type and status enums`
 **Status**: ✅ Complete - build clean
 
-#### T11: Create the income entities
+#### T11: Create the income entities ✅
 
 **What**: `IncomeSource`, `IncomeSourceVersion` and `IncomePayment`, all inheriting `BaseEntity`.
 **Where**: `src/Balance.Domain/Entities/IncomeSource.cs` and its two siblings
@@ -303,13 +303,14 @@ T19
 
 **Done when**:
 
-- [ ] `IncomePayment.IncomeSourceVersionId` is nullable
-- [ ] `IncomeSourceVersion.ValidityEnd` is nullable
-- [ ] `dotnet build` reports 0 errors and 0 warnings
+- [x] `IncomePayment.IncomeSourceVersionId` is nullable
+- [x] `IncomeSourceVersion.ValidityEnd` is nullable
+- [x] `dotnet build` reports 0 errors and 0 warnings
 
 **Tests**: none
 **Gate**: build
 **Commit**: `feat(domain): add income source, version and payment entities`
+**Status**: ✅ Complete - build clean
 
 #### T12: Map the income tables
 
