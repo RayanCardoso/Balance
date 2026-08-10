@@ -23,6 +23,9 @@ public static class ResourceErrorMessages
     public static string AMOUNT_GREATER_THAN_ZERO => Get(nameof(AMOUNT_GREATER_THAN_ZERO));
     public static string EXPECTED_DAY_OUT_OF_RANGE => Get(nameof(EXPECTED_DAY_OUT_OF_RANGE));
     public static string VARIABLE_SOURCE_HAS_NO_VERSION => Get(nameof(VARIABLE_SOURCE_HAS_NO_VERSION));
+    public static string INCOME_SOURCE_NOT_FOUND => Get(nameof(INCOME_SOURCE_NOT_FOUND));
+    public static string INCOME_SOURCE_ARCHIVED => Get(nameof(INCOME_SOURCE_ARCHIVED));
+    public static string NO_VERSION_IN_EFFECT => Get(nameof(NO_VERSION_IN_EFFECT));
 
     private static string Get(string key) =>
         ResourceManager.GetString(key, CultureInfo.CurrentUICulture) ?? key;

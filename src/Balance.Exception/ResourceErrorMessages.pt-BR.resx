@@ -48,4 +48,13 @@
   <data name="VARIABLE_SOURCE_HAS_NO_VERSION" xml:space="preserve">
     <value>Uma receita variável não possui valor nem dia esperado.</value>
   </data>
+  <data name="INCOME_SOURCE_NOT_FOUND" xml:space="preserve">
+    <value>Receita não encontrada.</value>
+  </data>
+  <data name="INCOME_SOURCE_ARCHIVED" xml:space="preserve">
+    <value>Esta receita está arquivada.</value>
+  </data>
+  <data name="NO_VERSION_IN_EFFECT" xml:space="preserve">
+    <value>Nenhuma versão desta receita está vigente no mês de referência.</value>
+  </data>
 </root>

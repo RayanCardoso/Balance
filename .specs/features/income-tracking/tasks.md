@@ -377,7 +377,7 @@ T19
 **Commit**: `feat(application): add RegisterIncomeSource use case`
 **Status**: ✅ Complete - 24 unit tests green. `Communication` cannot reference `Domain`, so the wire contract carries its own `IncomeType` mirror kept in sync by integer value.
 
-#### T15: RegisterIncomePayment use case
+#### T15: RegisterIncomePayment use case ✅
 
 **What**: Records a payment and freezes the version in effect at the reference month.
 **Where**: `src/Balance.Application/UseCases/Incomes/RegisterPayment/RegisterIncomePaymentUseCase.cs`
@@ -387,15 +387,16 @@ T19
 
 **Done when**:
 
-- [ ] A Recurring payment stores the version in effect; a Variable payment stores null
-- [ ] An archived source raises `INCOME_SOURCE_ARCHIVED`
-- [ ] A source belonging to another user raises `NotFoundException` (ownership test)
-- [ ] Gate check passes: `dotnet test tests/UseCases.Test; dotnet test tests/Validators.Tests`
-- [ ] Test count: 28 tests pass
+- [x] A Recurring payment stores the version in effect; a Variable payment stores null
+- [x] An archived source raises `INCOME_SOURCE_ARCHIVED`
+- [x] A source belonging to another user raises `NotFoundException` (ownership test)
+- [x] Gate check passes: `dotnet test tests/UseCases.Test; dotnet test tests/Validators.Tests`
+- [x] Test count: 31 tests pass (18 UseCases + 13 Validators)
 
 **Tests**: unit
 **Gate**: quick
 **Commit**: `feat(application): add RegisterIncomePayment use case`
+**Status**: ✅ Complete - 31 unit tests green. The shared `VersionInEffect` rule landed in `Balance.Domain/Extensions/IncomeSourceExtensions.cs`, as T17 needs the identical rule.
 
 #### T16: ChangeIncomeSourceValue use case
 

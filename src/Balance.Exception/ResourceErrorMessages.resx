@@ -48,4 +48,13 @@
   <data name="VARIABLE_SOURCE_HAS_NO_VERSION" xml:space="preserve">
     <value>A variable income source has no amount or expected day.</value>
   </data>
+  <data name="INCOME_SOURCE_NOT_FOUND" xml:space="preserve">
+    <value>Income source not found.</value>
+  </data>
+  <data name="INCOME_SOURCE_ARCHIVED" xml:space="preserve">
+    <value>This income source is archived.</value>
+  </data>
+  <data name="NO_VERSION_IN_EFFECT" xml:space="preserve">
+    <value>No version of this income source is in effect for the reference month.</value>
+  </data>
 </root>
