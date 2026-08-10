@@ -312,7 +312,7 @@ T19
 **Commit**: `feat(domain): add income source, version and payment entities`
 **Status**: ✅ Complete - build clean
 
-#### T12: Map the income tables
+#### T12: Map the income tables ✅
 
 **What**: The three `DbSet` properties, precision, delete behaviour and indexes.
 **Where**: `src/Balance.Infrastructure/DataAccess/BalanceDbContext.cs`
@@ -322,14 +322,15 @@ T19
 
 **Done when**:
 
-- [ ] Money columns declare precision 18 scale 2
-- [ ] `(IncomeSourceId, ReferenceMonth)` is indexed
-- [ ] Every relationship uses restrict delete behaviour
-- [ ] `dotnet build` reports 0 errors and 0 warnings
+- [x] Money columns declare precision 18 scale 2
+- [x] `(IncomeSourceId, ReferenceMonth)` is indexed
+- [x] Every relationship uses restrict delete behaviour
+- [x] `dotnet build` reports 0 errors and 0 warnings
 
 **Tests**: none
 **Gate**: build
 **Commit**: `feat(infrastructure): map income tables with precision and indexes`
+**Status**: ✅ Complete - build clean, 28 tests still green
 
 #### T13: Income repositories
 

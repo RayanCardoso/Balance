@@ -11,6 +11,9 @@ public class BalanceDbContext : DbContext
 
     public DbSet<User> Users { get; set; }
     public DbSet<Person> People { get; set; }
+    public DbSet<IncomeSource> IncomeSources { get; set; }
+    public DbSet<IncomeSourceVersion> IncomeSourceVersions { get; set; }
+    public DbSet<IncomePayment> IncomePayments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -25,6 +28,45 @@ public class BalanceDbContext : DbContext
             person.HasOne(p => p.User)
                 .WithMany()
                 .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<IncomeSource>(source =>
+        {
+            source.HasIndex(s => s.PersonId);
+
+            source.HasOne(s => s.Person)
+                .WithMany()
+                .HasForeignKey(s => s.PersonId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<IncomeSourceVersion>(version =>
+        {
+            version.Property(v => v.Amount).HasPrecision(18, 2);
+
+            version.HasIndex(v => new { v.IncomeSourceId, v.ValidityStart });
+
+            version.HasOne(v => v.IncomeSource)
+                .WithMany(s => s.Versions)
+                .HasForeignKey(v => v.IncomeSourceId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<IncomePayment>(payment =>
+        {
+            payment.Property(p => p.AmountReceived).HasPrecision(18, 2);
+
+            payment.HasIndex(p => new { p.IncomeSourceId, p.ReferenceMonth });
+
+            payment.HasOne(p => p.IncomeSource)
+                .WithMany(s => s.Payments)
+                .HasForeignKey(p => p.IncomeSourceId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            payment.HasOne(p => p.IncomeSourceVersion)
+                .WithMany()
+                .HasForeignKey(p => p.IncomeSourceVersionId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
     }
