@@ -356,7 +356,7 @@ T19
 
 ### Phase 4: Income write use cases
 
-#### T14: RegisterIncomeSource use case
+#### T14: RegisterIncomeSource use case ✅
 
 **What**: Creates the source and, for Recurring, its first open version, in one commit.
 **Where**: `src/Balance.Application/UseCases/Incomes/Register/RegisterIncomeSourceUseCase.cs`
@@ -366,15 +366,16 @@ T19
 
 **Done when**:
 
-- [ ] A Recurring source persists one open version; a Variable source persists none
-- [ ] A Person belonging to another user raises `NotFoundException` (ownership test)
-- [ ] Amount not greater than zero and expected day outside 1 to 31 both raise validation errors
-- [ ] Gate check passes: `dotnet test tests/UseCases.Test; dotnet test tests/Validators.Tests`
-- [ ] Test count: 20 tests pass
+- [x] A Recurring source persists one open version; a Variable source persists none
+- [x] A Person belonging to another user raises `NotFoundException` (ownership test)
+- [x] Amount not greater than zero and expected day outside 1 to 31 both raise validation errors
+- [x] Gate check passes: `dotnet test tests/UseCases.Test; dotnet test tests/Validators.Tests`
+- [x] Test count: 24 tests pass (11 UseCases + 13 Validators)
 
 **Tests**: unit
 **Gate**: quick
 **Commit**: `feat(application): add RegisterIncomeSource use case`
+**Status**: ✅ Complete - 24 unit tests green. `Communication` cannot reference `Domain`, so the wire contract carries its own `IncomeType` mirror kept in sync by integer value.
 
 #### T15: RegisterIncomePayment use case
 

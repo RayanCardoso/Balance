@@ -36,4 +36,16 @@
   <data name="EMAIL_OR_PASSWORD_INVALID" xml:space="preserve">
     <value>E-mail e/ou senha inválidos.</value>
   </data>
+  <data name="PERSON_NOT_FOUND" xml:space="preserve">
+    <value>Pessoa não encontrada.</value>
+  </data>
+  <data name="AMOUNT_GREATER_THAN_ZERO" xml:space="preserve">
+    <value>O valor deve ser maior que zero.</value>
+  </data>
+  <data name="EXPECTED_DAY_OUT_OF_RANGE" xml:space="preserve">
+    <value>O dia esperado deve estar entre 1 e 31.</value>
+  </data>
+  <data name="VARIABLE_SOURCE_HAS_NO_VERSION" xml:space="preserve">
+    <value>Uma receita variável não possui valor nem dia esperado.</value>
+  </data>
 </root>

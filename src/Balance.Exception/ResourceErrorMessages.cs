@@ -19,6 +19,11 @@ public static class ResourceErrorMessages
     public static string PASSWORD_TOO_SHORT => Get(nameof(PASSWORD_TOO_SHORT));
     public static string EMAIL_OR_PASSWORD_INVALID => Get(nameof(EMAIL_OR_PASSWORD_INVALID));
 
+    public static string PERSON_NOT_FOUND => Get(nameof(PERSON_NOT_FOUND));
+    public static string AMOUNT_GREATER_THAN_ZERO => Get(nameof(AMOUNT_GREATER_THAN_ZERO));
+    public static string EXPECTED_DAY_OUT_OF_RANGE => Get(nameof(EXPECTED_DAY_OUT_OF_RANGE));
+    public static string VARIABLE_SOURCE_HAS_NO_VERSION => Get(nameof(VARIABLE_SOURCE_HAS_NO_VERSION));
+
     private static string Get(string key) =>
         ResourceManager.GetString(key, CultureInfo.CurrentUICulture) ?? key;
 }
