@@ -173,7 +173,7 @@ T19
 
 ### Phase 2: Person vertical
 
-#### T5: Create the Person entity
+#### T5: Create the Person entity ✅
 
 **What**: `Person` inheriting `BaseEntity`, with name, optional description, `UserId` and `IsAccountOwner`.
 **Where**: `src/Balance.Domain/Entities/Person.cs`
@@ -183,12 +183,13 @@ T19
 
 **Done when**:
 
-- [ ] Navigation to `User` and the `UserId` foreign key are declared
-- [ ] `dotnet build` reports 0 errors and 0 warnings
+- [x] Navigation to `User` and the `UserId` foreign key are declared
+- [x] `dotnet build` reports 0 errors and 0 warnings
 
 **Tests**: none
 **Gate**: build
 **Commit**: `feat(domain): add Person entity owned by a user`
+**Status**: ✅ Complete - build clean
 
 #### T6: Persist Person
 
