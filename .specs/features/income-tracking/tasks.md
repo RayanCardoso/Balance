@@ -275,7 +275,7 @@ T19
 
 ### Phase 3: Income domain and persistence
 
-#### T10: Create the income enums
+#### T10: Create the income enums ✅
 
 **What**: `IncomeType` with Recurring and Variable, and `IncomeStatus` with Pending, Received and Divergent.
 **Where**: `src/Balance.Domain/Enums/IncomeType.cs`
@@ -285,12 +285,13 @@ T19
 
 **Done when**:
 
-- [ ] Both enums declared with explicit integer values
-- [ ] `dotnet build` reports 0 errors and 0 warnings
+- [x] Both enums declared with explicit integer values
+- [x] `dotnet build` reports 0 errors and 0 warnings
 
 **Tests**: none
 **Gate**: build
 **Commit**: `feat(domain): add income type and status enums`
+**Status**: ✅ Complete - build clean
 
 #### T11: Create the income entities
 
