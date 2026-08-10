@@ -126,7 +126,7 @@ T19
 **Commit**: `test: assert error messages through ResourceManager per repo convention`
 **Status**: ✅ Complete - 8 passed, 0 failed
 
-#### T3: Migrate User and its consumers to the Guid identity
+#### T3: Migrate User and its consumers to the Guid identity ✅
 
 **What**: `User` inherits `BaseEntity`; `UserIdentifier` and `long Id` are removed, and every consumer moves to `Id`. One atomic change - splitting it leaves a tree that does not compile.
 **Where**: `src/Balance.Domain/Entities/User.cs` plus its consumers `JwtTokenGenerator.cs`, `LoggedUser.cs`, `UserBuilder.cs`, `CustomWebApplicationFactory.cs`
@@ -136,17 +136,18 @@ T19
 
 **Done when**:
 
-- [ ] `User` has no `UserIdentifier` and no `long Id`
-- [ ] The `Sid` claim carries `user.Id`
-- [ ] `LoggedUser` resolves on `Id`
-- [ ] A test proves the `Sid` claim of a login token equals the persisted user's `Id`
-- [ ] A test proves `LoggedUser.Get()` returns the user matching a token's `Sid`
-- [ ] Gate check passes: `dotnet test`
-- [ ] Test count: 10 tests pass (no silent deletions)
+- [x] `User` has no `UserIdentifier` and no `long Id`
+- [x] The `Sid` claim carries `user.Id`
+- [x] `LoggedUser` resolves on `Id`
+- [x] A test proves the `Sid` claim of a login token equals the persisted user's `Id`
+- [x] A test proves `LoggedUser.Get()` returns the user matching a token's `Sid`
+- [x] Gate check passes: `dotnet test`
+- [x] Test count: 10 tests pass (no silent deletions)
 
 **Tests**: integration
 **Gate**: full
 **Commit**: `refactor(domain)!: move User onto BaseEntity Guid identity`
+**Status**: ✅ Complete - 10 passed, 0 failed. Only the stale migration still names `UserIdentifier`; T19 regenerates it.
 
 #### T4: Stamp audit timestamps centrally
 

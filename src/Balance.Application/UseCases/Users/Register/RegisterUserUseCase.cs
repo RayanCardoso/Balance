@@ -43,7 +43,6 @@ public class RegisterUserUseCase : IRegisterUserUseCase
 
         var user = _mapper.Map<User>(request);
         user.Password = _passwordEncripter.Encrypt(request.Password);
-        user.UserIdentifier = Guid.NewGuid();
 
         await _writeOnlyRepository.Add(user);
         await _unitOfWork.Commit();

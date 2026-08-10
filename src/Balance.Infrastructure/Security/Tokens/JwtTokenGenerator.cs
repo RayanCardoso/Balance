@@ -24,7 +24,7 @@ public class JwtTokenGenerator : IAccessTokenGenerator
         {
             new(ClaimTypes.Name, user.Name),
             new(ClaimTypes.Email, user.Email),
-            new(ClaimTypes.Sid, user.UserIdentifier.ToString()),
+            new(ClaimTypes.Sid, user.Id.ToString()),
             new(ClaimTypes.Role, user.Role)
         };
 

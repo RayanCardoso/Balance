@@ -44,8 +44,8 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         IPasswordEncripter passwordEncripter,
         IAccessTokenGenerator accessTokenGenerator)
     {
-        User_Team_Member = AddUser(dbContext, passwordEncripter, accessTokenGenerator, Roles.TEAM_MEMBER, id: 1);
-        User_Admin = AddUser(dbContext, passwordEncripter, accessTokenGenerator, Roles.ADMIN, id: 2);
+        User_Team_Member = AddUser(dbContext, passwordEncripter, accessTokenGenerator, Roles.TEAM_MEMBER);
+        User_Admin = AddUser(dbContext, passwordEncripter, accessTokenGenerator, Roles.ADMIN);
 
         dbContext.SaveChanges();
     }
@@ -54,11 +54,9 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         BalanceDbContext dbContext,
         IPasswordEncripter passwordEncripter,
         IAccessTokenGenerator accessTokenGenerator,
-        string role,
-        long id)
+        string role)
     {
         var user = UserBuilder.Build(role);
-        user.Id = id;
 
         var plainPassword = user.Password;
         user.Password = passwordEncripter.Encrypt(plainPassword);
