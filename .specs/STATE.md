@@ -64,9 +64,13 @@ the same response as a non-existent id.
 **Branch:** `main`
 **Feature in flight:** `income-tracking`
 
-**Where things stand:** spec, context and design are written and approved. The user delegated the
-whole run (design → tasks → execute → verify) without further review and asked for a single report at
-the end. `git push` is explicitly NOT authorised for this run - commits stay local.
+**Where things stand:** `income-tracking` is complete and verified. All 20 tasks are done, 82 tests
+pass, and `validation.md` records a PASS with 5/5 sensor mutations killed. 22 local commits sit ahead
+of `origin/main` - `git push` was explicitly NOT authorised for this run, so pushing is the user's
+next action.
+
+**Known gaps carried forward:** the archive operation for an income source (its filter exists and is
+honoured, but nothing sets `Archived`); update and delete for `Person`; correcting a recorded payment.
 
 **Environment notes:**
 
