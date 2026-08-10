@@ -87,7 +87,7 @@ T19
 
 ### Phase 1: Identity foundation and test conventions
 
-#### T1: Create BaseEntity
+#### T1: Create BaseEntity ✅
 
 **What**: The abstract root carrying `Guid Id`, `DateTime CreatedAt` and `DateTime? UpdatedAt`.
 **Where**: `src/Balance.Domain/Entities/BaseEntity.cs`
@@ -97,12 +97,13 @@ T19
 
 **Done when**:
 
-- [ ] `Id` defaults to a new `Guid`, `CreatedAt` to `DateTime.UtcNow`, `UpdatedAt` to null
-- [ ] `dotnet build` reports 0 errors and 0 warnings
+- [x] `Id` defaults to a new `Guid`, `CreatedAt` to `DateTime.UtcNow`, `UpdatedAt` to null
+- [x] `dotnet build` reports 0 errors and 0 warnings
 
 **Tests**: none
 **Gate**: build
 **Commit**: `feat(domain): add BaseEntity with id and audit timestamps`
+**Status**: ✅ Complete - build clean, 0 errors 0 warnings
 
 #### T2: Adopt the repo's test message convention
 
