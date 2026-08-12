@@ -265,7 +265,7 @@ T19 -> T20
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings
 
-#### T17: Add the Expense contracts
+#### T17: Add the Expense contracts ✅
 
 **Where**: `src/Balance.Communication/Requests/RequestRegisterExpenseJson.cs`
 **What**: `RequestRegisterExpenseJson` with `Name`, `PersonId`, `Type`, `Amount`, `CategoryId`, `AccountId`, `Date` and a nullable `CompetenceMonth` override, plus `ResponseExpenseJson`.
@@ -273,6 +273,7 @@ T19 -> T20
 **Requirement**: EXPN-01, EXPN-02
 **Tests**: compile-only per the coverage matrix; the shape is asserted by T20
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings
 
 #### T18: Add RegisterExpenseUseCase
 
