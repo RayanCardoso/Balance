@@ -290,7 +290,7 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 | RECR-02 | P1: Register a recurring expense | Pending | Pending |
 | RPAY-01 | P1: Record what a recurring expense actually cost | Schema foundation | Implementing |
 | RPAY-02 | P1: Record what a recurring expense actually cost | Pending | Pending |
-| RPAY-03 | P1: Record what a recurring expense actually cost | Pending | Pending |
+| RPAY-03 | P1: Record what a recurring expense actually cost | Schema foundation | Implementing |
 | VIEW-01 | P1: View the expenses of a given month | Pending | Pending |
 | VIEW-02 | P1: View the expenses of a given month | Pending | Pending |
 | VIEW-03 | P1: View the expenses of a given month | Schema foundation | Implementing |

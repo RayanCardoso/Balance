@@ -126,7 +126,7 @@ T2 has no intra-phase dependency.
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings
 
-#### T6: Configure the seven new entities in BalanceDbContext
+#### T6: Configure the seven new entities in BalanceDbContext ✅
 
 **Where**: `src/Balance.Infrastructure/DataAccess/BalanceDbContext.cs`
 **What**: `DbSet` per entity; `HasPrecision(18, 2)` on every money column; `Restrict` on every relationship; the indexes listed in the design; a unique index on `RecurringExpensePayment (RecurringExpenseId, ReferenceMonth)`. The income configuration block is not touched.
@@ -134,6 +134,7 @@ T2 has no intra-phase dependency.
 **Requirement**: SHAR-02, RPAY-03
 **Tests**: schema-shape layer per the coverage matrix — verified by reading the migration in T45; the uniqueness rule it backs is separately enforced and unit-tested in T34
 **Gate**: `test` — the 82 existing tests must stay green through the context change
+**Status**: ✅ Complete — 82 passed, 0 failed. Phase 1 done.
 
 ---
 
