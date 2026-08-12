@@ -224,7 +224,7 @@ T14 -> T15
 **Gate**: `test`
 **Status**: ✅ Complete — 125 passed, 0 failed (21 new). Both boundaries (1 and 31) and both invalid values (0 and 32) covered for closing day and due day; a debit account with all three fields null accepted.
 
-#### T14: Add the Category and Account controllers
+#### T14: Add the Category and Account controllers ✅
 
 **Where**: `src/Balance.Api/Controllers/CategoryController.cs`
 **What**: `CategoryController` and `AccountController`, both `[Authorize]`, with full `ProducesResponseType` documentation matching `IncomeController`, plus the four use case registrations in `Balance.Application`'s DI extension and the four repository registrations in `Balance.Infrastructure`'s.
@@ -232,6 +232,7 @@ T14 -> T15
 **Requirement**: SHAR-01, SHAR-02
 **Tests**: endpoint layer — asserted by T15
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings. Both controllers registered, all four use cases and four repositories wired in DI.
 
 #### T15: Add the catalogue endpoint tests
 
