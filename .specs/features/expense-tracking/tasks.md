@@ -495,7 +495,7 @@ T36 -> T37
 **Gate**: `test`
 **Status**: ✅ Complete — 288 passed, 0 failed (11 new). The month-and-version assertion is discriminating rather than tautological: the fixture closes the old version at 2026-07-31 and opens a new one at 2026-08-01, so the payment's August month now *resolves* to the newer version, and the test still demands the frozen id be the old one. Any implementation that recomputed the version on update fails it. The request type carries neither field, so the rule is unrepresentable as well as untested-for. SPEC_DEVIATION: `RECURRING_EXPENSE_PAYMENT_NOT_FOUND` added to the `.resx` pair — the design named no not-found key for a payment, and reusing `RECURRING_EXPENSE_NOT_FOUND` would name the wrong entity. Same correction T18 and T28 applied; the 404 AD-004 pins is unchanged.
 
-#### T36: Add the payment routes
+#### T36: Add the payment routes ✅
 
 **Where**: `src/Balance.Api/Controllers/RecurringExpenseController.cs`
 **What**: `POST /api/recurring-expense/payment` and `PUT /api/recurring-expense/payment/{id:guid}`, documented, plus DI registrations.
@@ -503,6 +503,7 @@ T36 -> T37
 **Requirement**: RPAY-01, RPAY-02
 **Tests**: endpoint layer — asserted by T37
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings. Both use cases and `IRecurringExpensePaymentRepository` wired in DI, the registration T32 left for this task.
 
 #### T37: Add the payment endpoint tests
 
