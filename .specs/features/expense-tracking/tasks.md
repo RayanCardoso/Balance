@@ -285,7 +285,7 @@ T19 -> T20
 **Gate**: `test`
 **Status**: ✅ Complete — 154 passed, 0 failed (20 new). Every branch of EXPN-02 covered, including the closing-day boundary and an override that beats a differing derived month. SPEC_DEVIATION: `CATEGORY_NOT_FOUND` and `ACCOUNT_NOT_FOUND` added to the `.resx` pair — the design named only `PERSON_NOT_FOUND`, which would have made a foreign category answer "Person not found." The 404 status AD-004 pins is unchanged.
 
-#### T19: Add the ExpenseController register route
+#### T19: Add the ExpenseController register route ✅
 
 **Where**: `src/Balance.Api/Controllers/ExpenseController.cs`
 **What**: `[Authorize]` controller with `POST /api/expense`, documented responses, plus the use case and repository DI registrations.
@@ -293,6 +293,7 @@ T19 -> T20
 **Requirement**: EXPN-01
 **Tests**: endpoint layer — asserted by T20
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings. `RegisterExpenseUseCase` and both expense repository interfaces wired in DI.
 
 #### T20: Add the expense endpoint tests
 
