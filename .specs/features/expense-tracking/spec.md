@@ -296,7 +296,7 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 | VIEW-02 | P1: View the expenses of a given month | Domain rules and messages | Implementing |
 | VIEW-03 | P1: View the expenses of a given month | Schema foundation | Implementing |
 | VIEW-04 | P1: View the expenses of a given month | Pending | Pending |
-| RECR-03 | P2: Change the base value of a recurring expense | Pending | Pending |
+| RECR-03 | P2: Change the base value of a recurring expense | Recurring expenses | Implementing |
 | RECR-04 | P2: Change the base value of a recurring expense | Pending | Pending |
 | RECR-05 | P2: Archive a recurring expense | Pending | Pending |
 | DASH-01 | P2: See income and expenses for the same month | Pending | Pending |

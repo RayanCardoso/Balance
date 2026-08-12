@@ -381,7 +381,7 @@ T30 -> T31
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings. One implementation behind the read-only, write-only and update-only interfaces; `GetForMonth` filters on `Person.UserId`, skips archived rows and loads only that month's payment.
 
-#### T26: Add the recurring expense contracts
+#### T26: Add the recurring expense contracts ✅
 
 **Where**: `src/Balance.Communication/Requests/RequestRegisterRecurringExpenseJson.cs`
 **What**: `RequestRegisterRecurringExpenseJson`, `RequestChangeRecurringExpenseValueJson` and `ResponseRecurringExpenseJson` with its version.
@@ -389,6 +389,7 @@ T30 -> T31
 **Requirement**: RECR-01, RECR-03
 **Tests**: compile-only per the coverage matrix; shapes are asserted by T31
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings. `ResponseRecurringExpenseJson` carries the version history as a collection rather than a single current version, so the register response shows exactly one open version and the change response shows the previous one closed — the two Independent Tests RECR-01 and RECR-03 name.
 
 #### T27: Add RegisterRecurringExpenseUseCase
 
