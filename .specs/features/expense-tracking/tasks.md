@@ -255,7 +255,7 @@ T18 -> T19
 T19 -> T20
 ```
 
-#### T16: Add the Expense repository
+#### T16: Add the Expense repository ✅
 
 **Where**: `src/Balance.Infrastructure/DataAccess/Repositories/Expenses/ExpenseRepository.cs`
 **What**: `IExpenseWriteOnlyRepository` (`Add`, `AddRange`) and `IExpenseReadOnlyRepository` (`GetForMonth(User, DateOnly)`), the read including category, account and plan and filtering on `Person.UserId` and `CompetenceMonth`.
@@ -263,6 +263,7 @@ T19 -> T20
 **Requirement**: EXPN-01, VIEW-01
 **Tests**: endpoint layer per the coverage matrix — proved by T20 and T41
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings
 
 #### T17: Add the Expense contracts
 

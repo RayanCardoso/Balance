@@ -291,7 +291,7 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 | RPAY-01 | P1: Record what a recurring expense actually cost | Schema foundation | Implementing |
 | RPAY-02 | P1: Record what a recurring expense actually cost | Pending | Pending |
 | RPAY-03 | P1: Record what a recurring expense actually cost | Schema foundation | Implementing |
-| VIEW-01 | P1: View the expenses of a given month | Pending | Pending |
+| VIEW-01 | P1: View the expenses of a given month | Expense slice | Implementing |
 | VIEW-02 | P1: View the expenses of a given month | Domain rules and messages | Implementing |
 | VIEW-03 | P1: View the expenses of a given month | Schema foundation | Implementing |
 | VIEW-04 | P1: View the expenses of a given month | Pending | Pending |
