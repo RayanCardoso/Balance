@@ -411,7 +411,7 @@ T30 -> T31
 **Gate**: `test`
 **Status**: ✅ Complete — 238 passed, 0 failed (12 new). The closed version's `ValidityEnd` asserted as the exact date 2026-08-31 against a new start of 2026-09-01, the timeline proved gap-free and overlap-free, `Commit` counted at 1, and a payment recorded against the old version proved to keep its frozen version id (RECR-04 AC4). Rejected changes leave the version open and commit nothing. SPEC_DEVIATION: `RECURRING_EXPENSE_NOT_FOUND` added to the `.resx` pair — the design's error table named no not-found key for a recurring expense, which would have answered "Income source not found." Same correction T18 applied; the 404 AD-004 pins is unchanged.
 
-#### T29: Add ArchiveRecurringExpenseUseCase
+#### T29: Add ArchiveRecurringExpenseUseCase ✅
 
 **Where**: `src/Balance.Application/UseCases/RecurringExpenses/Archive/ArchiveRecurringExpenseUseCase.cs`
 **What**: One use case taking the target state, so archive and unarchive share the ownership check. Loads through the update-only repository, sets `Archived` and commits.
@@ -419,6 +419,7 @@ T30 -> T31
 **Requirement**: RECR-05
 **Tests**: use case layer — archiving sets the flag, unarchiving clears it, and a foreign expense produces 404 without touching the flag
 **Gate**: `test`
+**Status**: ✅ Complete — 242 passed, 0 failed (4 new). One code path for both directions; the foreign-expense test asserts the flag stayed false and nothing was committed, so an implementation that set the flag before the ownership check would fail it. Archiving leaves the recorded payments intact. This is lesson **L-002** closed: the `Archived` field now ships with the operation that produces its state.
 
 #### T30: Add the RecurringExpenseController
 
