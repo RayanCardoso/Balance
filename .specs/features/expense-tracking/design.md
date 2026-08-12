@@ -296,11 +296,27 @@ New message keys: `DAY_OUT_OF_RANGE`, `INSTALLMENT_COUNT_INVALID`, `PAYMENT_ALRE
 `NAME_REQUIRED`, `AMOUNT_GREATER_THAN_ZERO`, `NO_VERSION_IN_EFFECT`, `CHANGE_REASON_REQUIRED`,
 `VALIDITY_START_MUST_BE_LATER`, `REFERENCE_MONTH_INVALID`, `PERSON_NOT_FOUND`.
 
-> **Correction, T18.** This table originally named `PERSON_NOT_FOUND` as the only reused not-found key,
-> which would have answered a foreign *category* with "Person not found" — a 404 with a body describing
-> the wrong entity. `CATEGORY_NOT_FOUND` and `ACCOUNT_NOT_FOUND` were added following the existing
-> `INCOME_SOURCE_NOT_FOUND` convention. The 404 status AD-004 pins is unchanged; only the message body
-> names the right entity. Recorded as a `SPEC_DEVIATION` marker in `RegisterExpenseUseCase.cs`.
+> **Correction, T18 and T28.** This table originally named `PERSON_NOT_FOUND` as the only reused
+> not-found key, which would have answered a foreign *category* with "Person not found" — a 404 with a
+> body describing the wrong entity. `CATEGORY_NOT_FOUND`, `ACCOUNT_NOT_FOUND` (T18) and
+> `RECURRING_EXPENSE_NOT_FOUND` (T28) were added following the existing `INCOME_SOURCE_NOT_FOUND`
+> convention. The 404 status AD-004 pins is unchanged; only the message body names the right entity.
+> Recorded as `SPEC_DEVIATION` markers in `RegisterExpenseUseCase.cs` and
+> `ChangeRecurringExpenseValueUseCase.cs`.
+
+> **Correction, T26 — response shape.** `ResponseRecurringExpenseJson` carries the **version history as
+> a collection**, not just the version currently in effect. Returning only the current version (income's
+> shape) leaves RECR-03 AC1 — "sets the `ValidityEnd` of the version in effect to the day before the new
+> `ValidityStart`" — unobservable at the endpoint layer, so the change-value route could not be verified
+> end to end. With the collection, the response shows the closed version at its exact end date, which is
+> what the Independent Tests for RECR-01 and RECR-03 ask a reader to confirm.
+
+> **Implementation note, T27/T28 — EF change-tracker fixup.** After `AddVersion`, the tracker fixes the
+> new version into the already-loaded `Versions` collection, so appending it again when building the
+> response double-counts it. This surfaced only in the T31 endpoint test (3 versions where 2 were
+> expected); the unit test's mocked repository performs no fixup and stayed green. Any use case that
+> adds a child to a loaded aggregate must filter by id before appending — this applies directly to the
+> payment use cases in Phase 7, which touch the same aggregate.
 
 ---
 
