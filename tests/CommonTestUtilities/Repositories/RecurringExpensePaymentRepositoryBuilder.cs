@@ -32,5 +32,15 @@ public class RecurringExpensePaymentRepositoryBuilder
         return this;
     }
 
+    /// <summary>The tracked read the correction path loads the payment through.</summary>
+    public RecurringExpensePaymentRepositoryBuilder GetById(User user, RecurringExpensePayment payment)
+    {
+        _repository
+            .Setup(repository => repository.GetById(user, payment.Id))
+            .ReturnsAsync(payment);
+
+        return this;
+    }
+
     public IRecurringExpensePaymentRepository Build() => _repository.Object;
 }

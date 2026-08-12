@@ -87,4 +87,7 @@
   <data name="RECURRING_EXPENSE_NOT_FOUND" xml:space="preserve">
     <value>Despesa recorrente não encontrada.</value>
   </data>
+  <data name="RECURRING_EXPENSE_PAYMENT_NOT_FOUND" xml:space="preserve">
+    <value>Pagamento de despesa recorrente não encontrado.</value>
+  </data>
 </root>

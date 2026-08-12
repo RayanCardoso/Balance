@@ -37,6 +37,7 @@ public static class ResourceErrorMessages
     public static string CATEGORY_NOT_FOUND => Get(nameof(CATEGORY_NOT_FOUND));
     public static string ACCOUNT_NOT_FOUND => Get(nameof(ACCOUNT_NOT_FOUND));
     public static string RECURRING_EXPENSE_NOT_FOUND => Get(nameof(RECURRING_EXPENSE_NOT_FOUND));
+    public static string RECURRING_EXPENSE_PAYMENT_NOT_FOUND => Get(nameof(RECURRING_EXPENSE_PAYMENT_NOT_FOUND));
 
     private static string Get(string key) =>
         ResourceManager.GetString(key, CultureInfo.CurrentUICulture) ?? key;

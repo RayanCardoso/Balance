@@ -485,7 +485,7 @@ T36 -> T37
 **Gate**: `test`
 **Status**: ✅ Complete — 277 passed, 0 failed (15 new). The freeze is asserted against a *past* month after a value change, so the payment carries the closed version's id and not the open one — a use case that froze the currently open version would fail that test alone. Every rejection path also asserts nothing was added and nothing committed. The duplicate probe is the guard under test; the unique index is never relied on.
 
-#### T35: Add UpdateRecurringExpensePaymentUseCase
+#### T35: Add UpdateRecurringExpensePaymentUseCase ✅
 
 **Where**: `src/Balance.Application/UseCases/RecurringExpenses/UpdatePayment/UpdateRecurringExpensePaymentUseCase.cs`
 **What**: Loads the payment tracked and scoped to the caller, overwrites amount, payment date, notes and paying account, and commits.
@@ -493,6 +493,7 @@ T36 -> T37
 **Requirement**: RPAY-02, RPAY-03
 **Tests**: use case + validator layers — the amount overwritten while the reference month and frozen version id are unchanged, a non-positive amount rejected, and a foreign payment producing 404
 **Gate**: `test`
+**Status**: ✅ Complete — 288 passed, 0 failed (11 new). The month-and-version assertion is discriminating rather than tautological: the fixture closes the old version at 2026-07-31 and opens a new one at 2026-08-01, so the payment's August month now *resolves* to the newer version, and the test still demands the frozen id be the old one. Any implementation that recomputed the version on update fails it. The request type carries neither field, so the rule is unrepresentable as well as untested-for. SPEC_DEVIATION: `RECURRING_EXPENSE_PAYMENT_NOT_FOUND` added to the `.resx` pair — the design named no not-found key for a payment, and reusing `RECURRING_EXPENSE_NOT_FOUND` would name the wrong entity. Same correction T18 and T28 applied; the 404 AD-004 pins is unchanged.
 
 #### T36: Add the payment routes
 
