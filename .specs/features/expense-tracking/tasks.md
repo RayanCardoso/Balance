@@ -345,7 +345,7 @@ T23 -> T24
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings. `RegisterInstallmentPlanUseCase` and `IInstallmentPlanWriteOnlyRepository` wired in DI.
 
-#### T24: Add the installment-plan endpoint tests
+#### T24: Add the installment-plan endpoint tests ✅
 
 **Where**: `tests/WebApi.Test/Expenses/RegisterInstallmentPlanTest.cs`
 **What**: 201 returning N installments whose amounts sum to the total and whose competence months are consecutive, 400 for a count below 2, and 401 without a token.
@@ -353,6 +353,7 @@ T23 -> T24
 **Requirement**: INST-01, INST-02, INST-03
 **Tests**: this task is the endpoint-layer coverage for Phase 5
 **Gate**: `test`
+**Status**: ✅ Complete — 204 passed, 0 failed (7 new). Phase 5 done. The 100.00-over-3 plan read back through the API as 33.33/33.33/33.34 in three consecutive competence months with the computed end date, `INSTALLMENT_COUNT_INVALID` and `AMOUNT_GREATER_THAN_ZERO` in both cultures, 404 for a foreign category, and 401 without a token.
 
 ---
 
