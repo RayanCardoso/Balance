@@ -278,7 +278,7 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 | Requirement ID | Story | Phase | Status |
 | -------------- | ----- | ----- | ------ |
 | SHAR-01 | P1: Keep a catalogue of categories and accounts | Schema foundation | Implementing |
-| SHAR-02 | P1: Keep a catalogue of categories and accounts | Pending | Pending |
+| SHAR-02 | P1: Keep a catalogue of categories and accounts | Schema foundation | Implementing |
 | SHAR-03 | P1: Keep a catalogue of categories and accounts | Pending | Pending |
 | EXPN-01 | P1: Register an expense | Schema foundation | Implementing |
 | EXPN-02 | P1: Register an expense | Pending | Pending |

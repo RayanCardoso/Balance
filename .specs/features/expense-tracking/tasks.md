@@ -96,7 +96,7 @@ T2 has no intra-phase dependency.
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings
 
-#### T3: Add the Category and Account entities
+#### T3: Add the Category and Account entities ✅
 
 **Where**: `src/Balance.Domain/Entities/`
 **What**: `Category : BaseEntity` with `Name`, `Description?`, `Priority`, `UserId`, `User`. `Account : BaseEntity` with `Name`, `Institution`, `ClosingDay?`, `DueDay?`, `Limit?`, `PersonId`, `Person`. The nullable card fields are the design's decision for debit accounts.
@@ -104,6 +104,7 @@ T2 has no intra-phase dependency.
 **Requirement**: SHAR-01, SHAR-02
 **Tests**: compile-only per the coverage matrix; persistence is asserted by T15
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings
 
 #### T4: Add the Expense and InstallmentPlan entities
 
