@@ -371,7 +371,7 @@ T29 -> T30
 T30 -> T31
 ```
 
-#### T25: Add the RecurringExpense repositories
+#### T25: Add the RecurringExpense repositories ✅
 
 **Where**: `src/Balance.Infrastructure/DataAccess/Repositories/RecurringExpenses/RecurringExpenseRepository.cs`
 **What**: The read-only, write-only and update-only interfaces from the design, with one implementation. `GetForMonth` includes the versions and that month's payment; every read filters on `Person.UserId`.
@@ -379,6 +379,7 @@ T30 -> T31
 **Requirement**: RECR-01, VIEW-02
 **Tests**: endpoint layer per the coverage matrix — proved by T31 and T41
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings. One implementation behind the read-only, write-only and update-only interfaces; `GetForMonth` filters on `Person.UserId`, skips archived rows and loads only that month's payment.
 
 #### T26: Add the recurring expense contracts
 
