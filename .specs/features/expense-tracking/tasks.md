@@ -152,7 +152,7 @@ No intra-phase dependencies: T7, T8 and T9 depend only on Phase 1 and can be don
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings
 
-#### T8: Add CompetenceMonthResolver
+#### T8: Add CompetenceMonthResolver ✅
 
 **Where**: `src/Balance.Domain/Extensions/CompetenceMonthResolver.cs`
 **What**: `static DateOnly Resolve(ExpenseType, int? closingDay, DateOnly date)` implementing EXPN-02: credit past the closing day rolls to the next month; everything else stays in the date's month. Always returns day 1.
@@ -160,6 +160,7 @@ No intra-phase dependencies: T7, T8 and T9 depend only on Phase 1 and can be don
 **Requirement**: EXPN-02
 **Tests**: pure-domain layer — a fixture per branch, including a purchase exactly on the closing day (which must not roll), a December purchase rolling into January of the next year, and a credit account with a null closing day
 **Gate**: `test`
+**Status**: ✅ Complete — 89 passed, 0 failed (7 new). Every branch of EXPN-02 has a fixture, including the closing-day boundary and the December roll into 2027.
 
 #### T9: Add RecurringExpenseExtensions.VersionInEffect
 

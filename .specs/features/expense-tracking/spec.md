@@ -281,7 +281,7 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 | SHAR-02 | P1: Keep a catalogue of categories and accounts | Schema foundation | Implementing |
 | SHAR-03 | P1: Keep a catalogue of categories and accounts | Domain rules and messages | Implementing |
 | EXPN-01 | P1: Register an expense | Schema foundation | Implementing |
-| EXPN-02 | P1: Register an expense | Pending | Pending |
+| EXPN-02 | P1: Register an expense | Domain rules and messages | Implementing |
 | EXPN-03 | P1: Register an expense | Pending | Pending |
 | INST-01 | P1: Register an installment purchase | Schema foundation | Implementing |
 | INST-02 | P1: Register an installment purchase | Pending | Pending |
