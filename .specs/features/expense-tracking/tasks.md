@@ -325,7 +325,7 @@ T23 -> T24
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings. The request carries no end date; the response carries the computed one and the generated installments.
 
-#### T22: Add RegisterInstallmentPlanUseCase
+#### T22: Add RegisterInstallmentPlanUseCase ✅
 
 **Where**: `src/Balance.Application/UseCases/Expenses/RegisterInstallmentPlan/RegisterInstallmentPlanUseCase.cs`
 **What**: Generates N expenses in one `Commit()`: amounts `round(total / n, 2)` with the residual on the last, competence months advancing monthly from the resolved first month, `Type = Credit`, `Date = StartDate`, and the plan's `EndDate` set to the last installment's competence month. Validator covers `INSTALLMENT_COUNT_INVALID` and `AMOUNT_GREATER_THAN_ZERO`.
@@ -333,6 +333,7 @@ T23 -> T24
 **Requirement**: INST-01, INST-02, INST-03
 **Tests**: use case + validator layers — 100.00 over 3 giving 33.33/33.33/33.34, several awkward totals whose installments must sum exactly, N consecutive competence months crossing a year boundary, a count of 1 rejected, and a foreign category producing 404
 **Gate**: `test`
+**Status**: ✅ Complete — 197 passed, 0 failed (33 new). Seven awkward totals asserted to sum exactly, the residual proved to land only on the last installment, competence months crossing into 2027, and `Commit` asserted called exactly once.
 
 #### T23: Add the installment-plan route
 

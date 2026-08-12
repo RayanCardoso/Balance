@@ -284,7 +284,7 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 | EXPN-02 | P1: Register an expense | Domain rules and messages | Implementing |
 | EXPN-03 | P1: Register an expense | Expense slice | Implementing |
 | INST-01 | P1: Register an installment purchase | Schema foundation | Implementing |
-| INST-02 | P1: Register an installment purchase | Pending | Pending |
+| INST-02 | P1: Register an installment purchase | Installment plans | Implementing |
 | INST-03 | P1: Register an installment purchase | Domain rules and messages | Implementing |
 | RECR-01 | P1: Register a recurring expense | Schema foundation | Implementing |
 | RECR-02 | P1: Register a recurring expense | Pending | Pending |
