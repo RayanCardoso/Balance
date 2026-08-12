@@ -11,6 +11,9 @@ using Balance.Application.UseCases.Incomes.Register;
 using Balance.Application.UseCases.Incomes.RegisterPayment;
 using Balance.Application.UseCases.Login.DoLogin;
 using Balance.Application.UseCases.People.GetAll;
+using Balance.Application.UseCases.RecurringExpenses.Archive;
+using Balance.Application.UseCases.RecurringExpenses.ChangeValue;
+using Balance.Application.UseCases.RecurringExpenses.Register;
 using Balance.Application.UseCases.People.Register;
 using Balance.Application.UseCases.Users.Register;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,5 +49,8 @@ public static class DependencyInjectionExtension
         services.AddScoped<IGetAllAccountsUseCase, GetAllAccountsUseCase>();
         services.AddScoped<IRegisterExpenseUseCase, RegisterExpenseUseCase>();
         services.AddScoped<IRegisterInstallmentPlanUseCase, RegisterInstallmentPlanUseCase>();
+        services.AddScoped<IRegisterRecurringExpenseUseCase, RegisterRecurringExpenseUseCase>();
+        services.AddScoped<IChangeRecurringExpenseValueUseCase, ChangeRecurringExpenseValueUseCase>();
+        services.AddScoped<IArchiveRecurringExpenseUseCase, ArchiveRecurringExpenseUseCase>();
     }
 }

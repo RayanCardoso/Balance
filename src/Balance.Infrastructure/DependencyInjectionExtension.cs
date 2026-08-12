@@ -4,6 +4,7 @@ using Balance.Domain.Repositories.Categories;
 using Balance.Domain.Repositories.Expenses;
 using Balance.Domain.Repositories.Incomes;
 using Balance.Domain.Repositories.People;
+using Balance.Domain.Repositories.RecurringExpenses;
 using Balance.Domain.Repositories.Users;
 using Balance.Domain.Security.Cryptography;
 using Balance.Domain.Security.Tokens;
@@ -14,6 +15,7 @@ using Balance.Infrastructure.DataAccess.Repositories.Categories;
 using Balance.Infrastructure.DataAccess.Repositories.Expenses;
 using Balance.Infrastructure.DataAccess.Repositories.Incomes;
 using Balance.Infrastructure.DataAccess.Repositories.People;
+using Balance.Infrastructure.DataAccess.Repositories.RecurringExpenses;
 using Balance.Infrastructure.DataAccess.Repositories.Users;
 using Balance.Infrastructure.Extensions;
 using Balance.Infrastructure.Security.Cryptography;
@@ -59,6 +61,9 @@ public static class DependencyInjectionExtension
         services.AddScoped<IExpenseReadOnlyRepository, ExpenseRepository>();
         services.AddScoped<IExpenseWriteOnlyRepository, ExpenseRepository>();
         services.AddScoped<IInstallmentPlanWriteOnlyRepository, InstallmentPlanRepository>();
+        services.AddScoped<IRecurringExpenseReadOnlyRepository, RecurringExpenseRepository>();
+        services.AddScoped<IRecurringExpenseWriteOnlyRepository, RecurringExpenseRepository>();
+        services.AddScoped<IRecurringExpenseUpdateOnlyRepository, RecurringExpenseRepository>();
     }
 
     private static void AddToken(IServiceCollection services, IConfiguration configuration)

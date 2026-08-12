@@ -421,7 +421,7 @@ T30 -> T31
 **Gate**: `test`
 **Status**: ✅ Complete — 242 passed, 0 failed (4 new). One code path for both directions; the foreign-expense test asserts the flag stayed false and nothing was committed, so an implementation that set the flag before the ownership check would fail it. Archiving leaves the recorded payments intact. This is lesson **L-002** closed: the `Archived` field now ships with the operation that produces its state.
 
-#### T30: Add the RecurringExpenseController
+#### T30: Add the RecurringExpenseController ✅
 
 **Where**: `src/Balance.Api/Controllers/RecurringExpenseController.cs`
 **What**: `[Authorize]` controller with `POST /api/recurring-expense`, `PUT /api/recurring-expense/value` and `PUT /api/recurring-expense/{id:guid}/archive`, documented responses, plus DI registrations.
@@ -429,6 +429,7 @@ T30 -> T31
 **Requirement**: RECR-01, RECR-03, RECR-05
 **Tests**: endpoint layer — asserted by T31
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings. An explicit `api/recurring-expense` route template, since `[controller]` would not produce the hyphen. Archive and unarchive share one route, the target state arriving as `?archived=`, defaulting to true. Three use cases and three repository interfaces wired in DI.
 
 #### T31: Add the recurring expense endpoint tests
 
