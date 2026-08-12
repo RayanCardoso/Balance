@@ -525,7 +525,7 @@ T39 -> T40
 T40 -> T41
 ```
 
-#### T38: Add the monthly expense contracts
+#### T38: Add the monthly expense contracts ✅
 
 **Where**: `src/Balance.Communication/Responses/ResponseMonthlyExpenseJson.cs`
 **What**: The response with a variable line collection, a recurring line collection and the four totals. Variable lines carry the installment number and count; recurring lines carry expected, actual, due day, `IsEstimate` and status.
@@ -533,6 +533,7 @@ T40 -> T41
 **Requirement**: VIEW-01, VIEW-04
 **Tests**: compile-only per the coverage matrix; the shape is asserted by T41
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings. Lines also carry the category name and priority and the account name, so the page can group by priority without a second round trip.
 
 #### T39: Add GetMonthlyExpenseUseCase
 
