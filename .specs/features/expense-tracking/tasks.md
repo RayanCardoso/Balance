@@ -475,7 +475,7 @@ T36 -> T37
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings. The update request carries neither the reference month nor the version identifier, so RPAY-02 AC4 is unrepresentable rather than merely unenforced; the payment id travels on the route. The response exposes the frozen version id, which is what makes RPAY-01 AC2 observable at the endpoint layer.
 
-#### T34: Add RegisterRecurringExpensePaymentUseCase
+#### T34: Add RegisterRecurringExpensePaymentUseCase ✅
 
 **Where**: `src/Balance.Application/UseCases/RecurringExpenses/RegisterPayment/RegisterRecurringExpensePaymentUseCase.cs`
 **What**: Resolves the recurring expense, rejects an archived one, probes for an existing payment in that month, resolves and freezes the version in effect, persists and commits. Validator covers `AMOUNT_GREATER_THAN_ZERO`.
@@ -483,6 +483,7 @@ T36 -> T37
 **Requirement**: RPAY-01, RPAY-03
 **Tests**: use case + validator layers — the frozen version id matching the version in effect, a second payment for the same month rejected with `PAYMENT_ALREADY_RECORDED`, an archived expense rejected, a month with no version in effect rejected, a null notes and null paying account accepted, and a foreign expense producing 404
 **Gate**: `test`
+**Status**: ✅ Complete — 277 passed, 0 failed (15 new). The freeze is asserted against a *past* month after a value change, so the payment carries the closed version's id and not the open one — a use case that froze the currently open version would fail that test alone. Every rejection path also asserts nothing was added and nothing committed. The duplicate probe is the guard under test; the unique index is never relied on.
 
 #### T35: Add UpdateRecurringExpensePaymentUseCase
 
