@@ -580,7 +580,7 @@ T42 -> T43
 T43 -> T44
 ```
 
-#### T42: Add GetMonthlyDashboardUseCase
+#### T42: Add GetMonthlyDashboardUseCase ✅
 
 **Where**: `src/Balance.Application/UseCases/Dashboard/GetMonthly/GetMonthlyDashboardUseCase.cs`
 **What**: Injects `IGetMonthlyIncomeUseCase` and `IGetMonthlyExpenseUseCase`, invokes both for the month and returns `ResponseMonthlyDashboardJson` with both halves and the balance. No income type is edited.
@@ -588,6 +588,9 @@ T43 -> T44
 **Requirement**: DASH-01, DASH-02
 **Tests**: use case layer — both halves returned unchanged from their mocked use cases, and the balance computed as total income received minus total committed expense
 **Gate**: `test`
+**Status**: ✅ Complete — 170 use case tests passed, 0 failed (was 164). 6 test cases.
+
+Both halves are asserted with `ShouldBeSameAs`, so a future implementation that rebuilt or filtered either response would fail rather than pass on a value comparison. Two balance cases pin what the spec means by "income received": one where expected income far exceeds what arrived (balance goes negative), and one where the amount already paid differs from the committed total — either substitution would otherwise look correct against a single happy-path figure.
 
 #### T43: Add the DashboardController
 
