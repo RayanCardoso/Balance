@@ -106,7 +106,7 @@ T2 has no intra-phase dependency.
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings
 
-#### T4: Add the Expense and InstallmentPlan entities
+#### T4: Add the Expense and InstallmentPlan entities ✅
 
 **Where**: `src/Balance.Domain/Entities/`
 **What**: `Expense : BaseEntity` and `InstallmentPlan : BaseEntity` exactly as specified in the design's data model, including the nullable `InstallmentNumber` and `InstallmentPlanId` and the `Installments` collection.
@@ -114,6 +114,7 @@ T2 has no intra-phase dependency.
 **Requirement**: EXPN-01, INST-01
 **Tests**: compile-only per the coverage matrix; persistence is asserted by T20 and T24
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings
 
 #### T5: Add the recurring expense entities
 

@@ -283,7 +283,7 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 | EXPN-01 | P1: Register an expense | Schema foundation | Implementing |
 | EXPN-02 | P1: Register an expense | Pending | Pending |
 | EXPN-03 | P1: Register an expense | Pending | Pending |
-| INST-01 | P1: Register an installment purchase | Pending | Pending |
+| INST-01 | P1: Register an installment purchase | Schema foundation | Implementing |
 | INST-02 | P1: Register an installment purchase | Pending | Pending |
 | INST-03 | P1: Register an installment purchase | Pending | Pending |
 | RECR-01 | P1: Register a recurring expense | Pending | Pending |
