@@ -234,7 +234,7 @@ T14 -> T15
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings. Both controllers registered, all four use cases and four repositories wired in DI.
 
-#### T15: Add the catalogue endpoint tests
+#### T15: Add the catalogue endpoint tests ✅
 
 **Where**: `tests/WebApi.Test/Categories/CategoryEndpointsTest.cs`
 **What**: Integration tests for both controllers: 201 on create, listing returns only the caller's rows, a second account sees none of them, a foreign `PersonId` on an account returns 404, and every route returns 401 without a token.
@@ -242,6 +242,7 @@ T14 -> T15
 **Requirement**: SHAR-01, SHAR-02, SHAR-03
 **Tests**: this task is the endpoint-layer coverage for Phase 3
 **Gate**: `test`
+**Status**: ✅ Complete — 134 passed, 0 failed (9 new). Phase 3 done. Both controllers covered: 201 on create, cross-account isolation on both listings, 404 on a foreign `PersonId`, and 401 on all four routes without a token.
 
 ---
 
