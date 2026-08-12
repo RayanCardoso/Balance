@@ -645,7 +645,7 @@ T46 -> T49
 
 `InitialCreate` is untouched, so the income schema's committed history is intact.
 
-#### T46: Add the CORS policy
+#### T46: Add the CORS policy ✅
 
 **Where**: `src/Balance.Api/Program.cs`
 **What**: A named policy allowing `http://localhost:5173` with the methods and headers the page needs, applied before authorization. No `AllowAnyOrigin`.
@@ -653,6 +653,7 @@ T46 -> T49
 **Requirement**: DASH-01
 **Tests**: endpoint layer — the existing suite must stay green through the pipeline change; the policy itself is proved by the page loading in T49
 **Gate**: `test`
+**Status**: ✅ Complete — 342 passed, 0 failed. Named policy `FrontendDevServer`, pinned to the single origin `http://localhost:5173`, registered before `UseAuthentication`. The first CORS configuration in the solution.
 
 #### T47: Start PostgreSQL and apply the migrations
 

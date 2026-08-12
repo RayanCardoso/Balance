@@ -60,6 +60,15 @@ builder.Services.AddAuthentication(config =>
     };
 });
 
+// The Vite dev server that hosts the dashboard page. Named and pinned to that single origin -
+// never AllowAnyOrigin, which would outlive the page it exists for.
+const string frontendCorsPolicy = "FrontendDevServer";
+
+builder.Services.AddCors(options => options.AddPolicy(frontendCorsPolicy, policy => policy
+    .WithOrigins("http://localhost:5173")
+    .AllowAnyHeader()
+    .AllowAnyMethod()));
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -71,6 +80,8 @@ if (app.Environment.IsDevelopment())
 app.UseMiddleware<CultureMiddleware>();
 
 app.UseHttpsRedirection();
+
+app.UseCors(frontendCorsPolicy);
 
 app.UseAuthentication();
 app.UseAuthorization();
