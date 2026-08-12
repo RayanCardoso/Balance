@@ -655,7 +655,7 @@ T46 -> T49
 **Gate**: `test`
 **Status**: ✅ Complete — 342 passed, 0 failed. Named policy `FrontendDevServer`, pinned to the single origin `http://localhost:5173`, registered before `UseAuthentication`. The first CORS configuration in the solution.
 
-#### T47: Start PostgreSQL and apply the migrations
+#### T47: Start PostgreSQL and apply the migrations ✅
 
 **Where**: `docker-compose.yml`
 **What**: Bring up the postgres service, start the API and confirm `DataBaseMigration` applies both migrations, leaving a database with every income and expense table present.
@@ -663,6 +663,16 @@ T46 -> T49
 **Requirement**: SHAR-01, EXPN-01, RECR-01
 **Tests**: schema-shape layer — the applied schema is inspected directly in the running database
 **Gate**: `migration`
+**Status**: ✅ Complete — both migrations applied to PostgreSQL 17. Inspected in the running database, not inferred from the migration file:
+
+| Check | Result |
+| ----- | ------ |
+| Tables | 12 — 5 income, 7 expense — plus `__EFMigrationsHistory` |
+| One payment per month | `IX_RecurringExpensePayments_RecurringExpenseId_ReferenceMonth` confirmed `CREATE UNIQUE INDEX` |
+| Money precision | 7 `numeric(18,2)` columns across both features |
+| Delete behaviour | 21 foreign keys, every one `RESTRICT`, none cascading |
+
+**SPEC_DEVIATION — host port.** The design said the container starts from the existing `docker-compose.yml` unchanged. It could not: this machine runs local PostgreSQL services (`postgresql-x64-17`, `postgresql-x64-18`) that already hold **5432 and 5433** and answer `localhost` before Docker does, producing `28P01 password authentication failed` against the wrong server. The container's host port moved to **5434** and `appsettings.Development.json` follows. Stopping a system service was rejected as too invasive for a project-level problem; the container port is confined to the repo and reversible in one line. The container's own port is still 5432 — only the host mapping changed.
 
 #### T48: Add the seeding script
 

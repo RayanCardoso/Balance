@@ -6,8 +6,11 @@ services:
       POSTGRES_DB: Balance
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+    # 5434 on the host: this machine already runs local PostgreSQL services (postgresql-x64-17 and
+    # -18) holding 5432 and 5433, and they answer localhost before the container does. 5434 keeps the
+    # container independent instead of requiring a system service to be stopped.
     ports:
-      - "5432:5432"
+      - "5434:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
