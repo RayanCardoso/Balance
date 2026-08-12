@@ -288,7 +288,7 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 | INST-02 | P1: Register an installment purchase | Installment plans | Implementing |
 | INST-03 | P1: Register an installment purchase | Domain rules and messages | Implementing |
 | RECR-01 | P1: Register a recurring expense | Schema foundation | Implementing |
-| RECR-02 | P1: Register a recurring expense | Pending | Pending |
+| RECR-02 | P1: Register a recurring expense | Recurring expenses | Implementing |
 | RPAY-01 | P1: Record what a recurring expense actually cost | Schema foundation | Implementing |
 | RPAY-02 | P1: Record what a recurring expense actually cost | Pending | Pending |
 | RPAY-03 | P1: Record what a recurring expense actually cost | Schema foundation | Implementing |

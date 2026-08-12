@@ -391,7 +391,7 @@ T30 -> T31
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings. `ResponseRecurringExpenseJson` carries the version history as a collection rather than a single current version, so the register response shows exactly one open version and the change response shows the previous one closed — the two Independent Tests RECR-01 and RECR-03 name.
 
-#### T27: Add RegisterRecurringExpenseUseCase
+#### T27: Add RegisterRecurringExpenseUseCase ✅
 
 **Where**: `src/Balance.Application/UseCases/RecurringExpenses/Register/RegisterRecurringExpenseUseCase.cs`
 **What**: Persists the recurring expense and its first open version in one `Commit()`, with `Archived = false` and the supplied `IsEstimate`. Validator covers `NAME_REQUIRED`, `AMOUNT_GREATER_THAN_ZERO` and `DAY_OUT_OF_RANGE`.
@@ -399,6 +399,7 @@ T30 -> T31
 **Requirement**: RECR-01, RECR-02
 **Tests**: use case + validator layers — one version created with a null validity end, `Commit` called exactly once, a foreign person/category/account each producing 404, and each validation message in both cultures
 **Gate**: `test`
+**Status**: ✅ Complete — 226 passed, 0 failed (22 new). Exactly one version added with a null validity end, `Commit` counted at 1, `Archived` false with both `IsEstimate` values stored, and a foreign person, category and account each 404. Culture coverage for the three validation messages is at the endpoint layer in T31, matching the convention T12 set.
 
 #### T28: Add ChangeRecurringExpenseValueUseCase
 
