@@ -401,7 +401,7 @@ T30 -> T31
 **Gate**: `test`
 **Status**: ✅ Complete — 226 passed, 0 failed (22 new). Exactly one version added with a null validity end, `Commit` counted at 1, `Archived` false with both `IsEstimate` values stored, and a foreign person, category and account each 404. Culture coverage for the three validation messages is at the endpoint layer in T31, matching the convention T12 set.
 
-#### T28: Add ChangeRecurringExpenseValueUseCase
+#### T28: Add ChangeRecurringExpenseValueUseCase ✅
 
 **Where**: `src/Balance.Application/UseCases/RecurringExpenses/ChangeValue/ChangeRecurringExpenseValueUseCase.cs`
 **What**: Closes the version in effect at the day before the new validity start and opens the new one in one `Commit()`. Validator covers `CHANGE_REASON_REQUIRED` and `VALIDITY_START_MUST_BE_LATER`.
@@ -409,6 +409,7 @@ T30 -> T31
 **Requirement**: RECR-03, RECR-04
 **Tests**: use case + validator layers — the old version's end set to the day before, the new version open with its reason, both saved in one commit, an equal or earlier start rejected, and a foreign expense producing 404
 **Gate**: `test`
+**Status**: ✅ Complete — 238 passed, 0 failed (12 new). The closed version's `ValidityEnd` asserted as the exact date 2026-08-31 against a new start of 2026-09-01, the timeline proved gap-free and overlap-free, `Commit` counted at 1, and a payment recorded against the old version proved to keep its frozen version id (RECR-04 AC4). Rejected changes leave the version open and commit nothing. SPEC_DEVIATION: `RECURRING_EXPENSE_NOT_FOUND` added to the `.resx` pair — the design's error table named no not-found key for a recurring expense, which would have answered "Income source not found." Same correction T18 applied; the 404 AD-004 pins is unchanged.
 
 #### T29: Add ArchiveRecurringExpenseUseCase
 
