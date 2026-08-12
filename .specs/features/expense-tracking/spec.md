@@ -277,10 +277,10 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 
 | Requirement ID | Story | Phase | Status |
 | -------------- | ----- | ----- | ------ |
-| SHAR-01 | P1: Keep a catalogue of categories and accounts | Pending | Pending |
+| SHAR-01 | P1: Keep a catalogue of categories and accounts | Schema foundation | Implementing |
 | SHAR-02 | P1: Keep a catalogue of categories and accounts | Pending | Pending |
 | SHAR-03 | P1: Keep a catalogue of categories and accounts | Pending | Pending |
-| EXPN-01 | P1: Register an expense | Pending | Pending |
+| EXPN-01 | P1: Register an expense | Schema foundation | Implementing |
 | EXPN-02 | P1: Register an expense | Pending | Pending |
 | EXPN-03 | P1: Register an expense | Pending | Pending |
 | INST-01 | P1: Register an installment purchase | Pending | Pending |
@@ -293,7 +293,7 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 | RPAY-03 | P1: Record what a recurring expense actually cost | Pending | Pending |
 | VIEW-01 | P1: View the expenses of a given month | Pending | Pending |
 | VIEW-02 | P1: View the expenses of a given month | Pending | Pending |
-| VIEW-03 | P1: View the expenses of a given month | Pending | Pending |
+| VIEW-03 | P1: View the expenses of a given month | Schema foundation | Implementing |
 | VIEW-04 | P1: View the expenses of a given month | Pending | Pending |
 | RECR-03 | P2: Change the base value of a recurring expense | Pending | Pending |
 | RECR-04 | P2: Change the base value of a recurring expense | Pending | Pending |

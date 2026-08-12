@@ -76,7 +76,7 @@ T5 -> T6
 
 T2 has no intra-phase dependency.
 
-#### T1: Add the domain expense enums
+#### T1: Add the domain expense enums ✅
 
 **Where**: `src/Balance.Domain/Enums/`
 **What**: `ExpenseType { Credit = 0, Debit = 1, Pix = 2 }`, `ExpensePriority { Essential = 0, Important = 1, Superfluous = 2 }`, `ExpenseStatus { Pending = 0, Paid = 1, Divergent = 2 }`, one file each, matching the existing `IncomeType` style.
@@ -84,6 +84,7 @@ T2 has no intra-phase dependency.
 **Requirement**: SHAR-01, EXPN-01, VIEW-03
 **Tests**: compile-only per the coverage matrix — enums carry no behaviour; their values are asserted wherever they are consumed
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings
 
 #### T2: Mirror the expense enums in Communication
 
