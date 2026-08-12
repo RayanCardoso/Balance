@@ -299,8 +299,8 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 | RECR-03 | P2: Change the base value of a recurring expense | Recurring expenses | Implementing |
 | RECR-04 | P2: Change the base value of a recurring expense | Recurring expenses | Implementing |
 | RECR-05 | P2: Archive a recurring expense | Recurring expenses | Implementing |
-| DASH-01 | P2: See income and expenses for the same month | Pending | Pending |
-| DASH-02 | P2: See income and expenses for the same month | Pending | Pending |
+| DASH-01 | P2: See income and expenses for the same month | Dashboard | Implementing |
+| DASH-02 | P2: See income and expenses for the same month | Dashboard | Implementing |
 
 **Status values:** Pending → In Design → In Tasks → Implementing → Verified
 

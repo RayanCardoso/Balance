@@ -602,7 +602,7 @@ Both halves are asserted with `ShouldBeSameAs`, so a future implementation that 
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings.
 
-#### T44: Add the dashboard endpoint tests
+#### T44: Add the dashboard endpoint tests ✅
 
 **Where**: `tests/WebApi.Test/Dashboard/GetMonthlyDashboardTest.cs`
 **What**: With income and expenses in one month, the dashboard's income half equals what `GET /api/income/{year}/{month}` returns and its expense half equals what `GET /api/expense/{year}/{month}` returns; the balance is their difference; 401 without a token.
@@ -610,6 +610,9 @@ Both halves are asserted with `ShouldBeSameAs`, so a future implementation that 
 **Requirement**: DASH-01, DASH-02
 **Tests**: this task is the endpoint-layer coverage for Phase 9
 **Gate**: `test`
+**Status**: ✅ Complete — 342 passed, 0 failed (was 328). 8 test methods.
+
+Both halves are compared as **raw serialised JSON** against what the two individual endpoints return for the same month, not field by field. That is the assertion the feature's success criterion asks for, and it is what fails if the dashboard ever reshapes, filters or recomputes the income half — the whole point of AD-006. A negative-balance case pins the sign convention, which a single positive fixture would leave unproven.
 
 ---
 
