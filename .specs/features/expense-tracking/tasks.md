@@ -86,7 +86,7 @@ T2 has no intra-phase dependency.
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings
 
-#### T2: Mirror the expense enums in Communication
+#### T2: Mirror the expense enums in Communication ✅
 
 **Where**: `src/Balance.Communication/Enums/`
 **What**: The same three enums with identical member order, so the existing `(CommunicationX)domainX` cast convention stays valid.
@@ -94,6 +94,7 @@ T2 has no intra-phase dependency.
 **Requirement**: SHAR-01, EXPN-01, VIEW-03
 **Tests**: compile-only per the coverage matrix; the cast is exercised by every endpoint test in later phases
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings
 
 #### T3: Add the Category and Account entities
 
