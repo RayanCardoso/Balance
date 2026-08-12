@@ -214,7 +214,7 @@ T14 -> T15
 **Gate**: `test`
 **Status**: ✅ Complete — 104 passed, 0 failed (8 new). Culture coverage for `NAME_REQUIRED` deferred to the endpoint layer in T15, matching the existing Person/Income convention.
 
-#### T13: Add the Account contracts and use cases
+#### T13: Add the Account contracts and use cases ✅
 
 **Where**: `src/Balance.Application/UseCases/Accounts/`
 **What**: `RequestRegisterAccountJson`, `ResponseAccountJson`, `RegisterAccountUseCase` with its validator, and `GetAllAccountsUseCase`. The register use case resolves the referenced `Person` through `IPersonReadOnlyRepository` and 404s when it is not the caller's.
@@ -222,6 +222,7 @@ T14 -> T15
 **Requirement**: SHAR-02, SHAR-03
 **Tests**: use case + validator layers — a success path, a foreign person producing 404, `NAME_REQUIRED`, `DAY_OUT_OF_RANGE` for day 0 and day 32, and acceptance of a null closing day, due day and limit
 **Gate**: `test`
+**Status**: ✅ Complete — 125 passed, 0 failed (21 new). Both boundaries (1 and 31) and both invalid values (0 and 32) covered for closing day and due day; a debit account with all three fields null accepted.
 
 #### T14: Add the Category and Account controllers
 
