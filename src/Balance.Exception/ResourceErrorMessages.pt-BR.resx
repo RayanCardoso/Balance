@@ -78,4 +78,10 @@
   <data name="RECURRING_EXPENSE_ARCHIVED" xml:space="preserve">
     <value>Esta despesa recorrente está arquivada.</value>
   </data>
+  <data name="CATEGORY_NOT_FOUND" xml:space="preserve">
+    <value>Categoria não encontrada.</value>
+  </data>
+  <data name="ACCOUNT_NOT_FOUND" xml:space="preserve">
+    <value>Conta não encontrada.</value>
+  </data>
 </root>

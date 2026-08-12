@@ -34,6 +34,8 @@ public static class ResourceErrorMessages
     public static string INSTALLMENT_COUNT_INVALID => Get(nameof(INSTALLMENT_COUNT_INVALID));
     public static string PAYMENT_ALREADY_RECORDED => Get(nameof(PAYMENT_ALREADY_RECORDED));
     public static string RECURRING_EXPENSE_ARCHIVED => Get(nameof(RECURRING_EXPENSE_ARCHIVED));
+    public static string CATEGORY_NOT_FOUND => Get(nameof(CATEGORY_NOT_FOUND));
+    public static string ACCOUNT_NOT_FOUND => Get(nameof(ACCOUNT_NOT_FOUND));
 
     private static string Get(string key) =>
         ResourceManager.GetString(key, CultureInfo.CurrentUICulture) ?? key;

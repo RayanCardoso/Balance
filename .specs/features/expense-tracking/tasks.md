@@ -275,7 +275,7 @@ T19 -> T20
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings
 
-#### T18: Add RegisterExpenseUseCase
+#### T18: Add RegisterExpenseUseCase ✅
 
 **Where**: `src/Balance.Application/UseCases/Expenses/Register/RegisterExpenseUseCase.cs`
 **What**: Resolves person, category and account through their owning repositories, derives `CompetenceMonth` through `CompetenceMonthResolver` unless the request overrides it, persists and commits. Its validator covers `NAME_REQUIRED` and `AMOUNT_GREATER_THAN_ZERO`.
@@ -283,6 +283,7 @@ T19 -> T20
 **Requirement**: EXPN-01, EXPN-02, EXPN-03
 **Tests**: use case + validator layers — credit after and on the closing day, debit ignoring the closing day, credit on an account with no closing day, an explicit override winning over the derived value, an account belonging to a *different person of the same user* succeeding, and a foreign person, category or account each producing 404
 **Gate**: `test`
+**Status**: ✅ Complete — 154 passed, 0 failed (20 new). Every branch of EXPN-02 covered, including the closing-day boundary and an override that beats a differing derived month. SPEC_DEVIATION: `CATEGORY_NOT_FOUND` and `ACCOUNT_NOT_FOUND` added to the `.resx` pair — the design named only `PERSON_NOT_FOUND`, which would have made a foreign category answer "Person not found." The 404 status AD-004 pins is unchanged.
 
 #### T19: Add the ExpenseController register route
 

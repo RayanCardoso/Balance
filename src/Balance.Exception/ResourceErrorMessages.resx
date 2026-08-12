@@ -78,4 +78,10 @@
   <data name="RECURRING_EXPENSE_ARCHIVED" xml:space="preserve">
     <value>This recurring expense is archived.</value>
   </data>
+  <data name="CATEGORY_NOT_FOUND" xml:space="preserve">
+    <value>Category not found.</value>
+  </data>
+  <data name="ACCOUNT_NOT_FOUND" xml:space="preserve">
+    <value>Account not found.</value>
+  </data>
 </root>
