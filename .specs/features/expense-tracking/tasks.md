@@ -184,7 +184,7 @@ T13 -> T14
 T14 -> T15
 ```
 
-#### T10: Add the Category repository
+#### T10: Add the Category repository ✅
 
 **Where**: `src/Balance.Infrastructure/DataAccess/Repositories/Categories/CategoryRepository.cs`
 **What**: `ICategoryReadOnlyRepository` (`GetAll(User)`, `GetById(User, Guid)`) and `ICategoryWriteOnlyRepository` (`Add`) in Domain, with one implementation. Both reads filter on `UserId` per AD-003.
@@ -192,6 +192,7 @@ T14 -> T15
 **Requirement**: SHAR-01
 **Tests**: endpoint layer per the coverage matrix — repository filtering is proved by the cross-account isolation test in T15
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings
 
 #### T11: Add the Account repository
 
