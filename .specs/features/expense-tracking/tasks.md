@@ -625,7 +625,7 @@ T48 -> T49
 T46 -> T49
 ```
 
-#### T45: Generate the AddExpenseTracking migration
+#### T45: Generate the AddExpenseTracking migration ✅
 
 **Where**: `src/Balance.Infrastructure/Migrations/`
 **What**: An additive migration on top of the committed `InitialCreate`. Read the generated file and confirm it creates seven tables, alters none, and carries the money precision, the indexes and the unique index from T6.
@@ -633,6 +633,17 @@ T46 -> T49
 **Requirement**: SHAR-02, RPAY-03
 **Tests**: schema-shape layer per the coverage matrix — the generated SQL is the artifact under review
 **Gate**: `migration`
+**Status**: ✅ Complete — `20260812233254_AddExpenseTracking`. Reviewed, not assumed:
+
+| Claim | Verified |
+| ----- | -------- |
+| Creates seven tables | `Accounts`, `Categories`, `InstallmentPlans`, `RecurringExpenses`, `Expenses`, `RecurringExpenseVersions`, `RecurringExpensePayments` |
+| Alters no existing table | 0 `AlterColumn` / `DropColumn` / `DropTable` / `RenameColumn` inside `Up`. The 7 `DropTable` calls in the file are the `Down` rollback, which is correct |
+| Money precision | 5 `numeric(18,2)` columns — `Account.Limit`, `Expense.Amount`, `InstallmentPlan.TotalAmount`, `RecurringExpenseVersion.Amount`, `RecurringExpensePayment.AmountPaid` |
+| Delete behaviour | 16 relationships, every one `ReferentialAction.Restrict` |
+| One payment per month | `IX_RecurringExpensePayments_RecurringExpenseId_ReferenceMonth`, `unique: true` |
+
+`InitialCreate` is untouched, so the income schema's committed history is intact.
 
 #### T46: Add the CORS policy
 
