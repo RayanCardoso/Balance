@@ -194,7 +194,7 @@ T14 -> T15
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings
 
-#### T11: Add the Account repository
+#### T11: Add the Account repository ✅
 
 **Where**: `src/Balance.Infrastructure/DataAccess/Repositories/Accounts/AccountRepository.cs`
 **What**: `IAccountReadOnlyRepository` (`GetAll(User)`, `GetById(User, Guid)`) and `IAccountWriteOnlyRepository` (`Add`). Both reads filter on `Person.UserId`.
@@ -202,6 +202,7 @@ T14 -> T15
 **Requirement**: SHAR-02
 **Tests**: endpoint layer per the coverage matrix — filtering is proved by the cross-account isolation test in T15
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings
 
 #### T12: Add the Category contracts and use cases
 
