@@ -559,7 +559,7 @@ T40 -> T41
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings. Route mirrors `IncomeController.GetMonthly`. Both repositories it needs were already registered by T16 and T25; only the use case registration was new.
 
-#### T41: Add the monthly expense endpoint tests
+#### T41: Add the monthly expense endpoint tests ✅
 
 **Where**: `tests/WebApi.Test/Expenses/GetMonthlyExpenseTest.cs`
 **What**: An end-to-end month built through the API — one paid bill, one unpaid bill, one installment expense — read back with the right statuses and totals; a second account seeing none of it; 400 for month 13; 401 without a token.
@@ -567,6 +567,9 @@ T40 -> T41
 **Requirement**: VIEW-01..04
 **Tests**: this task is the endpoint-layer coverage for Phase 8
 **Gate**: `test`
+**Status**: ✅ Complete — 328 passed, 0 failed (was 318). 10 test methods, every fixture built through the public API.
+
+Carries the coverage deferred from T39: `An_Archived_Recurring_Expense_Is_Omitted_While_Its_Payment_Survives` archives a *paid* bill through the archive route, asserts the line and its totals disappear, then unarchives and asserts the recorded 150.00 comes back — proving RECR-05 AC3 and the "payments survive archiving" edge case at the only layer where the repository's `Archived == false` filter actually runs.
 
 ---
 
