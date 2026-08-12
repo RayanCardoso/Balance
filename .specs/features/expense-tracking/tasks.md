@@ -549,7 +549,7 @@ T40 -> T41
 
 **Contract correction carried in this commit.** T38 gave the recurring line a `CategoryName`, `CategoryPriority` and `AccountName`. `GetForMonth` loads a recurring expense with its versions and the month's payment, not its catalogue navigations, so those three fields would have been empty on every response — and the spec asks a recurring line only for the expected amount, due day, `IsEstimate`, actual and status. Removed rather than shipped always-blank; the variable line keeps them because `ExpenseRepository.GetForMonth` does include those navigations.
 
-#### T40: Add the monthly expense route
+#### T40: Add the monthly expense route ✅
 
 **Where**: `src/Balance.Api/Controllers/ExpenseController.cs`
 **What**: `GET /api/expense/{year:int}/{month:int}` with documented responses, plus its DI registration.
@@ -557,6 +557,7 @@ T40 -> T41
 **Requirement**: VIEW-01
 **Tests**: endpoint layer — asserted by T41
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings. Route mirrors `IncomeController.GetMonthly`. Both repositories it needs were already registered by T16 and T25; only the use case registration was new.
 
 #### T41: Add the monthly expense endpoint tests
 

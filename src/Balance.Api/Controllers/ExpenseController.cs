@@ -1,3 +1,4 @@
+using Balance.Application.UseCases.Expenses.GetMonthly;
 using Balance.Application.UseCases.Expenses.Register;
 using Balance.Application.UseCases.Expenses.RegisterInstallmentPlan;
 using Balance.Communication.Requests;
@@ -38,5 +39,19 @@ public class ExpenseController : ControllerBase
         var response = await useCase.Execute(request);
 
         return Created(string.Empty, response);
+    }
+
+    [HttpGet("{year:int}/{month:int}")]
+    [ProducesResponseType(typeof(ResponseMonthlyExpenseJson), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> GetMonthly(
+        int year,
+        int month,
+        [FromServices] IGetMonthlyExpenseUseCase useCase)
+    {
+        var response = await useCase.Execute(year, month);
+
+        return Ok(response);
     }
 }
