@@ -295,7 +295,7 @@ T19 -> T20
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings. `RegisterExpenseUseCase` and both expense repository interfaces wired in DI.
 
-#### T20: Add the expense endpoint tests
+#### T20: Add the expense endpoint tests ✅
 
 **Where**: `tests/WebApi.Test/Expenses/RegisterExpenseTest.cs`
 **What**: 201 with the derived competence month for a credit expense past the closing day, 400 for a non-positive amount, 404 for a foreign category, 401 without a token, and a cross-person account accepted.
@@ -303,6 +303,7 @@ T19 -> T20
 **Requirement**: EXPN-01, EXPN-02, EXPN-03
 **Tests**: this task is the endpoint-layer coverage for Phase 4
 **Gate**: `test`
+**Status**: ✅ Complete — 164 passed, 0 failed (10 new). Phase 4 done. 201 with the rolled competence month and with the boundary month, a cross-person account accepted, a foreign category and a foreign account each 404, `NAME_REQUIRED` and `AMOUNT_GREATER_THAN_ZERO` in both cultures, and 401 without a token.
 
 ---
 
