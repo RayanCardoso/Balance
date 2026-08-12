@@ -431,7 +431,7 @@ T30 -> T31
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings. An explicit `api/recurring-expense` route template, since `[controller]` would not produce the hyphen. Archive and unarchive share one route, the target state arriving as `?archived=`, defaulting to true. Three use cases and three repository interfaces wired in DI.
 
-#### T31: Add the recurring expense endpoint tests
+#### T31: Add the recurring expense endpoint tests ✅
 
 **Where**: `tests/WebApi.Test/RecurringExpenses/RecurringExpenseEndpointsTest.cs`
 **What**: 201 on register with one open version, 200 on a value change with the old version closed, 204 on archive and unarchive, 404 for a foreign expense, 400 for each validation rule, and 401 on every route without a token.
@@ -439,6 +439,7 @@ T30 -> T31
 **Requirement**: RECR-01..05
 **Tests**: this task is the endpoint-layer coverage for Phase 6
 **Gate**: `test`
+**Status**: ✅ Complete — 262 passed, 0 failed (20 new). Phase 6 done. Register returns exactly one open version, a change from 2026-09-01 reads back the previous version closed at 2026-08-31 with the new one open and its reason readable, archive and unarchive both 204, a foreign expense 404s on both mutating routes, `NAME_REQUIRED`, `AMOUNT_GREATER_THAN_ZERO`, `DAY_OUT_OF_RANGE`, `CHANGE_REASON_REQUIRED` and `VALIDITY_START_MUST_BE_LATER` each asserted in both cultures, and all three routes 401 without a token. RECR-05 AC3 (archived rows omitted from the monthly view) belongs to T39/T41; the repository filter it needs is already in place from T25.
 
 ---
 

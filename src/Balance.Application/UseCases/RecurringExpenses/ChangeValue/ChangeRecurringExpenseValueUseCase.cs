@@ -76,7 +76,10 @@ public class ChangeRecurringExpenseValueUseCase : IChangeRecurringExpenseValueUs
             DueDay = recurringExpense.DueDay,
             IsEstimate = recurringExpense.IsEstimate,
             Archived = recurringExpense.Archived,
+            // The change tracker fixes the new version into the loaded collection once it is
+            // added, so it is filtered out before being appended rather than counted twice.
             Versions = recurringExpense.Versions
+                .Where(version => version.Id != newVersion.Id)
                 .Append(newVersion)
                 .OrderBy(version => version.ValidityStart)
                 .Select(version => new ResponseRecurringExpenseVersionJson
