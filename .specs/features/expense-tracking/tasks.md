@@ -116,7 +116,7 @@ T2 has no intra-phase dependency.
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings
 
-#### T5: Add the recurring expense entities
+#### T5: Add the recurring expense entities ✅
 
 **Where**: `src/Balance.Domain/Entities/`
 **What**: `RecurringExpense`, `RecurringExpenseVersion` and `RecurringExpensePayment`, all `: BaseEntity`, as specified in the design's data model, including the nullable `AccountId` on the payment.
@@ -124,6 +124,7 @@ T2 has no intra-phase dependency.
 **Requirement**: RECR-01, RPAY-01
 **Tests**: compile-only per the coverage matrix; persistence is asserted by T31 and T37
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings
 
 #### T6: Configure the seven new entities in BalanceDbContext
 

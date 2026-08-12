@@ -286,9 +286,9 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 | INST-01 | P1: Register an installment purchase | Schema foundation | Implementing |
 | INST-02 | P1: Register an installment purchase | Pending | Pending |
 | INST-03 | P1: Register an installment purchase | Pending | Pending |
-| RECR-01 | P1: Register a recurring expense | Pending | Pending |
+| RECR-01 | P1: Register a recurring expense | Schema foundation | Implementing |
 | RECR-02 | P1: Register a recurring expense | Pending | Pending |
-| RPAY-01 | P1: Record what a recurring expense actually cost | Pending | Pending |
+| RPAY-01 | P1: Record what a recurring expense actually cost | Schema foundation | Implementing |
 | RPAY-02 | P1: Record what a recurring expense actually cost | Pending | Pending |
 | RPAY-03 | P1: Record what a recurring expense actually cost | Pending | Pending |
 | VIEW-01 | P1: View the expenses of a given month | Pending | Pending |
