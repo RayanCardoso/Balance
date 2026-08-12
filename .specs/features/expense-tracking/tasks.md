@@ -543,6 +543,11 @@ T40 -> T41
 **Requirement**: VIEW-01, VIEW-02, VIEW-03, VIEW-04
 **Tests**: use case layer — a paid bill matching its estimate reporting `Paid`, a differing amount reporting `Divergent`, an unpaid bill reporting `Pending` with a null actual, a month predating every version reporting a null expected, an archived expense omitted, an installment line carrying its number and count, the committed total mixing actuals and estimates, an invalid month rejected, and an empty account returning zeroed totals
 **Gate**: `test`
+**Status**: ✅ Complete — 318 passed, 0 failed (was 306). 12 test cases.
+
+**Coverage note — "an archived expense omitted" moved to T41.** The `Archived == false` filter lives in `RecurringExpenseRepository.GetForMonth` (T25), so at the use-case layer the repository is mocked and a test asserting the omission would only be asserting what the mock was told to return. That is a tautology, not coverage. RECR-05 AC3 and VIEW-02 are therefore proved end to end in T41, where the filter actually runs. Every other criterion in this task's `Tests` field is covered here.
+
+**Contract correction carried in this commit.** T38 gave the recurring line a `CategoryName`, `CategoryPriority` and `AccountName`. `GetForMonth` loads a recurring expense with its versions and the month's payment, not its catalogue navigations, so those three fields would have been empty on every response — and the spec asks a recurring line only for the expected amount, due day, `IsEstimate`, actual and status. Removed rather than shipped always-blank; the variable line keeps them because `ExpenseRepository.GetForMonth` does include those navigations.
 
 #### T40: Add the monthly expense route
 

@@ -55,11 +55,15 @@ public class ResponseRecurringExpenseLineJson
     public string Name { get; set; } = string.Empty;
 
     public Guid PersonId { get; set; }
+
+    /// <summary>
+    /// Identifiers only. The category and account names carried by a variable line are not repeated
+    /// here: <c>GetForMonth</c> loads a recurring expense with its versions and the month's payment,
+    /// not its catalogue navigations, and the spec asks a recurring line for the expected amount, the
+    /// due day, <c>IsEstimate</c>, the actual and the status - not for catalogue names.
+    /// </summary>
     public Guid CategoryId { get; set; }
-    public string CategoryName { get; set; } = string.Empty;
-    public ExpensePriority CategoryPriority { get; set; }
     public Guid AccountId { get; set; }
-    public string AccountName { get; set; } = string.Empty;
 
     public int DueDay { get; set; }
 
