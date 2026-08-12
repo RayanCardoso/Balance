@@ -173,3 +173,9 @@ All four requested additions were approved by the user:
 - Budgets, spending targets, and alerts on `DueDay`.
 - Reports and exports over the monthly expense view.
 - Archive / unarchive for `IncomeSource`, still carried forward from income-tracking.
+- Promoting the per-class `NewAccount(closingDay)` test helper into `BalanceClassFixture`. It is
+  duplicated across `RegisterExpenseTest` and `RegisterInstallmentPlanTest` (matching the repo's
+  existing per-class helper convention) and phases 6-8 will want it a third time. Surfaced during
+  batch 3; deliberately left alone because it is outside every task definition in this feature.
+- Unifying `RecurringExpenseExtensions.VersionInEffect` with its income twin, once income is next
+  opened for its own reasons. See AD-006.

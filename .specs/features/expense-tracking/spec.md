@@ -61,6 +61,7 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 | `Category` and `Account` endpoints | Create and list, approved as an addition | Nothing can be registered without them | y |
 | Monthly expense view and dashboard | Approved as additions | They are what the requested frontend page consumes | y |
 | Installment rounding | Installments 1..N-1 are `round(Total / N, 2)`; installment N is `Total - sum(previous)` | The N amounts must sum to the total exactly, with no lost or invented cent | n |
+| Installment midpoint rounding | `MidpointRounding.AwayFromZero` on installments 1..N-1 | Recorded during T22 as a spec-precision gap: the spec says only "round to 2 decimals" and does not pin the midpoint mode. It affects at most one cent on a non-final installment, and the final installment is the residual, so the sum is exact under either mode. No test depends on the choice | n |
 | Installment expense type and date | Every generated expense carries `Type = Credit` and `Date = StartDate` | The purchase happened once; what advances month to month is the invoice it lands on | n |
 | `InstallmentPlan.EndDate` | Computed as the competence month of installment N, not accepted from the request | Accepting both a count and an end date invites a contradiction the system would have to arbitrate | n |
 | `InstallmentPlan.PersonId` | Added to the plan; generated expenses inherit it | The user's sketch omits it, but without it the generated rows have no owner and no ownership cascade | n |

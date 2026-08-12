@@ -292,9 +292,15 @@ some bills have arrived and others have not.
 | Database unreachable | Existing `ExceptionFilter` fallback | 500 `UNKNOWN_ERROR` |
 
 New message keys: `DAY_OUT_OF_RANGE`, `INSTALLMENT_COUNT_INVALID`, `PAYMENT_ALREADY_RECORDED`,
-`RECURRING_EXPENSE_ARCHIVED`. Reused as-is: `NAME_REQUIRED`, `AMOUNT_GREATER_THAN_ZERO`,
-`NO_VERSION_IN_EFFECT`, `CHANGE_REASON_REQUIRED`, `VALIDITY_START_MUST_BE_LATER`,
-`REFERENCE_MONTH_INVALID`, `PERSON_NOT_FOUND`.
+`RECURRING_EXPENSE_ARCHIVED`, `CATEGORY_NOT_FOUND`, `ACCOUNT_NOT_FOUND`. Reused as-is:
+`NAME_REQUIRED`, `AMOUNT_GREATER_THAN_ZERO`, `NO_VERSION_IN_EFFECT`, `CHANGE_REASON_REQUIRED`,
+`VALIDITY_START_MUST_BE_LATER`, `REFERENCE_MONTH_INVALID`, `PERSON_NOT_FOUND`.
+
+> **Correction, T18.** This table originally named `PERSON_NOT_FOUND` as the only reused not-found key,
+> which would have answered a foreign *category* with "Person not found" — a 404 with a body describing
+> the wrong entity. `CATEGORY_NOT_FOUND` and `ACCOUNT_NOT_FOUND` were added following the existing
+> `INCOME_SOURCE_NOT_FOUND` convention. The 404 status AD-004 pins is unchanged; only the message body
+> names the right entity. Recorded as a `SPEC_DEVIATION` marker in `RegisterExpenseUseCase.cs`.
 
 ---
 
