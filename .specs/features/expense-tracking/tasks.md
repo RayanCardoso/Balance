@@ -592,7 +592,7 @@ T43 -> T44
 
 Both halves are asserted with `ShouldBeSameAs`, so a future implementation that rebuilt or filtered either response would fail rather than pass on a value comparison. Two balance cases pin what the spec means by "income received": one where expected income far exceeds what arrived (balance goes negative), and one where the amount already paid differs from the committed total — either substitution would otherwise look correct against a single happy-path figure.
 
-#### T43: Add the DashboardController
+#### T43: Add the DashboardController ✅
 
 **Where**: `src/Balance.Api/Controllers/DashboardController.cs`
 **What**: `[Authorize]` controller with `GET /api/dashboard/{year:int}/{month:int}`, documented, plus its DI registration.
@@ -600,6 +600,7 @@ Both halves are asserted with `ShouldBeSameAs`, so a future implementation that 
 **Requirement**: DASH-01
 **Tests**: endpoint layer — asserted by T44
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings.
 
 #### T44: Add the dashboard endpoint tests
 

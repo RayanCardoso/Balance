@@ -1,6 +1,7 @@
 using Balance.Application.AutoMapper;
 using Balance.Application.UseCases.Accounts.GetAll;
 using Balance.Application.UseCases.Accounts.Register;
+using Balance.Application.UseCases.Dashboard.GetMonthly;
 using Balance.Application.UseCases.Categories.GetAll;
 using Balance.Application.UseCases.Categories.Register;
 using Balance.Application.UseCases.Expenses.GetMonthly;
@@ -52,6 +53,7 @@ public static class DependencyInjectionExtension
         services.AddScoped<IGetAllAccountsUseCase, GetAllAccountsUseCase>();
         services.AddScoped<IRegisterExpenseUseCase, RegisterExpenseUseCase>();
         services.AddScoped<IGetMonthlyExpenseUseCase, GetMonthlyExpenseUseCase>();
+        services.AddScoped<IGetMonthlyDashboardUseCase, GetMonthlyDashboardUseCase>();
         services.AddScoped<IRegisterInstallmentPlanUseCase, RegisterInstallmentPlanUseCase>();
         services.AddScoped<IRegisterRecurringExpenseUseCase, RegisterRecurringExpenseUseCase>();
         services.AddScoped<IChangeRecurringExpenseValueUseCase, ChangeRecurringExpenseValueUseCase>();
