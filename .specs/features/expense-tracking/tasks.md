@@ -315,7 +315,7 @@ T22 -> T23
 T23 -> T24
 ```
 
-#### T21: Add the InstallmentPlan repository and contracts
+#### T21: Add the InstallmentPlan repository and contracts ✅
 
 **Where**: `src/Balance.Infrastructure/DataAccess/Repositories/Expenses/InstallmentPlanRepository.cs`
 **What**: `IInstallmentPlanWriteOnlyRepository.Add(InstallmentPlan)`, plus `RequestRegisterInstallmentPlanJson` and `ResponseInstallmentPlanJson` carrying the generated installments.
@@ -323,6 +323,7 @@ T23 -> T24
 **Requirement**: INST-01
 **Tests**: endpoint layer per the coverage matrix — proved by T24
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings. The request carries no end date; the response carries the computed one and the generated installments.
 
 #### T22: Add RegisterInstallmentPlanUseCase
 
