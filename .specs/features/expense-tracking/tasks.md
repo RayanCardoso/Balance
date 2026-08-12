@@ -455,7 +455,7 @@ T35 -> T36
 T36 -> T37
 ```
 
-#### T32: Add the RecurringExpensePayment repository
+#### T32: Add the RecurringExpensePayment repository ✅
 
 **Where**: `src/Balance.Infrastructure/DataAccess/Repositories/RecurringExpenses/RecurringExpensePaymentRepository.cs`
 **What**: `Add`, a tracked `GetById(User, Guid)` for the update path, and `GetByMonth(Guid, DateOnly)` backing the duplicate probe. Reads filter on `RecurringExpense.Person.UserId`.
@@ -463,6 +463,7 @@ T36 -> T37
 **Requirement**: RPAY-01, RPAY-02
 **Tests**: endpoint layer per the coverage matrix — proved by T37
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings. One interface per the design; `GetById` is tracked for the correction path, `GetByMonth` is `AsNoTracking` because it only answers "does one already exist".
 
 #### T33: Add the payment contracts
 
