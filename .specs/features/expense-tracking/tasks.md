@@ -204,7 +204,7 @@ T14 -> T15
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings
 
-#### T12: Add the Category contracts and use cases
+#### T12: Add the Category contracts and use cases ✅
 
 **Where**: `src/Balance.Application/UseCases/Categories/`
 **What**: `RequestRegisterCategoryJson`, `ResponseCategoryJson`, `RegisterCategoryUseCase` with its validator, and `GetAllCategoriesUseCase`. The register use case attaches `UserId` from `ILoggedUser`.
@@ -212,6 +212,7 @@ T14 -> T15
 **Requirement**: SHAR-01, SHAR-03
 **Tests**: use case + validator layers — a success path, a listing scoped to the logged user, and the `NAME_REQUIRED` rule in both cultures
 **Gate**: `test`
+**Status**: ✅ Complete — 104 passed, 0 failed (8 new). Culture coverage for `NAME_REQUIRED` deferred to the endpoint layer in T15, matching the existing Person/Income convention.
 
 #### T13: Add the Account contracts and use cases
 
