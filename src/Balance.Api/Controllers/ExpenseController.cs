@@ -1,4 +1,5 @@
 using Balance.Application.UseCases.Expenses.Register;
+using Balance.Application.UseCases.Expenses.RegisterInstallmentPlan;
 using Balance.Communication.Requests;
 using Balance.Communication.Responses;
 using Microsoft.AspNetCore.Authorization;
@@ -19,6 +20,20 @@ public class ExpenseController : ControllerBase
     public async Task<IActionResult> Register(
         [FromBody] RequestRegisterExpenseJson request,
         [FromServices] IRegisterExpenseUseCase useCase)
+    {
+        var response = await useCase.Execute(request);
+
+        return Created(string.Empty, response);
+    }
+
+    [HttpPost("installment-plan")]
+    [ProducesResponseType(typeof(ResponseInstallmentPlanJson), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> RegisterInstallmentPlan(
+        [FromBody] RequestRegisterInstallmentPlanJson request,
+        [FromServices] IRegisterInstallmentPlanUseCase useCase)
     {
         var response = await useCase.Execute(request);
 

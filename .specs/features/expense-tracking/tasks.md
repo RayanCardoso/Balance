@@ -335,7 +335,7 @@ T23 -> T24
 **Gate**: `test`
 **Status**: ✅ Complete — 197 passed, 0 failed (33 new). Seven awkward totals asserted to sum exactly, the residual proved to land only on the last installment, competence months crossing into 2027, and `Commit` asserted called exactly once.
 
-#### T23: Add the installment-plan route
+#### T23: Add the installment-plan route ✅
 
 **Where**: `src/Balance.Api/Controllers/ExpenseController.cs`
 **What**: `POST /api/expense/installment-plan` with documented responses, plus its DI registrations.
@@ -343,6 +343,7 @@ T23 -> T24
 **Requirement**: INST-01
 **Tests**: endpoint layer — asserted by T24
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings. `RegisterInstallmentPlanUseCase` and `IInstallmentPlanWriteOnlyRepository` wired in DI.
 
 #### T24: Add the installment-plan endpoint tests
 

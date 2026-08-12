@@ -58,6 +58,7 @@ public static class DependencyInjectionExtension
         services.AddScoped<IAccountWriteOnlyRepository, AccountRepository>();
         services.AddScoped<IExpenseReadOnlyRepository, ExpenseRepository>();
         services.AddScoped<IExpenseWriteOnlyRepository, ExpenseRepository>();
+        services.AddScoped<IInstallmentPlanWriteOnlyRepository, InstallmentPlanRepository>();
     }
 
     private static void AddToken(IServiceCollection services, IConfiguration configuration)
