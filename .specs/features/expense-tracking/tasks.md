@@ -674,7 +674,7 @@ T46 -> T49
 
 **SPEC_DEVIATION — host port.** The design said the container starts from the existing `docker-compose.yml` unchanged. It could not: this machine runs local PostgreSQL services (`postgresql-x64-17`, `postgresql-x64-18`) that already hold **5432 and 5433** and answer `localhost` before Docker does, producing `28P01 password authentication failed` against the wrong server. The container's host port moved to **5434** and `appsettings.Development.json` follows. Stopping a system service was rejected as too invasive for a project-level problem; the container port is confined to the repo and reversible in one line. The container's own port is still 5432 — only the host mapping changed.
 
-#### T48: Add the seeding script
+#### T48: Add the seeding script ✅
 
 **Where**: `frontend/scripts/seed.mjs`
 **What**: A Node 20 script driving the public API: register a user, log in, create a second person, categories of all three priorities, a credit and a debit account, recurring and variable income with payments, recurring expenses with and without a payment, single expenses of all three types, and one installment plan. Idempotent enough to re-run against a fresh database.
@@ -682,6 +682,19 @@ T46 -> T49
 **Requirement**: every requirement — the seed exercises each endpoint
 **Tests**: endpoint layer — every call's status code is asserted by the script itself, which fails loudly on a non-2xx
 **Gate**: `page` — the seeded month returns non-zero totals from `GET /api/dashboard`
+**Status**: ✅ Complete — ran green against PostgreSQL. 2 people, 5 categories, 3 accounts, 3 income sources, 6 recurring expenses, 8 one-off expenses and a 10× plan, all through the public API.
+
+August 2026 reads back: income received R$ 13.000,00 · variable R$ 2.057,75 · recurring expected R$ 2.888,80 · recurring paid R$ 2.582,30 · committed R$ 5.013,95 · balance R$ 7.986,05. Every figure was recomputed by hand and matches.
+
+**The seed is shaped to exercise the rules, not just to fill tables**, and three behaviours were verified against the live database rather than assumed:
+
+| Rule | Evidence |
+| ---- | -------- |
+| EXPN-02, credit past the closing day | "Fone de ouvido" bought 21 Aug on Nubank (closes the 20th) appears in **September**, not August. "Livraria" bought 19 Aug on Itaú Click (closes the 8th) also lands in September — same rule, different card |
+| RECR-03, the version in effect | Aluguel was raised 2100 → 2250 from July. August's expected total uses **2250**; the July raise did not rewrite earlier months |
+| VIEW-03/04, estimate vs actual | Luz was paid at 287,40 against a 220,00 estimate and reports `Divergent`; Água, Internet and Academia are unpaid and contribute their **estimates** to the committed total |
+
+Re-running against an already-seeded database fails on the duplicate account, by design — the script says so and prints the `docker compose down -v` needed for a clean run.
 
 #### T49: Build the frontend page
 
