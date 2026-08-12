@@ -505,7 +505,7 @@ T36 -> T37
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings. Both use cases and `IRecurringExpensePaymentRepository` wired in DI, the registration T32 left for this task.
 
-#### T37: Add the payment endpoint tests
+#### T37: Add the payment endpoint tests ✅
 
 **Where**: `tests/WebApi.Test/RecurringExpenses/RecurringExpensePaymentTest.cs`
 **What**: 201 on record, 200 on correction, 400 on a duplicate month, 400 against an archived expense, 404 for a foreign payment, and 401 on both routes without a token.
@@ -513,6 +513,7 @@ T36 -> T37
 **Requirement**: RPAY-01, RPAY-02, RPAY-03
 **Tests**: this task is the endpoint-layer coverage for Phase 7
 **Gate**: `test`
+**Status**: ✅ Complete — 306 passed, 0 failed (59 validator, 152 use case, 95 endpoint). 13 test methods, 4 of them culture-parameterised. Every fixture is built through the public API: the archived state comes from the archive route, the closed version from the change-value route. Covers RPAY-01 AC2 by recording a payment for a month *before* a value change and asserting the frozen id is the old version's, and RPAY-02 AC4 by asserting the reference month and version id are unchanged by value after a correction. The batch worker was cut off by a session limit after writing this file but before running its gate; the gate was run and the task closed by the orchestrator.
 
 ---
 
