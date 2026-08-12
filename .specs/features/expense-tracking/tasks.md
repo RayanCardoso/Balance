@@ -162,7 +162,7 @@ No intra-phase dependencies: T7, T8 and T9 depend only on Phase 1 and can be don
 **Gate**: `test`
 **Status**: ✅ Complete — 89 passed, 0 failed (7 new). Every branch of EXPN-02 has a fixture, including the closing-day boundary and the December roll into 2027.
 
-#### T9: Add RecurringExpenseExtensions.VersionInEffect
+#### T9: Add RecurringExpenseExtensions.VersionInEffect ✅
 
 **Where**: `src/Balance.Domain/Extensions/RecurringExpenseExtensions.cs`
 **What**: The version-in-effect rule for a competence month, duplicated deliberately from income per the design. Reuses `DateOnly.FirstDayOfMonth()` without editing it.
@@ -170,6 +170,7 @@ No intra-phase dependencies: T7, T8 and T9 depend only on Phase 1 and can be don
 **Requirement**: VIEW-02
 **Tests**: pure-domain layer — including a fixture where two versions genuinely overlap the same month, so the ordering is exercised rather than assumed. This is lesson **L-001** applied directly
 **Gate**: `test`
+**Status**: ✅ Complete — 96 passed, 0 failed (7 new). Phase 2 done. The overlapping-versions fixture was confirmed discriminating: flipping `OrderByDescending` to `OrderBy` in a scratch run failed that test alone.
 
 ---
 
