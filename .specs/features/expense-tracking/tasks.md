@@ -465,7 +465,7 @@ T36 -> T37
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings. One interface per the design; `GetById` is tracked for the correction path, `GetByMonth` is `AsNoTracking` because it only answers "does one already exist".
 
-#### T33: Add the payment contracts
+#### T33: Add the payment contracts ✅
 
 **Where**: `src/Balance.Communication/Requests/RequestRegisterRecurringExpensePaymentJson.cs`
 **What**: `RequestRegisterRecurringExpensePaymentJson`, `RequestUpdateRecurringExpensePaymentJson` and `ResponseRecurringExpensePaymentJson`, all carrying the nullable paying `AccountId`.
@@ -473,6 +473,7 @@ T36 -> T37
 **Requirement**: RPAY-01, RPAY-02
 **Tests**: compile-only per the coverage matrix; shapes are asserted by T37
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings. The update request carries neither the reference month nor the version identifier, so RPAY-02 AC4 is unrepresentable rather than merely unenforced; the payment id travels on the route. The response exposes the frozen version id, which is what makes RPAY-01 AC2 observable at the endpoint layer.
 
 #### T34: Add RegisterRecurringExpensePaymentUseCase
 
