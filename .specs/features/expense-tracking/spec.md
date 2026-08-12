@@ -279,13 +279,13 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 | -------------- | ----- | ----- | ------ |
 | SHAR-01 | P1: Keep a catalogue of categories and accounts | Schema foundation | Implementing |
 | SHAR-02 | P1: Keep a catalogue of categories and accounts | Schema foundation | Implementing |
-| SHAR-03 | P1: Keep a catalogue of categories and accounts | Pending | Pending |
+| SHAR-03 | P1: Keep a catalogue of categories and accounts | Domain rules and messages | Implementing |
 | EXPN-01 | P1: Register an expense | Schema foundation | Implementing |
 | EXPN-02 | P1: Register an expense | Pending | Pending |
 | EXPN-03 | P1: Register an expense | Pending | Pending |
 | INST-01 | P1: Register an installment purchase | Schema foundation | Implementing |
 | INST-02 | P1: Register an installment purchase | Pending | Pending |
-| INST-03 | P1: Register an installment purchase | Pending | Pending |
+| INST-03 | P1: Register an installment purchase | Domain rules and messages | Implementing |
 | RECR-01 | P1: Register a recurring expense | Schema foundation | Implementing |
 | RECR-02 | P1: Register a recurring expense | Pending | Pending |
 | RPAY-01 | P1: Record what a recurring expense actually cost | Schema foundation | Implementing |

@@ -142,7 +142,7 @@ T2 has no intra-phase dependency.
 
 No intra-phase dependencies: T7, T8 and T9 depend only on Phase 1 and can be done in any order.
 
-#### T7: Add the four new error-message keys
+#### T7: Add the four new error-message keys ✅
 
 **Where**: `src/Balance.Exception/ResourceErrorMessages.resx`
 **What**: `DAY_OUT_OF_RANGE`, `INSTALLMENT_COUNT_INVALID`, `PAYMENT_ALREADY_RECORDED`, `RECURRING_EXPENSE_ARCHIVED` added to the invariant `.resx`, the `pt-BR` `.resx` and the generated `ResourceErrorMessages` accessor. Existing keys are reused, not duplicated.
@@ -150,6 +150,7 @@ No intra-phase dependencies: T7, T8 and T9 depend only on Phase 1 and can be don
 **Requirement**: SHAR-03, INST-03, RPAY-03
 **Tests**: validator layer per the coverage matrix — each key is asserted in both cultures by the validator tests of the phase that raises it
 **Gate**: `build`
+**Status**: ✅ Complete — build clean, 0 errors 0 warnings
 
 #### T8: Add CompetenceMonthResolver
 
