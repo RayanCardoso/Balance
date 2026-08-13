@@ -60,12 +60,13 @@ builder.Services.AddAuthentication(config =>
     };
 });
 
-// The Vite dev server that hosts the dashboard page. Named and pinned to that single origin -
-// never AllowAnyOrigin, which would outlive the page it exists for.
+// The dev servers that host a browser client: Vite for the dashboard page and Expo web for the
+// mobile app. Named and pinned to those origins - never AllowAnyOrigin, which would outlive the
+// pages it exists for. Expo on a device is not a browser and needs no CORS entry.
 const string frontendCorsPolicy = "FrontendDevServer";
 
 builder.Services.AddCors(options => options.AddPolicy(frontendCorsPolicy, policy => policy
-    .WithOrigins("http://localhost:5173")
+    .WithOrigins("http://localhost:5173", "http://localhost:8081")
     .AllowAnyHeader()
     .AllowAnyMethod()));
 
