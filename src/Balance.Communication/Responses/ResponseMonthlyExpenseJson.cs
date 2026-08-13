@@ -80,6 +80,13 @@ public class ResponseRecurringExpenseLineJson
 
     public DateOnly? PaymentDate { get; set; }
 
+    /// <summary>
+    /// The id of this month's payment, null while the bill has not arrived. Without it a client
+    /// reading a monthly line cannot reach <c>PUT /api/recurring-expense/payment/{id}</c>, so a
+    /// payment recorded in an earlier session could never be corrected.
+    /// </summary>
+    public Guid? PaymentId { get; set; }
+
     public string? Notes { get; set; }
 
     public ExpenseStatus Status { get; set; }

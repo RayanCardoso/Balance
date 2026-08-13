@@ -73,6 +73,40 @@ public class GetMonthlyExpenseUseCaseTest
     }
 
     /// <summary>
+    /// The monthly line is the only place a client can read the payment's id from, and
+    /// <c>PUT /api/recurring-expense/payment/{id}</c> needs it to correct a bill paid earlier. The id
+    /// value itself is asserted, not the field's presence - the wrong due day shipped exactly that way.
+    /// </summary>
+    [Fact]
+    public async Task A_Paid_Line_Carries_The_Id_Of_That_Months_Payment()
+    {
+        var (user, person) = NewOwner();
+
+        var bill = RecurringExpenseBuilder.Build(person, amount: 150m);
+        var paymentId = Pay(bill, August, 180m);
+
+        var useCase = BuildUseCase(user, recurringExpenses: [bill]);
+
+        var result = await useCase.Execute(2026, 8);
+
+        result.RecurringLines.ShouldHaveSingleItem().PaymentId.ShouldBe(paymentId);
+    }
+
+    [Fact]
+    public async Task An_Unpaid_Line_Carries_A_Null_Payment_Id()
+    {
+        var (user, person) = NewOwner();
+
+        var bill = RecurringExpenseBuilder.Build(person, amount: 150m);
+
+        var useCase = BuildUseCase(user, recurringExpenses: [bill]);
+
+        var result = await useCase.Execute(2026, 8);
+
+        result.RecurringLines.ShouldHaveSingleItem().PaymentId.ShouldBeNull();
+    }
+
+    /// <summary>
     /// VIEW AC3's second clause: the line reports the recurring expense's due day. It is rendered on
     /// the page, so a wrong value is user-visible.
     /// </summary>
@@ -322,8 +356,10 @@ public class GetMonthlyExpenseUseCaseTest
             AccountId = Guid.NewGuid()
         };
 
-    private static void Pay(RecurringExpense expense, DateOnly referenceMonth, decimal amountPaid) =>
-        expense.Payments.Add(new RecurringExpensePayment
+    /// <summary>Returns the recorded payment's id so a test can pin the value the line reports.</summary>
+    private static Guid Pay(RecurringExpense expense, DateOnly referenceMonth, decimal amountPaid)
+    {
+        var payment = new RecurringExpensePayment
         {
             Id = Guid.NewGuid(),
             RecurringExpenseId = expense.Id,
@@ -331,7 +367,12 @@ public class GetMonthlyExpenseUseCaseTest
             ReferenceMonth = referenceMonth,
             PaymentDate = referenceMonth.AddDays(11),
             AmountPaid = amountPaid
-        });
+        };
+
+        expense.Payments.Add(payment);
+
+        return payment.Id;
+    }
 
     private static GetMonthlyExpenseUseCase BuildUseCase(
         User user,

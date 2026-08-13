@@ -168,6 +168,30 @@ public class GetMonthlyExpenseTest : BalanceClassFixture
             .GetProperty("dueDay").GetInt32().ShouldBe(22);
     }
 
+    /// <summary>
+    /// The payment id has to survive the whole round trip: without it on the monthly line, a client
+    /// cannot reach PUT /api/recurring-expense/payment/{id} and a bill paid in an earlier session can
+    /// never be corrected. The exact id is asserted, not the field's presence.
+    /// </summary>
+    [Fact]
+    public async Task A_Recurring_Line_Reports_The_Id_Of_The_Payment_Recorded_For_That_Month()
+    {
+        var caller = await NewAccount();
+
+        var paid = await NewRecurringExpense(caller, amount: 150.00m, name: "Luz");
+        var paymentId = await PayBill(caller, paid, amountPaid: 180.00m);
+
+        await NewRecurringExpense(caller, amount: 45.00m, name: "Netflix");
+
+        var recurring = (await GetMonth(caller)).GetProperty("recurringLines").EnumerateArray().ToList();
+
+        recurring.Single(line => line.GetProperty("name").GetString() == "Luz")
+            .GetProperty("paymentId").GetGuid().ShouldBe(paymentId);
+
+        recurring.Single(line => line.GetProperty("name").GetString() == "Netflix")
+            .GetProperty("paymentId").ValueKind.ShouldBe(JsonValueKind.Null);
+    }
+
     [Fact]
     public async Task The_Estimate_Flag_Is_Reported_On_The_Line()
     {
@@ -317,7 +341,8 @@ public class GetMonthlyExpenseTest : BalanceClassFixture
         return (await ReadJson(response)).GetProperty("id").GetGuid();
     }
 
-    private async Task PayBill(Caller caller, Guid recurringExpenseId, decimal amountPaid)
+    /// <summary>Returns the created payment's id so a test can pin the value the line reports.</summary>
+    private async Task<Guid> PayBill(Caller caller, Guid recurringExpenseId, decimal amountPaid)
     {
         var request = RequestRegisterRecurringExpensePaymentJsonBuilder.Build(
             recurringExpenseId, referenceMonth: August);
@@ -326,6 +351,8 @@ public class GetMonthlyExpenseTest : BalanceClassFixture
 
         var response = await DoPost(PAYMENT, request, token: caller.Token);
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
+
+        return (await ReadJson(response)).GetProperty("id").GetGuid();
     }
 
     private static async Task<JsonElement> ReadJson(HttpResponseMessage response)

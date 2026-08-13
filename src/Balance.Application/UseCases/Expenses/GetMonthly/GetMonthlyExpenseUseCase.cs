@@ -92,6 +92,7 @@ public class GetMonthlyExpenseUseCase : IGetMonthlyExpenseUseCase
             ExpectedAmount = version?.Amount,
             ActualAmount = payment?.AmountPaid,
             PaymentDate = payment?.PaymentDate,
+            PaymentId = payment?.Id,
             Notes = payment?.Notes,
             Status = ResolveStatus(version?.Amount, payment?.AmountPaid)
         };
