@@ -535,7 +535,7 @@ T40 -> T41
 **Gate**: `build`
 **Status**: ✅ Complete — build clean, 0 errors 0 warnings. Lines also carry the category name and priority and the account name, so the page can group by priority without a second round trip.
 
-#### T39: Add GetMonthlyExpenseUseCase
+#### T39: Add GetMonthlyExpenseUseCase ✅
 
 **Where**: `src/Balance.Application/UseCases/Expenses/GetMonthly/GetMonthlyExpenseUseCase.cs`
 **What**: Loads the month's expenses and non-archived recurring expenses, resolves each version in effect, applies the four-step status rule and computes the totals including the committed total. Rejects an invalid year or month with `REFERENCE_MONTH_INVALID`.
