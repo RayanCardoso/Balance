@@ -68,6 +68,12 @@ Seen once or not yet corroborated. Tracked, not trusted.
 - evidence: tasks.md T47 SPEC_DEVIATION; docker-compose.yml host port 5434 (environment)
 - last seen: 2026-08-13T00:29:49Z
 
+### L-010 - Pin a rounding mode with an exact-midpoint input and a literal expected value; recomputing the expectation with the implementation's own rounding call asserts nothing.
+- signal: `surviving_mutant` · recurrence: 1 feature(s) · scope: `money` · harmful: 0
+- features: expense-tracking
+- evidence: validation.md sensor M12 - RegisterInstallmentPlanUseCase.cs:122 (AwayFromZero -> ToEven survived all 348 tests) (money)
+- last seen: 2026-08-13T01:10:36Z
+
 ## Quarantined (failed when applied - ignore)
 
 A confirmed lesson that recurred alongside failure. Kept for the maintainer to review.

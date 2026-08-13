@@ -95,15 +95,29 @@ opened for its own reasons.
 **Branch:** `feature/expense-tracking`
 **Feature in flight:** `expense-tracking`
 
-**Where things stand:** `income-tracking` is complete and verified (20 tasks, 82 tests, PASS with 5/5
-sensor mutations killed). `expense-tracking` is specified, designed and broken into 49 tasks across
-10 phases; both deterministic gates pass. Execution runs as 6 phase-batch sub-agents plus phase 10
-inline. Branch `feature/expense-tracking` was cut from `main`; the 22 income commits are still local
-and unpushed, and no push has been authorised for either feature.
+**Where things stand:** both features are complete and verified. `income-tracking`: 20 tasks, PASS,
+5/5 sensor mutations killed. `expense-tracking`: all 49 tasks done, **349 tests**, PASS on validation
+iteration 2 with 12/12 sensor mutations killed and `validate_state.py` exiting 0.
+
+Iteration 1 returned FAIL on a real defect: `DueDay` reached the monthly line and the page while no
+test asserted it, so zeroing it left the whole suite green. Fixed, then re-injected in a scratch
+worktree to confirm the new tests kill it rather than trusting the claim. A twelfth mutation
+(`MidpointRounding.AwayFromZero` → `ToEven`) survived iteration 2 as a cosmetic finding and was closed
+the same way — the old test recomputed its expectation with the implementation's own `Math.Round`
+call, so it followed the code instead of pinning it.
+
+Branch `feature/expense-tracking` holds 55 commits on top of `main`, which itself carries the 22
+unpushed income commits. **No push has been authorised for either feature** — that is the user's call.
+The frontend is NOT under version control: `C:\estudos\projetos\Balance\frontend` has no git
+repository, so `seed.mjs`, the Vite project and `node_modules` exist only on disk.
 
 **Known gaps carried forward:** the archive operation for an income source (its filter exists and is
 honoured, but nothing sets `Archived`); update and delete for `Person`; correcting a recorded income
 payment. Expense-specific deferrals are listed in that feature's `context.md`.
+
+**Running services (started during phase 10):** PostgreSQL in Docker as `Balance_postgres`; a Vite dev
+server on 5173. The dev API on 5126 was stopped so it would stop holding copy-locks on
+`src\Balance.Api\bin\Debug\net10.0\*.dll` during builds — restart it before using the page.
 
 **Environment notes (re-checked 2026-08-12):**
 
@@ -113,8 +127,9 @@ payment. Expense-specific deferrals are listed in that feature's `context.md`.
 - Python 3.13 is no longer installed. The skill validators run on LibreOffice's bundled CPython at
   `C:\Program Files\LibreOffice\program\python.exe` (3.10.19). The `python` and `python3` names on PATH
   are Microsoft Store stubs and do not work.
-- Docker is installed but its daemon is not running, so PostgreSQL cannot be started. Integration tests
-  run on the EF Core in-memory provider through `CustomWebApplicationFactory`. The user is starting
-  Docker Desktop for phase 10, which needs a real database.
+- Docker is running. PostgreSQL is mapped to host port **5434**, not 5432: this machine runs local
+  `postgresql-x64-17` and `postgresql-x64-18` services that hold 5432 and 5433 and answer `localhost`
+  before the container, which produced `28P01 password authentication failed` against the wrong
+  server. Integration tests still use the EF Core in-memory provider and need no database.
 - System Node is v12.6.0, too old for Vite. NVM holds v20.19.4 and v18.20.4, but `nvm use` needs admin.
   Invoke Node directly: `%APPDATA%\nvm\v20.19.4\node.exe` (verified, ships npm 10.8.2).

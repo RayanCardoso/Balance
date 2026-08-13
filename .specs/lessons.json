@@ -3,7 +3,7 @@
   "promote_threshold": 2,
   "window_days": 45,
   "quarantine_threshold": 2,
-  "next_id": 10,
+  "next_id": 11,
   "lessons": [
     {
       "id": "L-001",
@@ -166,6 +166,24 @@
       ],
       "created": "2026-08-13T00:29:49Z",
       "last_seen": "2026-08-13T00:29:49Z"
+    },
+    {
+      "id": "L-010",
+      "key": "surviving_mutant::pin a rounding mode with an exact midpoint input and a literal expected value recomputing the expectation with the implementation s own rounding call asserts nothing",
+      "text": "Pin a rounding mode with an exact-midpoint input and a literal expected value; recomputing the expectation with the implementation's own rounding call asserts nothing.",
+      "signal": "surviving_mutant",
+      "scope": "money",
+      "status": "candidate",
+      "features": [
+        "expense-tracking"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "validation.md sensor M12 - RegisterInstallmentPlanUseCase.cs:122 (AwayFromZero -> ToEven survived all 348 tests) (money)"
+      ],
+      "created": "2026-08-13T01:10:36Z",
+      "last_seen": "2026-08-13T01:10:36Z"
     }
   ]
 }

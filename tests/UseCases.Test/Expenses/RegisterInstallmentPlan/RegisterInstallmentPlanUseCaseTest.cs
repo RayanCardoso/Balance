@@ -87,6 +87,28 @@ public class RegisterInstallmentPlanUseCaseTest
         result.Installments[count - 1].Amount.ShouldBe(total - each * (count - 1));
     }
 
+    /// <summary>
+    /// Pins the midpoint rounding mode with literal expected values. The test above recomputes its
+    /// expectation with the implementation's own <c>Math.Round</c> call, so it follows the code
+    /// wherever it goes and asserts nothing about which way a half-cent breaks. 0.05 over 2 is an
+    /// exact midpoint - 0.025 - and is the smallest input that separates the two modes:
+    /// AwayFromZero gives 0.03, ToEven gives 0.02.
+    /// </summary>
+    [Fact]
+    public async Task An_Exact_Half_Cent_Rounds_Away_From_Zero_Not_To_Even()
+    {
+        var scenario = Scenario.Build();
+        var request = scenario.Request();
+        request.TotalAmount = 0.05m;
+        request.InstallmentCount = 2;
+
+        var result = await scenario.UseCase().Execute(request);
+
+        result.Installments[0].Amount.ShouldBe(0.03m);
+        result.Installments[1].Amount.ShouldBe(0.02m);
+        result.Installments.Sum(installment => installment.Amount).ShouldBe(0.05m);
+    }
+
     [Fact]
     public async Task Competence_Months_Advance_By_One_Month_From_The_Resolved_First_Month()
     {
