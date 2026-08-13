@@ -3,7 +3,7 @@
   "promote_threshold": 2,
   "window_days": 45,
   "quarantine_threshold": 2,
-  "next_id": 3,
+  "next_id": 10,
   "lessons": [
     {
       "id": "L-001",
@@ -40,6 +40,132 @@
       ],
       "created": "2026-08-10T23:28:52Z",
       "last_seen": "2026-08-10T23:28:52Z"
+    },
+    {
+      "id": "L-003",
+      "key": "ac_gap::assert one field per clause of a conjunctive acceptance criterion a criterion naming two outputs needs two assertions",
+      "text": "Assert one field per clause of a conjunctive acceptance criterion; a criterion naming two outputs needs two assertions.",
+      "signal": "ac_gap",
+      "scope": "read-model",
+      "status": "candidate",
+      "features": [
+        "expense-tracking"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "spec.md VIEW AC3 (due-day clause); validation.md Spec-Anchored AC table (read-model)"
+      ],
+      "created": "2026-08-13T00:29:46Z",
+      "last_seen": "2026-08-13T00:29:46Z"
+    },
+    {
+      "id": "L-004",
+      "key": "surviving_mutant::assert every pass through field a projection response copies from its entity totals and status assertions do not cover them",
+      "text": "Assert every pass-through field a projection response copies from its entity; totals and status assertions do not cover them.",
+      "signal": "surviving_mutant",
+      "scope": "read-model",
+      "status": "candidate",
+      "features": [
+        "expense-tracking"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "M11 - GetMonthlyExpenseUseCase.cs:90 DueDay=0 survived both suites (read-model)"
+      ],
+      "created": "2026-08-13T00:29:46Z",
+      "last_seen": "2026-08-13T00:29:46Z"
+    },
+    {
+      "id": "L-005",
+      "key": "surviving_mutant::give every branch of a status resolution rule its own fixture including the null input branch",
+      "text": "Give every branch of a status resolution rule its own fixture, including the null-input branch.",
+      "signal": "surviving_mutant",
+      "scope": "use-case",
+      "status": "candidate",
+      "features": [
+        "expense-tracking"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "M9 - GetMonthlyExpenseUseCase.cs:118 null-expected branch survived both suites (use-case)"
+      ],
+      "created": "2026-08-13T00:29:47Z",
+      "last_seen": "2026-08-13T00:29:47Z"
+    },
+    {
+      "id": "L-006",
+      "key": "spec_precision_gap::when the design adds a branch the spec does not define pin its outcome in the spec before implementing it",
+      "text": "When the design adds a branch the spec does not define, pin its outcome in the spec before implementing it.",
+      "signal": "spec_precision_gap",
+      "scope": "spec",
+      "status": "candidate",
+      "features": [
+        "expense-tracking"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "design.md status rule step 2 vs spec.md VIEW AC5-AC6 (spec)"
+      ],
+      "created": "2026-08-13T00:29:47Z",
+      "last_seen": "2026-08-13T00:29:47Z"
+    },
+    {
+      "id": "L-007",
+      "key": "spec_deviation::give every entity its own not found message key instead of reusing a neighbouring entity s",
+      "text": "Give every entity its own NOT_FOUND message key instead of reusing a neighbouring entity's.",
+      "signal": "spec_deviation",
+      "scope": "errors",
+      "status": "candidate",
+      "features": [
+        "expense-tracking"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "SPEC_DEVIATION in RegisterExpenseUseCase.cs, ChangeRecurringExpenseValueUseCase.cs, UpdateRecurringExpensePaymentUseCase.cs (T18, T28, T35) (errors)"
+      ],
+      "created": "2026-08-13T00:29:48Z",
+      "last_seen": "2026-08-13T00:29:48Z"
+    },
+    {
+      "id": "L-008",
+      "key": "spec_precision_gap::pin the midpoint rounding mode in the spec whenever a total is split and rounded across rows",
+      "text": "Pin the midpoint rounding mode in the spec whenever a total is split and rounded across rows.",
+      "signal": "spec_precision_gap",
+      "scope": "money",
+      "status": "candidate",
+      "features": [
+        "expense-tracking"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "spec.md Assumptions table - installment midpoint rounding; T22 (money)"
+      ],
+      "created": "2026-08-13T00:29:49Z",
+      "last_seen": "2026-08-13T00:29:49Z"
+    },
+    {
+      "id": "L-009",
+      "key": "spec_deviation::pin a non default container host port in docker compose when local database services already hold the defaults",
+      "text": "Pin a non-default container host port in docker-compose when local database services already hold the defaults.",
+      "signal": "spec_deviation",
+      "scope": "environment",
+      "status": "candidate",
+      "features": [
+        "expense-tracking"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "tasks.md T47 SPEC_DEVIATION; docker-compose.yml host port 5434 (environment)"
+      ],
+      "created": "2026-08-13T00:29:49Z",
+      "last_seen": "2026-08-13T00:29:49Z"
     }
   ]
 }

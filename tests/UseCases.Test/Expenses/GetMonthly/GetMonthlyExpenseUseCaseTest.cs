@@ -72,6 +72,70 @@ public class GetMonthlyExpenseUseCaseTest
         line.Status.ShouldBe(ExpenseStatus.Pending);
     }
 
+    /// <summary>
+    /// VIEW AC3's second clause: the line reports the recurring expense's due day. It is rendered on
+    /// the page, so a wrong value is user-visible.
+    /// </summary>
+    [Fact]
+    public async Task A_Recurring_Line_Reports_The_Due_Day_Of_Its_Expense()
+    {
+        var (user, person) = NewOwner();
+
+        var rent = RecurringExpenseBuilder.Build(person, dueDay: 10, name: "Aluguel");
+        var netflix = RecurringExpenseBuilder.Build(person, dueDay: 22, name: "Netflix");
+
+        var useCase = BuildUseCase(user, recurringExpenses: [rent, netflix]);
+
+        var result = await useCase.Execute(2026, 8);
+
+        result.RecurringLines.First(line => line.Name == "Aluguel").DueDay.ShouldBe(10);
+        result.RecurringLines.First(line => line.Name == "Netflix").DueDay.ShouldBe(22);
+    }
+
+    /// <summary>
+    /// Spec edge case: a due day of 31 in a shorter month is reported as stored, never clamped to the
+    /// month's length.
+    /// </summary>
+    [Fact]
+    public async Task A_Due_Day_Of_31_Is_Not_Clamped_To_A_Shorter_Month()
+    {
+        var (user, person) = NewOwner();
+
+        var bill = RecurringExpenseBuilder.Build(person, dueDay: 31);
+
+        // February 2026 has 28 days.
+        var useCase = BuildUseCase(user, competenceMonth: new DateOnly(2026, 2, 1), recurringExpenses: [bill]);
+
+        var result = await useCase.Execute(2026, 2);
+
+        result.RecurringLines.ShouldHaveSingleItem().DueDay.ShouldBe(31);
+    }
+
+    /// <summary>
+    /// The status rule's remaining branch: money went out for a month that has no version in effect,
+    /// so there is no expectation to diverge from. Not reachable through the public API today -
+    /// registering a payment rejects that month with NO_VERSION_IN_EFFECT - but the branch exists and
+    /// is pinned here so a future operation cannot change its meaning unnoticed.
+    /// </summary>
+    [Fact]
+    public async Task A_Payment_With_No_Version_In_Effect_Is_Paid_With_A_Null_Expected()
+    {
+        var (user, person) = NewOwner();
+
+        var bill = RecurringExpenseBuilder.Build(person, amount: 150m, validityStart: new DateOnly(2026, 5, 1));
+        Pay(bill, new DateOnly(2026, 2, 1), 90m);
+
+        var useCase = BuildUseCase(user, competenceMonth: new DateOnly(2026, 2, 1), recurringExpenses: [bill]);
+
+        var result = await useCase.Execute(2026, 2);
+
+        var line = result.RecurringLines.ShouldHaveSingleItem();
+
+        line.ExpectedAmount.ShouldBeNull();
+        line.ActualAmount.ShouldBe(90m);
+        line.Status.ShouldBe(ExpenseStatus.Paid);
+    }
+
     [Fact]
     public async Task A_Month_Predating_Every_Version_Reports_A_Null_Expected_Amount()
     {

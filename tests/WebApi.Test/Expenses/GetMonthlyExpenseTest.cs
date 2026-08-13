@@ -147,6 +147,27 @@ public class GetMonthlyExpenseTest : BalanceClassFixture
         month.GetProperty("totalVariable").GetDecimal().ShouldBe(100.00m);
     }
 
+    /// <summary>
+    /// VIEW AC3's second clause. The due day reaches the page, so a wrong value is user-visible; this
+    /// asserts it survives the whole round trip rather than only the use case's projection.
+    /// </summary>
+    [Fact]
+    public async Task A_Recurring_Line_Reports_The_Due_Day_It_Was_Registered_With()
+    {
+        var caller = await NewAccount();
+
+        await NewRecurringExpense(caller, amount: 2250.00m, name: "Aluguel", dueDay: 10);
+        await NewRecurringExpense(caller, amount: 44.90m, name: "Netflix", dueDay: 22);
+
+        var recurring = (await GetMonth(caller)).GetProperty("recurringLines").EnumerateArray().ToList();
+
+        recurring.Single(line => line.GetProperty("name").GetString() == "Aluguel")
+            .GetProperty("dueDay").GetInt32().ShouldBe(10);
+
+        recurring.Single(line => line.GetProperty("name").GetString() == "Netflix")
+            .GetProperty("dueDay").GetInt32().ShouldBe(22);
+    }
+
     [Fact]
     public async Task The_Estimate_Flag_Is_Reported_On_The_Line()
     {
@@ -275,7 +296,7 @@ public class GetMonthlyExpenseTest : BalanceClassFixture
     }
 
     private async Task<Guid> NewRecurringExpense(
-        Caller caller, decimal amount, string name, bool isEstimate = true)
+        Caller caller, decimal amount, string name, bool isEstimate = true, int? dueDay = null)
     {
         var request = RequestRegisterRecurringExpenseJsonBuilder.Build(
             caller.PersonId, caller.CategoryId, caller.AccountId);
@@ -284,6 +305,11 @@ public class GetMonthlyExpenseTest : BalanceClassFixture
         request.Amount = amount;
         request.IsEstimate = isEstimate;
         request.ValidityStart = new DateOnly(2026, 1, 1);
+
+        if (dueDay is not null)
+        {
+            request.DueDay = dueDay.Value;
+        }
 
         var response = await DoPost(RECURRING_EXPENSE, request, token: caller.Token);
         response.StatusCode.ShouldBe(HttpStatusCode.Created);

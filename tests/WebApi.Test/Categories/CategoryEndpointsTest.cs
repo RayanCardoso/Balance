@@ -136,6 +136,58 @@ public class CategoryEndpointsTest : BalanceClassFixture
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
 
+    /// <summary>
+    /// Spec edge case: two categories of the same user carrying the same name are both accepted.
+    /// Nothing enforces name uniqueness, and nothing should - "Mercado" for the month's shop and
+    /// "Mercado" for the weekly market is a legitimate way to keep them apart by description.
+    /// </summary>
+    [Fact]
+    public async Task Two_Categories_Of_The_Same_User_May_Share_A_Name()
+    {
+        var (token, _) = await NewAccount();
+
+        var first = RequestRegisterCategoryJsonBuilder.Build();
+        first.Name = "Mercado";
+
+        var second = RequestRegisterCategoryJsonBuilder.Build();
+        second.Name = "Mercado";
+
+        (await DoPost(CATEGORY, first, token: token)).StatusCode.ShouldBe(HttpStatusCode.Created);
+        (await DoPost(CATEGORY, second, token: token)).StatusCode.ShouldBe(HttpStatusCode.Created);
+
+        var listed = (await ReadJson(await DoGet(CATEGORY, token: token)))
+            .GetProperty("categories").EnumerateArray()
+            .Where(category => category.GetProperty("name").GetString() == "Mercado")
+            .ToList();
+
+        listed.Count.ShouldBe(2);
+        listed[0].GetProperty("id").GetGuid().ShouldNotBe(listed[1].GetProperty("id").GetGuid());
+    }
+
+    /// <summary>Same edge case for accounts: two cards at the same bank may carry the same name.</summary>
+    [Fact]
+    public async Task Two_Accounts_Of_The_Same_Person_May_Share_A_Name()
+    {
+        var (token, personId) = await NewAccount();
+
+        var first = RequestRegisterAccountJsonBuilder.Build(personId);
+        first.Name = "Nubank Roxinho";
+
+        var second = RequestRegisterAccountJsonBuilder.Build(personId);
+        second.Name = "Nubank Roxinho";
+
+        (await DoPost(ACCOUNT, first, token: token)).StatusCode.ShouldBe(HttpStatusCode.Created);
+        (await DoPost(ACCOUNT, second, token: token)).StatusCode.ShouldBe(HttpStatusCode.Created);
+
+        var listed = (await ReadJson(await DoGet(ACCOUNT, token: token)))
+            .GetProperty("accounts").EnumerateArray()
+            .Where(account => account.GetProperty("name").GetString() == "Nubank Roxinho")
+            .ToList();
+
+        listed.Count.ShouldBe(2);
+        listed[0].GetProperty("id").GetGuid().ShouldNotBe(listed[1].GetProperty("id").GetGuid());
+    }
+
     private async Task<(string Token, Guid PersonId)> NewAccount()
     {
         var request = RequestRegisterUserJsonBuilder.Build();
