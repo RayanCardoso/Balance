@@ -696,7 +696,7 @@ August 2026 reads back: income received R$ 13.000,00 · variable R$ 2.057,75 · 
 
 Re-running against an already-seeded database fails on the duplicate account, by design — the script says so and prints the `docker compose down -v` needed for a clean run.
 
-#### T49: Build the frontend page
+#### T49: Build the frontend page ✅
 
 **Where**: `frontend/src/App.jsx`
 **What**: A React + Vite page, created with the NVM Node 20 binary, that logs in with the seeded credentials and renders the dashboard month: fixed income, variable income, fixed (recurring) expenses, variable expenses with their installment markers, and the balance. Estimated figures are visibly marked as such.
@@ -704,6 +704,15 @@ Re-running against an already-seeded database fails on the duplicate account, by
 **Requirement**: DASH-01, VIEW-01, VIEW-04
 **Tests**: endpoint layer — the page is the manual acceptance check; the data it renders is already asserted by T41 and T44
 **Gate**: `page`
+**Status**: ✅ Complete — rendered in a real browser against the seeded PostgreSQL, and read back to confirm the figures rather than assumed.
+
+Scaffolded by hand rather than with `npm create vite`, which prompts interactively in a non-empty directory. React 18 + Vite 5, 63 packages, served on 5173 — the origin the `FrontendDevServer` CORS policy names, so the page loading is itself the proof T46 works.
+
+**August 2026** renders: received R$ 13.000,00 · committed R$ 5.013,95 · balance R$ 7.986,05. Salário Marina shows `Divergente` (4.550 against 4.300 expected); Luz shows `Divergente` (287,40 against 220,00); Aluguel and Netflix `Pago`; Água, Internet and Academia `Pendente` with their estimates. `Geladeira Brastemp (1/10)` carries its installment marker.
+
+**September 2026**, reached through the month control, confirms the competence rule end to end: `Geladeira Brastemp (2/10)`, plus **Livraria** (bought 19 Aug on a card closing the 8th) and **Fone de ouvido** (bought 21 Aug on a card closing the 20th) — both rolled forward by `CompetenceMonthResolver`, neither visible in August. Balance is −R$ 3.735,20, since nothing has been received yet.
+
+An estimated figure renders amber and italic and its row is tagged `estimativa`, but only while unpaid: Luz carries the tag in September and loses it in August, where the real bill arrived and overwrote it.
 
 ---
 
