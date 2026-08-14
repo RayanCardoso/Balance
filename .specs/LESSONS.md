@@ -74,6 +74,24 @@ Seen once or not yet corroborated. Tracked, not trusted.
 - evidence: validation.md sensor M12 - RegisterInstallmentPlanUseCase.cs:122 (AwayFromZero -> ToEven survived all 348 tests) (money)
 - last seen: 2026-08-13T01:10:36Z
 
+### L-011 - Pin the accepted input grammar in the spec for any value the UI also formats for display; a parser that rejects the formatter's own output rejects what the user just read.
+- signal: `spec_precision_gap` · recurrence: 1 feature(s) · scope: `money` · harmful: 0
+- features: balance-mobile-app
+- evidence: validation.md SPG-1; src/shared/lib/money.ts:16 formatMoney vs money.ts:28 parseMoneyInput (money)
+- last seen: 2026-08-14T15:02:34Z
+
+### L-012 - Route a failed client-side parse to a visible outcome; mapping it to the field's absent value silently discards what the user typed.
+- signal: `spec_precision_gap` · recurrence: 1 feature(s) · scope: `forms` · harmful: 0
+- features: balance-mobile-app
+- evidence: validation.md SPG-2; src/features/catalogue/ui/AccountsScreen.tsx:56 (forms)
+- last seen: 2026-08-14T15:02:34Z
+
+### L-013 - Assert order-dependent and constraint-dependent behaviour against the real database engine; an in-memory test provider guarantees neither ordering nor unique constraints.
+- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `persistence` · harmful: 0
+- features: balance-mobile-app
+- evidence: validation.md VFF-1; backend commit 3f44760; RecurringExpenseRepository.cs:29,36,44,56 (persistence)
+- last seen: 2026-08-14T15:02:35Z
+
 ## Quarantined (failed when applied - ignore)
 
 A confirmed lesson that recurred alongside failure. Kept for the maintainer to review.

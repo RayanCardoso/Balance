@@ -3,7 +3,7 @@
   "promote_threshold": 2,
   "window_days": 45,
   "quarantine_threshold": 2,
-  "next_id": 11,
+  "next_id": 14,
   "lessons": [
     {
       "id": "L-001",
@@ -184,6 +184,60 @@
       ],
       "created": "2026-08-13T01:10:36Z",
       "last_seen": "2026-08-13T01:10:36Z"
+    },
+    {
+      "id": "L-011",
+      "key": "spec_precision_gap::pin the accepted input grammar in the spec for any value the ui also formats for display a parser that rejects the formatter s own output rejects what the user just read",
+      "text": "Pin the accepted input grammar in the spec for any value the UI also formats for display; a parser that rejects the formatter's own output rejects what the user just read.",
+      "signal": "spec_precision_gap",
+      "scope": "money",
+      "status": "candidate",
+      "features": [
+        "balance-mobile-app"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "validation.md SPG-1; src/shared/lib/money.ts:16 formatMoney vs money.ts:28 parseMoneyInput (money)"
+      ],
+      "created": "2026-08-14T15:02:34Z",
+      "last_seen": "2026-08-14T15:02:34Z"
+    },
+    {
+      "id": "L-012",
+      "key": "spec_precision_gap::route a failed client side parse to a visible outcome mapping it to the field s absent value silently discards what the user typed",
+      "text": "Route a failed client-side parse to a visible outcome; mapping it to the field's absent value silently discards what the user typed.",
+      "signal": "spec_precision_gap",
+      "scope": "forms",
+      "status": "candidate",
+      "features": [
+        "balance-mobile-app"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "validation.md SPG-2; src/features/catalogue/ui/AccountsScreen.tsx:56 (forms)"
+      ],
+      "created": "2026-08-14T15:02:34Z",
+      "last_seen": "2026-08-14T15:02:34Z"
+    },
+    {
+      "id": "L-013",
+      "key": "ac_gap::assert order dependent and constraint dependent behaviour against the real database engine an in memory test provider guarantees neither ordering nor unique constraints",
+      "text": "Assert order-dependent and constraint-dependent behaviour against the real database engine; an in-memory test provider guarantees neither ordering nor unique constraints.",
+      "signal": "ac_gap",
+      "scope": "persistence",
+      "status": "candidate",
+      "features": [
+        "balance-mobile-app"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "validation.md VFF-1; backend commit 3f44760; RecurringExpenseRepository.cs:29,36,44,56 (persistence)"
+      ],
+      "created": "2026-08-14T15:02:35Z",
+      "last_seen": "2026-08-14T15:02:35Z"
     }
   ]
 }
