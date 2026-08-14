@@ -26,14 +26,14 @@ internal class RecurringExpenseRepository :
         await _dbContext
             .RecurringExpenses
             .AsNoTracking()
-            .Include(expense => expense.Versions)
+            .Include(expense => expense.Versions.OrderBy(version => version.ValidityStart))
             .FirstOrDefaultAsync(expense =>
                 expense.Id == recurringExpenseId && expense.Person.UserId == user.Id);
 
     async Task<RecurringExpense?> IRecurringExpenseUpdateOnlyRepository.GetById(User user, Guid recurringExpenseId) =>
         await _dbContext
             .RecurringExpenses
-            .Include(expense => expense.Versions)
+            .Include(expense => expense.Versions.OrderBy(version => version.ValidityStart))
             .FirstOrDefaultAsync(expense =>
                 expense.Id == recurringExpenseId && expense.Person.UserId == user.Id);
 
@@ -41,7 +41,7 @@ internal class RecurringExpenseRepository :
         await _dbContext
             .RecurringExpenses
             .AsNoTracking()
-            .Include(expense => expense.Versions)
+            .Include(expense => expense.Versions.OrderBy(version => version.ValidityStart))
             .Where(expense => expense.Person.UserId == user.Id)
             .OrderBy(expense => expense.Name)
             .ToListAsync();
@@ -53,7 +53,7 @@ internal class RecurringExpenseRepository :
         return await _dbContext
             .RecurringExpenses
             .AsNoTracking()
-            .Include(expense => expense.Versions)
+            .Include(expense => expense.Versions.OrderBy(version => version.ValidityStart))
             .Include(expense => expense.Payments.Where(payment => payment.ReferenceMonth == firstDayOfMonth))
             .Where(expense => expense.Person.UserId == user.Id && expense.Archived == false)
             .OrderBy(expense => expense.Name)
