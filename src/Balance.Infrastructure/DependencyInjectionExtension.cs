@@ -1,13 +1,21 @@
 using Balance.Domain.Repositories;
+using Balance.Domain.Repositories.Accounts;
+using Balance.Domain.Repositories.Categories;
+using Balance.Domain.Repositories.Expenses;
 using Balance.Domain.Repositories.Incomes;
 using Balance.Domain.Repositories.People;
+using Balance.Domain.Repositories.RecurringExpenses;
 using Balance.Domain.Repositories.Users;
 using Balance.Domain.Security.Cryptography;
 using Balance.Domain.Security.Tokens;
 using Balance.Domain.Services.LoggedUser;
 using Balance.Infrastructure.DataAccess;
+using Balance.Infrastructure.DataAccess.Repositories.Accounts;
+using Balance.Infrastructure.DataAccess.Repositories.Categories;
+using Balance.Infrastructure.DataAccess.Repositories.Expenses;
 using Balance.Infrastructure.DataAccess.Repositories.Incomes;
 using Balance.Infrastructure.DataAccess.Repositories.People;
+using Balance.Infrastructure.DataAccess.Repositories.RecurringExpenses;
 using Balance.Infrastructure.DataAccess.Repositories.Users;
 using Balance.Infrastructure.Extensions;
 using Balance.Infrastructure.Security.Cryptography;
@@ -46,6 +54,17 @@ public static class DependencyInjectionExtension
         services.AddScoped<IIncomeSourceWriteOnlyRepository, IncomeSourceRepository>();
         services.AddScoped<IIncomeSourceUpdateOnlyRepository, IncomeSourceRepository>();
         services.AddScoped<IIncomePaymentWriteOnlyRepository, IncomePaymentRepository>();
+        services.AddScoped<ICategoryReadOnlyRepository, CategoryRepository>();
+        services.AddScoped<ICategoryWriteOnlyRepository, CategoryRepository>();
+        services.AddScoped<IAccountReadOnlyRepository, AccountRepository>();
+        services.AddScoped<IAccountWriteOnlyRepository, AccountRepository>();
+        services.AddScoped<IExpenseReadOnlyRepository, ExpenseRepository>();
+        services.AddScoped<IExpenseWriteOnlyRepository, ExpenseRepository>();
+        services.AddScoped<IInstallmentPlanWriteOnlyRepository, InstallmentPlanRepository>();
+        services.AddScoped<IRecurringExpenseReadOnlyRepository, RecurringExpenseRepository>();
+        services.AddScoped<IRecurringExpenseWriteOnlyRepository, RecurringExpenseRepository>();
+        services.AddScoped<IRecurringExpenseUpdateOnlyRepository, RecurringExpenseRepository>();
+        services.AddScoped<IRecurringExpensePaymentRepository, RecurringExpensePaymentRepository>();
     }
 
     private static void AddToken(IServiceCollection services, IConfiguration configuration)

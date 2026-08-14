@@ -66,4 +66,28 @@
   <data name="REFERENCE_MONTH_INVALID" xml:space="preserve">
     <value>O mês de referência é inválido.</value>
   </data>
+  <data name="DAY_OUT_OF_RANGE" xml:space="preserve">
+    <value>O dia deve estar entre 1 e 31.</value>
+  </data>
+  <data name="INSTALLMENT_COUNT_INVALID" xml:space="preserve">
+    <value>O número de parcelas deve ser ao menos 2.</value>
+  </data>
+  <data name="PAYMENT_ALREADY_RECORDED" xml:space="preserve">
+    <value>Já existe um pagamento registrado para este mês de referência.</value>
+  </data>
+  <data name="RECURRING_EXPENSE_ARCHIVED" xml:space="preserve">
+    <value>Esta despesa recorrente está arquivada.</value>
+  </data>
+  <data name="CATEGORY_NOT_FOUND" xml:space="preserve">
+    <value>Categoria não encontrada.</value>
+  </data>
+  <data name="ACCOUNT_NOT_FOUND" xml:space="preserve">
+    <value>Conta não encontrada.</value>
+  </data>
+  <data name="RECURRING_EXPENSE_NOT_FOUND" xml:space="preserve">
+    <value>Despesa recorrente não encontrada.</value>
+  </data>
+  <data name="RECURRING_EXPENSE_PAYMENT_NOT_FOUND" xml:space="preserve">
+    <value>Pagamento de despesa recorrente não encontrado.</value>
+  </data>
 </root>

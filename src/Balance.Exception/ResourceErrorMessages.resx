@@ -66,4 +66,28 @@
   <data name="REFERENCE_MONTH_INVALID" xml:space="preserve">
     <value>The reference month is invalid.</value>
   </data>
+  <data name="DAY_OUT_OF_RANGE" xml:space="preserve">
+    <value>The day must be between 1 and 31.</value>
+  </data>
+  <data name="INSTALLMENT_COUNT_INVALID" xml:space="preserve">
+    <value>The number of installments must be at least 2.</value>
+  </data>
+  <data name="PAYMENT_ALREADY_RECORDED" xml:space="preserve">
+    <value>A payment has already been recorded for this reference month.</value>
+  </data>
+  <data name="RECURRING_EXPENSE_ARCHIVED" xml:space="preserve">
+    <value>This recurring expense is archived.</value>
+  </data>
+  <data name="CATEGORY_NOT_FOUND" xml:space="preserve">
+    <value>Category not found.</value>
+  </data>
+  <data name="ACCOUNT_NOT_FOUND" xml:space="preserve">
+    <value>Account not found.</value>
+  </data>
+  <data name="RECURRING_EXPENSE_NOT_FOUND" xml:space="preserve">
+    <value>Recurring expense not found.</value>
+  </data>
+  <data name="RECURRING_EXPENSE_PAYMENT_NOT_FOUND" xml:space="preserve">
+    <value>Recurring expense payment not found.</value>
+  </data>
 </root>

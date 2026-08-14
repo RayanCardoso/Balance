@@ -30,6 +30,15 @@ public static class ResourceErrorMessages
     public static string VALIDITY_START_MUST_BE_LATER => Get(nameof(VALIDITY_START_MUST_BE_LATER));
     public static string REFERENCE_MONTH_INVALID => Get(nameof(REFERENCE_MONTH_INVALID));
 
+    public static string DAY_OUT_OF_RANGE => Get(nameof(DAY_OUT_OF_RANGE));
+    public static string INSTALLMENT_COUNT_INVALID => Get(nameof(INSTALLMENT_COUNT_INVALID));
+    public static string PAYMENT_ALREADY_RECORDED => Get(nameof(PAYMENT_ALREADY_RECORDED));
+    public static string RECURRING_EXPENSE_ARCHIVED => Get(nameof(RECURRING_EXPENSE_ARCHIVED));
+    public static string CATEGORY_NOT_FOUND => Get(nameof(CATEGORY_NOT_FOUND));
+    public static string ACCOUNT_NOT_FOUND => Get(nameof(ACCOUNT_NOT_FOUND));
+    public static string RECURRING_EXPENSE_NOT_FOUND => Get(nameof(RECURRING_EXPENSE_NOT_FOUND));
+    public static string RECURRING_EXPENSE_PAYMENT_NOT_FOUND => Get(nameof(RECURRING_EXPENSE_PAYMENT_NOT_FOUND));
+
     private static string Get(string key) =>
         ResourceManager.GetString(key, CultureInfo.CurrentUICulture) ?? key;
 }
