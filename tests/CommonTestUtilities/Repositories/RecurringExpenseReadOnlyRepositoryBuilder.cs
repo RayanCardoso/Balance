@@ -17,6 +17,15 @@ public class RecurringExpenseReadOnlyRepositoryBuilder
         return this;
     }
 
+    public RecurringExpenseReadOnlyRepositoryBuilder GetAll(User user, List<RecurringExpense> recurringExpenses)
+    {
+        _repository
+            .Setup(repository => repository.GetAll(user))
+            .ReturnsAsync(recurringExpenses);
+
+        return this;
+    }
+
     public RecurringExpenseReadOnlyRepositoryBuilder GetForMonth(
         User user,
         DateOnly competenceMonth,

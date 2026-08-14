@@ -37,6 +37,15 @@ internal class RecurringExpenseRepository :
             .FirstOrDefaultAsync(expense =>
                 expense.Id == recurringExpenseId && expense.Person.UserId == user.Id);
 
+    public async Task<List<RecurringExpense>> GetAll(User user) =>
+        await _dbContext
+            .RecurringExpenses
+            .AsNoTracking()
+            .Include(expense => expense.Versions)
+            .Where(expense => expense.Person.UserId == user.Id)
+            .OrderBy(expense => expense.Name)
+            .ToListAsync();
+
     public async Task<List<RecurringExpense>> GetForMonth(User user, DateOnly competenceMonth)
     {
         var firstDayOfMonth = new DateOnly(competenceMonth.Year, competenceMonth.Month, 1);

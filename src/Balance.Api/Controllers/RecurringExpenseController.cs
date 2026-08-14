@@ -1,5 +1,6 @@
 using Balance.Application.UseCases.RecurringExpenses.Archive;
 using Balance.Application.UseCases.RecurringExpenses.ChangeValue;
+using Balance.Application.UseCases.RecurringExpenses.GetAll;
 using Balance.Application.UseCases.RecurringExpenses.Register;
 using Balance.Application.UseCases.RecurringExpenses.RegisterPayment;
 using Balance.Application.UseCases.RecurringExpenses.UpdatePayment;
@@ -27,6 +28,20 @@ public class RecurringExpenseController : ControllerBase
         var response = await useCase.Execute(request);
 
         return Created(string.Empty, response);
+    }
+
+    /// <summary>
+    /// Every recurring expense of the user, archived or not - the only surface an archived bill's id
+    /// stays reachable through, since the monthly view excludes archived rows by design.
+    /// </summary>
+    [HttpGet]
+    [ProducesResponseType(typeof(ResponseRecurringExpensesJson), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> GetAll([FromServices] IGetAllRecurringExpensesUseCase useCase)
+    {
+        var response = await useCase.Execute();
+
+        return Ok(response);
     }
 
     [HttpPut("value")]

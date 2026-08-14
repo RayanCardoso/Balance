@@ -263,6 +263,60 @@ public class RecurringExpenseEndpointsTest : BalanceClassFixture
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
 
+    /// <summary>
+    /// GetAll is the only surface an archived bill's id stays reachable through: the monthly view
+    /// excludes archived rows by design, so without this endpoint an archived bill could never be
+    /// unarchived once its id fell out of every month the app had cached.
+    /// </summary>
+    [Fact]
+    public async Task GetAll_Returns_Every_Recurring_Expense_Including_Archived_Ones()
+    {
+        var caller = await NewAccount();
+
+        var activeId = await NewRecurringExpense(caller);
+        var archivedId = await NewRecurringExpense(caller);
+
+        var archiveResponse = await DoPut(
+            $"{RECURRING_EXPENSE}/{archivedId}/archive?archived=true", new { }, token: caller.Token);
+        archiveResponse.StatusCode.ShouldBe(HttpStatusCode.NoContent);
+
+        var response = await DoGet(RECURRING_EXPENSE, token: caller.Token);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+
+        var expenses = (await ReadJson(response))
+            .GetProperty("recurringExpenses").EnumerateArray().ToList();
+
+        expenses.Count.ShouldBe(2);
+
+        expenses.Single(expense => expense.GetProperty("id").GetGuid() == archivedId)
+            .GetProperty("archived").GetBoolean().ShouldBeTrue();
+
+        expenses.Single(expense => expense.GetProperty("id").GetGuid() == activeId)
+            .GetProperty("archived").GetBoolean().ShouldBeFalse();
+    }
+
+    [Fact]
+    public async Task GetAll_Only_Returns_The_Logged_Users_Recurring_Expenses()
+    {
+        var first = await NewAccount();
+        var second = await NewAccount();
+
+        await NewRecurringExpense(first);
+
+        var response = await DoGet(RECURRING_EXPENSE, token: second.Token);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+
+        (await ReadJson(response)).GetProperty("recurringExpenses").EnumerateArray().ShouldBeEmpty();
+    }
+
+    [Fact]
+    public async Task GetAll_Without_Token_Is_Unauthorized()
+    {
+        var response = await DoGet(RECURRING_EXPENSE);
+
+        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+    }
+
     private sealed record Caller(string Token, Guid PersonId, Guid CategoryId, Guid AccountId);
 
     private async Task<Caller> NewAccount()
