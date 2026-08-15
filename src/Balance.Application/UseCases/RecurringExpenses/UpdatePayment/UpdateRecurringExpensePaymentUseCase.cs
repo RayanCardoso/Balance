@@ -5,6 +5,8 @@ using Balance.Domain.Repositories.RecurringExpenses;
 using Balance.Domain.Services.LoggedUser;
 using Balance.Exception;
 using Balance.Exception.ExceptionBase;
+using CommunicationExpenseType = Balance.Communication.Enums.ExpenseType;
+using DomainExpenseType = Balance.Domain.Enums.ExpenseType;
 
 namespace Balance.Application.UseCases.RecurringExpenses.UpdatePayment;
 
@@ -45,6 +47,7 @@ public class UpdateRecurringExpensePaymentUseCase : IUpdateRecurringExpensePayme
         payment.PaymentDate = request.PaymentDate;
         payment.Notes = request.Notes;
         payment.AccountId = request.AccountId;
+        payment.Type = (DomainExpenseType?)request.Type;
 
         await _unitOfWork.Commit();
 
@@ -57,7 +60,8 @@ public class UpdateRecurringExpensePaymentUseCase : IUpdateRecurringExpensePayme
             PaymentDate = payment.PaymentDate,
             AmountPaid = payment.AmountPaid,
             Notes = payment.Notes,
-            AccountId = payment.AccountId
+            AccountId = payment.AccountId,
+            Type = (CommunicationExpenseType?)payment.Type
         };
     }
 

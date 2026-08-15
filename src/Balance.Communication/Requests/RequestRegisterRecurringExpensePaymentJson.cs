@@ -1,3 +1,5 @@
+using Balance.Communication.Enums;
+
 namespace Balance.Communication.Requests;
 
 public class RequestRegisterRecurringExpensePaymentJson
@@ -16,4 +18,7 @@ public class RequestRegisterRecurringExpensePaymentJson
 
     /// <summary>The account that actually paid this month. Optional.</summary>
     public Guid? AccountId { get; set; }
+
+    /// <summary>Overrides the recurring expense's own payment type for this month. Optional.</summary>
+    public ExpenseType? Type { get; set; }
 }

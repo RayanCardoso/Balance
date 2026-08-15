@@ -1,4 +1,5 @@
 using Balance.Domain.Entities;
+using Balance.Domain.Enums;
 
 namespace CommonTestUtilities.Entities;
 
@@ -11,7 +12,8 @@ public class RecurringExpensePaymentBuilder
         decimal amountPaid = 180.00m,
         DateOnly? paymentDate = null,
         string? notes = "bill arrived",
-        Guid? accountId = null)
+        Guid? accountId = null,
+        ExpenseType? type = null)
     {
         var month = referenceMonth ?? new DateOnly(2026, 8, 1);
 
@@ -24,7 +26,8 @@ public class RecurringExpensePaymentBuilder
             PaymentDate = paymentDate ?? month.AddDays(9),
             AmountPaid = amountPaid,
             Notes = notes,
-            AccountId = accountId
+            AccountId = accountId,
+            Type = type
         };
     }
 }

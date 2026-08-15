@@ -8,6 +8,8 @@ using CommonTestUtilities.LoggedUser;
 using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Requests;
 using Shouldly;
+using CommunicationExpenseType = Balance.Communication.Enums.ExpenseType;
+using DomainExpenseType = Balance.Domain.Enums.ExpenseType;
 
 namespace UseCases.Test.RecurringExpenses.RegisterPayment;
 
@@ -114,6 +116,31 @@ public class RegisterRecurringExpensePaymentUseCaseTest
         result.AccountId.ShouldBeNull();
 
         scenario.UnitOfWork.Commits.ShouldBe(1);
+    }
+
+    [Fact]
+    public async Task Success_Persists_The_Payment_Type_Override()
+    {
+        var scenario = Scenario.Build();
+
+        var request = scenario.Request(new DateOnly(2026, 8, 1));
+        request.Type = CommunicationExpenseType.Pix;
+
+        var result = await scenario.UseCase().Execute(request);
+
+        scenario.PaymentRepository.Added!.Type.ShouldBe(DomainExpenseType.Pix);
+        result.Type.ShouldBe(CommunicationExpenseType.Pix);
+    }
+
+    [Fact]
+    public async Task Success_Leaves_The_Payment_Type_Override_Null_When_Omitted()
+    {
+        var scenario = Scenario.Build();
+
+        var result = await scenario.UseCase().Execute(scenario.Request(new DateOnly(2026, 8, 1)));
+
+        scenario.PaymentRepository.Added!.Type.ShouldBeNull();
+        result.Type.ShouldBeNull();
     }
 
     [Fact]

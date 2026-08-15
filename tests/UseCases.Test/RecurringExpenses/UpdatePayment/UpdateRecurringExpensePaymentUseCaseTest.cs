@@ -8,6 +8,8 @@ using CommonTestUtilities.LoggedUser;
 using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Requests;
 using Shouldly;
+using CommunicationExpenseType = Balance.Communication.Enums.ExpenseType;
+using DomainExpenseType = Balance.Domain.Enums.ExpenseType;
 
 namespace UseCases.Test.RecurringExpenses.UpdatePayment;
 
@@ -20,7 +22,10 @@ public class UpdateRecurringExpensePaymentUseCaseTest
         var scenario = Scenario.Build(amountPaid: 180.00m);
 
         var request = RequestUpdateRecurringExpensePaymentJsonBuilder.Build(
-            amountPaid: 172.40m, paymentDate: new DateOnly(2026, 8, 15), accountId: payingAccount);
+            amountPaid: 172.40m,
+            paymentDate: new DateOnly(2026, 8, 15),
+            accountId: payingAccount,
+            type: CommunicationExpenseType.Pix);
         request.Notes = "corrected after the bill was re-read";
 
         var result = await scenario.UseCase().Execute(scenario.Payment.Id, request);
@@ -29,12 +34,14 @@ public class UpdateRecurringExpensePaymentUseCaseTest
         scenario.Payment.PaymentDate.ShouldBe(new DateOnly(2026, 8, 15));
         scenario.Payment.Notes.ShouldBe("corrected after the bill was re-read");
         scenario.Payment.AccountId.ShouldBe(payingAccount);
+        scenario.Payment.Type.ShouldBe(DomainExpenseType.Pix);
 
         result.Id.ShouldBe(scenario.Payment.Id);
         result.AmountPaid.ShouldBe(172.40m);
         result.PaymentDate.ShouldBe(new DateOnly(2026, 8, 15));
         result.Notes.ShouldBe("corrected after the bill was re-read");
         result.AccountId.ShouldBe(payingAccount);
+        result.Type.ShouldBe(CommunicationExpenseType.Pix);
 
         scenario.UnitOfWork.Commits.ShouldBe(1);
     }
@@ -90,9 +97,9 @@ public class UpdateRecurringExpensePaymentUseCaseTest
     }
 
     [Fact]
-    public async Task Success_Clears_The_Notes_And_The_Paying_Account_When_They_Are_Omitted()
+    public async Task Success_Clears_The_Notes_The_Paying_Account_And_The_Type_Override_When_They_Are_Omitted()
     {
-        var scenario = Scenario.Build(accountId: Guid.NewGuid());
+        var scenario = Scenario.Build(accountId: Guid.NewGuid(), type: DomainExpenseType.Pix);
 
         var request = RequestUpdateRecurringExpensePaymentJsonBuilder.Build(amountPaid: 172.40m);
         request.Notes = null;
@@ -102,9 +109,11 @@ public class UpdateRecurringExpensePaymentUseCaseTest
 
         scenario.Payment.Notes.ShouldBeNull();
         scenario.Payment.AccountId.ShouldBeNull();
+        scenario.Payment.Type.ShouldBeNull();
 
         result.Notes.ShouldBeNull();
         result.AccountId.ShouldBeNull();
+        result.Type.ShouldBeNull();
     }
 
     [Theory]
@@ -160,7 +169,8 @@ public class UpdateRecurringExpensePaymentUseCaseTest
 
         public UnitOfWorkBuilder UnitOfWork { get; } = new();
 
-        public static Scenario Build(decimal amountPaid = 180.00m, Guid? accountId = null)
+        public static Scenario Build(
+            decimal amountPaid = 180.00m, Guid? accountId = null, DomainExpenseType? type = null)
         {
             var user = UserBuilder.Build();
             var recurringExpense = RecurringExpenseBuilder.Build(PersonBuilder.Build(user));
@@ -170,7 +180,7 @@ public class UpdateRecurringExpensePaymentUseCaseTest
                 User = user,
                 RecurringExpense = recurringExpense,
                 Payment = RecurringExpensePaymentBuilder.Build(
-                    recurringExpense, amountPaid: amountPaid, accountId: accountId)
+                    recurringExpense, amountPaid: amountPaid, accountId: accountId, type: type)
             };
         }
 

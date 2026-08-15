@@ -7,6 +7,8 @@ using Balance.Domain.Repositories.RecurringExpenses;
 using Balance.Domain.Services.LoggedUser;
 using Balance.Exception;
 using Balance.Exception.ExceptionBase;
+using CommunicationExpenseType = Balance.Communication.Enums.ExpenseType;
+using DomainExpenseType = Balance.Domain.Enums.ExpenseType;
 
 namespace Balance.Application.UseCases.RecurringExpenses.RegisterPayment;
 
@@ -69,7 +71,8 @@ public class RegisterRecurringExpensePaymentUseCase : IRegisterRecurringExpenseP
             PaymentDate = request.PaymentDate,
             AmountPaid = request.AmountPaid,
             Notes = request.Notes,
-            AccountId = request.AccountId
+            AccountId = request.AccountId,
+            Type = (DomainExpenseType?)request.Type
         };
 
         await _paymentRepository.Add(payment);
@@ -84,7 +87,8 @@ public class RegisterRecurringExpensePaymentUseCase : IRegisterRecurringExpenseP
             PaymentDate = payment.PaymentDate,
             AmountPaid = payment.AmountPaid,
             Notes = payment.Notes,
-            AccountId = payment.AccountId
+            AccountId = payment.AccountId,
+            Type = (CommunicationExpenseType?)payment.Type
         };
     }
 

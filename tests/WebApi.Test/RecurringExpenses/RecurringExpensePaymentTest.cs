@@ -5,6 +5,7 @@ using Shouldly;
 using System.Globalization;
 using System.Net;
 using System.Text.Json;
+using CommunicationExpenseType = Balance.Communication.Enums.ExpenseType;
 
 namespace WebApi.Test.RecurringExpenses;
 
@@ -34,6 +35,7 @@ public class RecurringExpensePaymentTest : BalanceClassFixture
         request.AmountPaid = 180.00m;
         request.PaymentDate = new DateOnly(2026, 8, 12);
         request.Notes = "bill arrived higher";
+        request.Type = CommunicationExpenseType.Pix;
 
         var response = await DoPost(PAYMENT, request, token: caller.Token);
 
@@ -49,6 +51,7 @@ public class RecurringExpensePaymentTest : BalanceClassFixture
         body.GetProperty("notes").GetString().ShouldBe("bill arrived higher");
         body.GetProperty("accountId").GetGuid().ShouldBe(caller.AccountId);
         body.GetProperty("recurringExpenseVersionId").GetGuid().ShouldBe(expense.VersionId);
+        body.GetProperty("type").GetInt32().ShouldBe((int)CommunicationExpenseType.Pix);
     }
 
     [Fact]
@@ -101,6 +104,7 @@ public class RecurringExpensePaymentTest : BalanceClassFixture
 
         body.GetProperty("notes").ValueKind.ShouldBe(JsonValueKind.Null);
         body.GetProperty("accountId").ValueKind.ShouldBe(JsonValueKind.Null);
+        body.GetProperty("type").ValueKind.ShouldBe(JsonValueKind.Null);
     }
 
     [Fact]
@@ -120,7 +124,10 @@ public class RecurringExpensePaymentTest : BalanceClassFixture
         var paymentId = recorded.GetProperty("id").GetGuid();
 
         var request = RequestUpdateRecurringExpensePaymentJsonBuilder.Build(
-            amountPaid: 172.40m, paymentDate: new DateOnly(2026, 8, 15), accountId: caller.AccountId);
+            amountPaid: 172.40m,
+            paymentDate: new DateOnly(2026, 8, 15),
+            accountId: caller.AccountId,
+            type: CommunicationExpenseType.Debit);
         request.Notes = "corrected after the bill was re-read";
 
         var response = await DoPut($"{PAYMENT}/{paymentId}", request, token: caller.Token);
@@ -134,6 +141,7 @@ public class RecurringExpensePaymentTest : BalanceClassFixture
         body.GetProperty("paymentDate").GetString().ShouldBe("2026-08-15");
         body.GetProperty("notes").GetString().ShouldBe("corrected after the bill was re-read");
         body.GetProperty("accountId").GetGuid().ShouldBe(caller.AccountId);
+        body.GetProperty("type").GetInt32().ShouldBe((int)CommunicationExpenseType.Debit);
 
         body.GetProperty("referenceMonth").GetString().ShouldBe("2026-08-01");
         body.GetProperty("recurringExpenseVersionId").GetGuid()

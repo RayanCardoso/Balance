@@ -1,3 +1,5 @@
+using Balance.Communication.Enums;
+
 namespace Balance.Communication.Responses;
 
 public class ResponseRecurringExpensePaymentJson
@@ -16,4 +18,7 @@ public class ResponseRecurringExpensePaymentJson
     public decimal AmountPaid { get; set; }
     public string? Notes { get; set; }
     public Guid? AccountId { get; set; }
+
+    /// <summary>Overrides the recurring expense's own payment type for this month. Null when not recorded.</summary>
+    public ExpenseType? Type { get; set; }
 }
