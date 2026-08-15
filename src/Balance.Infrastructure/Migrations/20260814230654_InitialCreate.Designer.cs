@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Balance.Infrastructure.Migrations
 {
     [DbContext(typeof(BalanceDbContext))]
-    [Migration("20260812233254_AddExpenseTracking")]
-    partial class AddExpenseTracking
+    [Migration("20260814230654_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

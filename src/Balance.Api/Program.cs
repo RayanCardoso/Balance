@@ -80,7 +80,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<CultureMiddleware>();
 
-app.UseHttpsRedirection();
+// Only outside development. The emulator and physical devices talk to this API over plain HTTP, and
+// the redirect would answer them with `https://localhost:7156` - a certificate Android refuses
+// (self-signed dev cert: "Trust anchor for certification path not found") on a host that, from
+// inside the emulator, is the emulator itself.
+if (app.Environment.IsDevelopment() == false)
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseCors(frontendCorsPolicy);
 
