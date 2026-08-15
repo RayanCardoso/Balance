@@ -76,6 +76,8 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 | Concurrency on a value change | Last write wins, guarded by an overlap check at write time | Matches the income feature; a household application does not justify locking | n |
 | Observability | N/A because the solution has no logging, metrics or tracing beyond the ASP.NET Core default | Adding an observability stack is outside this feature's boundary | n |
 | External-dependency failure | N/A because the feature calls no external service; PostgreSQL failures surface through the existing `ExceptionFilter` as 500 | No new outbound dependency is introduced | n |
+| `RecurringExpense.Type` and its per-payment override | Required `ExpenseType` on `RecurringExpense`, mirrored by an optional `ExpenseType?` override on `RecurringExpensePayment` | Mirrors the existing `AccountId` default/override pattern already used by both entities, rather than inventing a new shape; the user chose this explicitly over a single fixed field on `RecurringExpense` alone | y |
+| Validation of `Type` on registration | None - not validated as an enum range, matching `RequestRegisterExpenseJson.Type` which is also unvalidated today | Consistency with the existing one-off expense convention; introducing validation here that the sibling field lacks would be an unrequested behavior change | y |
 
 **Open questions:** none - all resolved or logged above.
 
@@ -263,6 +265,24 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 
 ---
 
+### P2: Record how a recurring expense is normally paid
+
+**User Story**: As an account owner, I want to record whether a recurring bill is paid by credit, debit or pix, and optionally record a different payment type for one month's payment, so that my recurring expenses carry the same payment-method information my one-off expenses already do.
+
+**Why P2**: The core recurring-expense model already ships; this closes a parity gap noticed after `RecurringExpenseController` was reviewed and found to carry `AccountId` but no `Type`, unlike `Expense`.
+
+**Acceptance Criteria**:
+1. WHEN an authenticated user registers a recurring expense THEN the system SHALL persist the supplied payment type and return it in the response.
+2. WHEN an authenticated user lists recurring expenses THEN the system SHALL report each recurring expense's payment type.
+3. WHEN an authenticated user changes the base value of a recurring expense THEN the system SHALL report the recurring expense's payment type unchanged in the response.
+4. WHEN an authenticated user records a payment for a recurring expense THEN the system SHALL persist the supplied payment type override, leaving it null when the request omits one.
+5. WHEN an authenticated user updates a recorded payment THEN the system SHALL overwrite its payment type override with the supplied value, clearing it when the request omits one.
+6. WHEN an authenticated user requests the expenses of a competence month THEN the system SHALL report each recurring line's payment type as the month's payment override when present, and the recurring expense's own payment type when absent.
+
+**Independent Test**: Register a recurring expense as Debit, record one month's payment overridden to Pix, and confirm the monthly view reports Pix for that month while the recurring expense itself still reports Debit for every other month.
+
+---
+
 ## Edge Cases
 
 - IF a competence month falls before the validity start of every version of a recurring expense THEN the system SHALL report a null expected amount for it.
@@ -272,6 +292,7 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 - IF a due day is 31 and the month is shorter THEN the system SHALL report the day as stored without clamping it to the month length.
 - IF two categories or two accounts of the same user carry the same name THEN the system SHALL accept both.
 - WHEN a recurring expense is archived after a payment was recorded THEN the system SHALL keep that payment retrievable through the database while omitting the line from the month.
+- IF a recurring expense payment is recorded without a payment type override THEN the system SHALL report the recurring expense's own payment type on the monthly line for that month.
 
 ---
 
@@ -302,10 +323,16 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 | RECR-05 | P2: Archive a recurring expense | Recurring expenses | Implementing |
 | DASH-01 | P2: See income and expenses for the same month | Dashboard | Implementing |
 | DASH-02 | P2: See income and expenses for the same month | Dashboard | Implementing |
+| RTYP-01 | P2: Record how a recurring expense is normally paid | Recurring expenses | Implementing |
+| RTYP-02 | P2: Record how a recurring expense is normally paid | Recurring expenses | Implementing |
+| RTYP-03 | P2: Record how a recurring expense is normally paid | Recurring expenses | Implementing |
+| RTYP-04 | P2: Record how a recurring expense is normally paid | Recurring payments | Implementing |
+| RTYP-05 | P2: Record how a recurring expense is normally paid | Recurring payments | Implementing |
+| RTYP-06 | P2: Record how a recurring expense is normally paid | Monthly expense view | Implementing |
 
 **Status values:** Pending → In Design → In Tasks → Implementing → Verified
 
-**Coverage:** 23 total, 0 mapped to tasks, 23 unmapped. Mapping happens in the Tasks phase.
+**Coverage:** 29 total, 0 mapped to tasks, 29 unmapped. Mapping happens in the Tasks phase.
 
 ### Requirement coverage map
 
@@ -334,6 +361,12 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 | RECR-05 | Archive and unarchive, and their effect on the monthly view |
 | DASH-01 | Dashboard composing the existing income use case with the expense view |
 | DASH-02 | Dashboard balance and its 401 without a token |
+| RTYP-01 | `Type` persisted on `RecurringExpense` registration and returned in the response |
+| RTYP-02 | `Type` reported on every recurring expense in `GetAll` |
+| RTYP-03 | `Type` reported unchanged in the `ChangeValue` response |
+| RTYP-04 | Optional `Type` override persisted on `RecurringExpensePayment` registration |
+| RTYP-05 | `Type` override overwritten (including cleared) on payment correction |
+| RTYP-06 | Monthly recurring line reports the effective `Type`: override or the expense's own |
 
 ---
 
@@ -348,3 +381,4 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 - [ ] The dashboard's income half is byte-identical to what `GET /api/income/{year}/{month}` returns for the same month.
 - [ ] Every endpoint added by this feature answers 401 without a bearer token.
 - [ ] PostgreSQL holds a seeded account with people, categories, accounts, income and expenses of every shape, and the frontend page renders it.
+- [ ] A recurring expense registered as Debit with one month's payment overridden to Pix reports Pix on that month's line and Debit on every other month, in `GetAll`, `ChangeValue` and the monthly view alike.

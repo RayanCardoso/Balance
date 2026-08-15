@@ -1,3 +1,5 @@
+using Balance.Domain.Enums;
+
 namespace Balance.Domain.Entities;
 
 public class RecurringExpensePayment : BaseEntity
@@ -18,6 +20,9 @@ public class RecurringExpensePayment : BaseEntity
     public DateOnly PaymentDate { get; set; }
 
     public decimal AmountPaid { get; set; }
+
+    /// <summary>Overrides the recurring expense's own payment type for this month. Null when not recorded.</summary>
+    public ExpenseType? Type { get; set; }
 
     public string? Notes { get; set; }
 

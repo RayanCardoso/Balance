@@ -1,8 +1,12 @@
+using Balance.Domain.Enums;
+
 namespace Balance.Domain.Entities;
 
 public class RecurringExpense : BaseEntity
 {
     public string Name { get; set; } = string.Empty;
+
+    public ExpenseType Type { get; set; }
 
     public int DueDay { get; set; }
 
