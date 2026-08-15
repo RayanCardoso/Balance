@@ -50,8 +50,15 @@ public class RegisterRecurringExpenseUseCase : IRegisterRecurringExpenseUseCase
         var category = await _categoryReadOnlyRepository.GetById(loggedUser, request.CategoryId)
             ?? throw new NotFoundException(ResourceErrorMessages.CATEGORY_NOT_FOUND);
 
-        var account = await _accountReadOnlyRepository.GetById(loggedUser, request.AccountId)
-            ?? throw new NotFoundException(ResourceErrorMessages.ACCOUNT_NOT_FOUND);
+        Guid? accountId = null;
+
+        if(request.AccountId != null)
+        {
+            var account = await _accountReadOnlyRepository.GetById(loggedUser, request.AccountId.Value)
+                ?? throw new NotFoundException(ResourceErrorMessages.ACCOUNT_NOT_FOUND);
+
+            accountId = account.Id;
+        }
 
         var recurringExpense = new RecurringExpense
         {
@@ -62,7 +69,7 @@ public class RegisterRecurringExpenseUseCase : IRegisterRecurringExpenseUseCase
             Archived = false,
             PersonId = person.Id,
             CategoryId = category.Id,
-            AccountId = account.Id
+            AccountId = accountId
         };
 
         await _writeOnlyRepository.Add(recurringExpense);
@@ -87,7 +94,7 @@ public class RegisterRecurringExpenseUseCase : IRegisterRecurringExpenseUseCase
             PersonId = recurringExpense.PersonId,
             Type = request.Type,
             CategoryId = recurringExpense.CategoryId,
-            AccountId = recurringExpense.AccountId,
+            AccountId = accountId,
             DueDay = recurringExpense.DueDay,
             IsEstimate = recurringExpense.IsEstimate,
             Archived = recurringExpense.Archived,

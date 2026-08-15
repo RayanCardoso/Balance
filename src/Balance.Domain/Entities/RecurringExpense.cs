@@ -21,8 +21,8 @@ public class RecurringExpense : BaseEntity
     public Guid CategoryId { get; set; }
     public Category Category { get; set; } = null!;
 
-    public Guid AccountId { get; set; }
-    public Account Account { get; set; } = null!;
+    public Guid? AccountId { get; set; }
+    public Account? Account { get; set; } = null!;
 
     public IList<RecurringExpenseVersion> Versions { get; set; } = [];
     public IList<RecurringExpensePayment> Payments { get; set; } = [];

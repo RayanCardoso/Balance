@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Balance.Api.Controllers;
 
-[Route("api/recurring-expense")]
+[Route("api/[controller]")]
 [ApiController]
 [Authorize]
 public class RecurringExpenseController : ControllerBase

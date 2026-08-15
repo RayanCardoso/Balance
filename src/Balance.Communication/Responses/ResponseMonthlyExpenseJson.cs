@@ -63,7 +63,7 @@ public class ResponseRecurringExpenseLineJson
     /// due day, <c>IsEstimate</c>, the actual and the status - not for catalogue names.
     /// </summary>
     public Guid CategoryId { get; set; }
-    public Guid AccountId { get; set; }
+    public Guid? AccountId { get; set; }
 
     /// <summary>The month's payment override when present, otherwise the recurring expense's own type.</summary>
     public ExpenseType Type { get; set; }

@@ -12,7 +12,7 @@ public class RequestRegisterRecurringExpenseJson
 
     public Guid CategoryId { get; set; }
 
-    public Guid AccountId { get; set; }
+    public Guid? AccountId { get; set; }
 
     /// <summary>The day of the month the bill falls due. Stored as given, never clamped.</summary>
     public int DueDay { get; set; }

@@ -9,7 +9,7 @@ public class ResponseRecurringExpenseJson
     public Guid PersonId { get; set; }
     public ExpenseType Type { get; set; }
     public Guid CategoryId { get; set; }
-    public Guid AccountId { get; set; }
+    public Guid? AccountId { get; set; }
     public int DueDay { get; set; }
     public bool IsEstimate { get; set; }
     public bool Archived { get; set; }
