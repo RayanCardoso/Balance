@@ -54,6 +54,36 @@ public class GetMonthlyExpenseUseCaseTest
     }
 
     [Fact]
+    public async Task A_Paid_Lines_Type_Is_The_Months_Override_When_Present()
+    {
+        var (user, person) = NewOwner();
+
+        var bill = RecurringExpenseBuilder.Build(person, amount: 150m, type: DomainExpenseType.Debit);
+        Pay(bill, August, 150m, type: DomainExpenseType.Pix);
+
+        var useCase = BuildUseCase(user, recurringExpenses: [bill]);
+
+        var result = await useCase.Execute(2026, 8);
+
+        result.RecurringLines.ShouldHaveSingleItem().Type.ShouldBe(ExpenseType.Pix);
+    }
+
+    [Fact]
+    public async Task A_Lines_Type_Falls_Back_To_The_Recurring_Expenses_Own_Type_When_No_Override_Is_Recorded()
+    {
+        var (user, person) = NewOwner();
+
+        var bill = RecurringExpenseBuilder.Build(person, amount: 150m, type: DomainExpenseType.Debit);
+        Pay(bill, August, 150m);
+
+        var useCase = BuildUseCase(user, recurringExpenses: [bill]);
+
+        var result = await useCase.Execute(2026, 8);
+
+        result.RecurringLines.ShouldHaveSingleItem().Type.ShouldBe(ExpenseType.Debit);
+    }
+
+    [Fact]
     public async Task An_Unpaid_Bill_Is_Pending_With_A_Null_Actual()
     {
         var (user, person) = NewOwner();
@@ -357,7 +387,8 @@ public class GetMonthlyExpenseUseCaseTest
         };
 
     /// <summary>Returns the recorded payment's id so a test can pin the value the line reports.</summary>
-    private static Guid Pay(RecurringExpense expense, DateOnly referenceMonth, decimal amountPaid)
+    private static Guid Pay(
+        RecurringExpense expense, DateOnly referenceMonth, decimal amountPaid, DomainExpenseType? type = null)
     {
         var payment = new RecurringExpensePayment
         {
@@ -366,7 +397,8 @@ public class GetMonthlyExpenseUseCaseTest
             RecurringExpenseVersionId = expense.Versions[0].Id,
             ReferenceMonth = referenceMonth,
             PaymentDate = referenceMonth.AddDays(11),
-            AmountPaid = amountPaid
+            AmountPaid = amountPaid,
+            Type = type
         };
 
         expense.Payments.Add(payment);

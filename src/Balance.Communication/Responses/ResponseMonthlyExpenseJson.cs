@@ -65,6 +65,9 @@ public class ResponseRecurringExpenseLineJson
     public Guid CategoryId { get; set; }
     public Guid AccountId { get; set; }
 
+    /// <summary>The month's payment override when present, otherwise the recurring expense's own type.</summary>
+    public ExpenseType Type { get; set; }
+
     public int DueDay { get; set; }
 
     /// <summary>Marks the expected amount as provisional rather than a known fixed value.</summary>

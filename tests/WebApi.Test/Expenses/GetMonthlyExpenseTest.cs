@@ -192,6 +192,29 @@ public class GetMonthlyExpenseTest : BalanceClassFixture
             .GetProperty("paymentId").ValueKind.ShouldBe(JsonValueKind.Null);
     }
 
+    /// <summary>
+    /// RTYP-06 and the spec's independent test: a bill's own payment type is reported by default, and
+    /// one month's override reported for that month only.
+    /// </summary>
+    [Fact]
+    public async Task A_Recurring_Lines_Type_Is_The_Months_Override_Or_The_Bills_Own_Type()
+    {
+        var caller = await NewAccount();
+
+        var debit = await NewRecurringExpense(caller, amount: 150.00m, name: "Luz");
+        await PayBill(caller, debit, amountPaid: 150.00m, type: ExpenseType.Pix);
+
+        await NewRecurringExpense(caller, amount: 45.00m, name: "Netflix");
+
+        var recurring = (await GetMonth(caller)).GetProperty("recurringLines").EnumerateArray().ToList();
+
+        recurring.Single(line => line.GetProperty("name").GetString() == "Luz")
+            .GetProperty("type").GetInt32().ShouldBe((int)ExpenseType.Pix);
+
+        recurring.Single(line => line.GetProperty("name").GetString() == "Netflix")
+            .GetProperty("type").GetInt32().ShouldBe((int)ExpenseType.Debit);
+    }
+
     [Fact]
     public async Task The_Estimate_Flag_Is_Reported_On_The_Line()
     {
@@ -342,12 +365,14 @@ public class GetMonthlyExpenseTest : BalanceClassFixture
     }
 
     /// <summary>Returns the created payment's id so a test can pin the value the line reports.</summary>
-    private async Task<Guid> PayBill(Caller caller, Guid recurringExpenseId, decimal amountPaid)
+    private async Task<Guid> PayBill(
+        Caller caller, Guid recurringExpenseId, decimal amountPaid, ExpenseType? type = null)
     {
         var request = RequestRegisterRecurringExpensePaymentJsonBuilder.Build(
             recurringExpenseId, referenceMonth: August);
 
         request.AmountPaid = amountPaid;
+        request.Type = type;
 
         var response = await DoPost(PAYMENT, request, token: caller.Token);
         response.StatusCode.ShouldBe(HttpStatusCode.Created);

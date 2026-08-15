@@ -87,6 +87,7 @@ public class GetMonthlyExpenseUseCase : IGetMonthlyExpenseUseCase
             PersonId = expense.PersonId,
             CategoryId = expense.CategoryId,
             AccountId = expense.AccountId,
+            Type = (CommunicationExpenseType)(payment?.Type ?? expense.Type),
             DueDay = expense.DueDay,
             IsEstimate = expense.IsEstimate,
             ExpectedAmount = version?.Amount,
