@@ -1,4 +1,5 @@
 using Balance.Domain.Entities;
+using Balance.Domain.Enums;
 using Person = Balance.Domain.Entities.Person;
 
 namespace CommonTestUtilities.Entities;
@@ -13,12 +14,14 @@ public class RecurringExpenseBuilder
         DateOnly? validityStart = null,
         bool isEstimate = true,
         bool archived = false,
-        string name = "Luz")
+        string name = "Luz",
+        ExpenseType type = ExpenseType.Debit)
     {
         var recurringExpense = new RecurringExpense
         {
             Id = Guid.NewGuid(),
             Name = name,
+            Type = type,
             DueDay = dueDay,
             IsEstimate = isEstimate,
             Archived = archived,

@@ -3,6 +3,8 @@ using CommonTestUtilities.Entities;
 using CommonTestUtilities.LoggedUser;
 using CommonTestUtilities.Repositories;
 using Shouldly;
+using CommunicationExpenseType = Balance.Communication.Enums.ExpenseType;
+using DomainExpenseType = Balance.Domain.Enums.ExpenseType;
 
 namespace UseCases.Test.RecurringExpenses.GetAll;
 
@@ -43,7 +45,8 @@ public class GetAllRecurringExpensesUseCaseTest
         var loggedUser = UserBuilder.Build();
         var person = PersonBuilder.Build(loggedUser);
 
-        var expense = RecurringExpenseBuilder.Build(person, amount: 150m, dueDay: 12, isEstimate: true);
+        var expense = RecurringExpenseBuilder.Build(
+            person, amount: 150m, dueDay: 12, isEstimate: true, type: DomainExpenseType.Pix);
 
         var readRepository = new RecurringExpenseReadOnlyRepositoryBuilder()
             .GetAll(loggedUser, [expense])
@@ -55,6 +58,7 @@ public class GetAllRecurringExpensesUseCaseTest
 
         var line = result.RecurringExpenses.ShouldHaveSingleItem();
 
+        line.Type.ShouldBe(CommunicationExpenseType.Pix);
         line.DueDay.ShouldBe(12);
         line.IsEstimate.ShouldBeTrue();
         line.PersonId.ShouldBe(person.Id);

@@ -8,6 +8,7 @@ using CommonTestUtilities.LoggedUser;
 using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Requests;
 using Shouldly;
+using DomainExpenseType = Balance.Domain.Enums.ExpenseType;
 
 namespace UseCases.Test.RecurringExpenses.Register;
 
@@ -24,6 +25,7 @@ public class RegisterRecurringExpenseUseCaseTest
         var added = scenario.WriteRepository.Added.ShouldNotBeNull();
 
         added.Name.ShouldBe(request.Name);
+        added.Type.ShouldBe((DomainExpenseType)request.Type);
         added.DueDay.ShouldBe(request.DueDay);
         added.PersonId.ShouldBe(scenario.Person.Id);
         added.CategoryId.ShouldBe(scenario.Category.Id);
@@ -38,6 +40,7 @@ public class RegisterRecurringExpenseUseCaseTest
 
         result.Id.ShouldBe(added.Id);
         result.Name.ShouldBe(request.Name);
+        result.Type.ShouldBe(request.Type);
         result.DueDay.ShouldBe(request.DueDay);
         result.PersonId.ShouldBe(scenario.Person.Id);
         result.CategoryId.ShouldBe(scenario.Category.Id);

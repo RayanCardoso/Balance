@@ -1,4 +1,5 @@
 using Bogus;
+using Balance.Communication.Enums;
 using Balance.Communication.Requests;
 
 namespace CommonTestUtilities.Requests;
@@ -10,6 +11,7 @@ public class RequestRegisterRecurringExpenseJsonBuilder
         return new Faker<RequestRegisterRecurringExpenseJson>()
             .RuleFor(r => r.Name, faker => faker.Commerce.ProductName())
             .RuleFor(r => r.PersonId, _ => personId)
+            .RuleFor(r => r.Type, _ => ExpenseType.Debit)
             .RuleFor(r => r.CategoryId, _ => categoryId)
             .RuleFor(r => r.AccountId, _ => accountId)
             .RuleFor(r => r.DueDay, faker => faker.Random.Int(1, 28))

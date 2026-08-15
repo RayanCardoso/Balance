@@ -30,6 +30,7 @@ public class RecurringExpenseEndpointsTest : BalanceClassFixture
         var request = RequestRegisterRecurringExpenseJsonBuilder.Build(
             caller.PersonId, caller.CategoryId, caller.AccountId);
         request.Name = "Netflix";
+        request.Type = Balance.Communication.Enums.ExpenseType.Debit;
         request.Amount = 55.90m;
         request.DueDay = 12;
         request.IsEstimate = true;
@@ -43,6 +44,7 @@ public class RecurringExpenseEndpointsTest : BalanceClassFixture
 
         body.GetProperty("id").GetGuid().ShouldNotBe(Guid.Empty);
         body.GetProperty("name").GetString().ShouldBe("Netflix");
+        body.GetProperty("type").GetInt32().ShouldBe((int)Balance.Communication.Enums.ExpenseType.Debit);
         body.GetProperty("personId").GetGuid().ShouldBe(caller.PersonId);
         body.GetProperty("categoryId").GetGuid().ShouldBe(caller.CategoryId);
         body.GetProperty("accountId").GetGuid().ShouldBe(caller.AccountId);
@@ -293,6 +295,9 @@ public class RecurringExpenseEndpointsTest : BalanceClassFixture
 
         expenses.Single(expense => expense.GetProperty("id").GetGuid() == activeId)
             .GetProperty("archived").GetBoolean().ShouldBeFalse();
+
+        expenses.ShouldAllBe(expense =>
+            expense.GetProperty("type").GetInt32() == (int)Balance.Communication.Enums.ExpenseType.Debit);
     }
 
     [Fact]

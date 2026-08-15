@@ -1,3 +1,5 @@
+using Balance.Communication.Enums;
+
 namespace Balance.Communication.Responses;
 
 public class ResponseRecurringExpenseJson
@@ -5,6 +7,7 @@ public class ResponseRecurringExpenseJson
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public Guid PersonId { get; set; }
+    public ExpenseType Type { get; set; }
     public Guid CategoryId { get; set; }
     public Guid AccountId { get; set; }
     public int DueDay { get; set; }

@@ -1,6 +1,7 @@
 using Balance.Communication.Requests;
 using Balance.Communication.Responses;
 using Balance.Domain.Entities;
+using Balance.Domain.Enums;
 using Balance.Domain.Repositories;
 using Balance.Domain.Repositories.Accounts;
 using Balance.Domain.Repositories.Categories;
@@ -55,6 +56,7 @@ public class RegisterRecurringExpenseUseCase : IRegisterRecurringExpenseUseCase
         var recurringExpense = new RecurringExpense
         {
             Name = request.Name,
+            Type = (ExpenseType)request.Type,
             DueDay = request.DueDay,
             IsEstimate = request.IsEstimate,
             Archived = false,
@@ -83,6 +85,7 @@ public class RegisterRecurringExpenseUseCase : IRegisterRecurringExpenseUseCase
             Id = recurringExpense.Id,
             Name = recurringExpense.Name,
             PersonId = recurringExpense.PersonId,
+            Type = request.Type,
             CategoryId = recurringExpense.CategoryId,
             AccountId = recurringExpense.AccountId,
             DueDay = recurringExpense.DueDay,

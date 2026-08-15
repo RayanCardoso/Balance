@@ -7,6 +7,7 @@ using Balance.Domain.Repositories.RecurringExpenses;
 using Balance.Domain.Services.LoggedUser;
 using Balance.Exception;
 using Balance.Exception.ExceptionBase;
+using CommunicationExpenseType = Balance.Communication.Enums.ExpenseType;
 
 namespace Balance.Application.UseCases.RecurringExpenses.ChangeValue;
 
@@ -71,6 +72,7 @@ public class ChangeRecurringExpenseValueUseCase : IChangeRecurringExpenseValueUs
             Id = recurringExpense.Id,
             Name = recurringExpense.Name,
             PersonId = recurringExpense.PersonId,
+            Type = (CommunicationExpenseType)recurringExpense.Type,
             CategoryId = recurringExpense.CategoryId,
             AccountId = recurringExpense.AccountId,
             DueDay = recurringExpense.DueDay,

@@ -7,6 +7,7 @@ using CommonTestUtilities.LoggedUser;
 using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Requests;
 using Shouldly;
+using CommunicationExpenseType = Balance.Communication.Enums.ExpenseType;
 
 namespace UseCases.Test.RecurringExpenses.ChangeValue;
 
@@ -97,6 +98,16 @@ public class ChangeRecurringExpenseValueUseCaseTest
         payment.RecurringExpenseVersionId.ShouldBe(frozenVersionId);
         payment.ReferenceMonth.ShouldBe(new DateOnly(2026, 8, 1));
         payment.AmountPaid.ShouldBe(152.40m);
+    }
+
+    [Fact]
+    public async Task The_Response_Reports_The_Recurring_Expenses_Payment_Type_Unchanged()
+    {
+        var scenario = Scenario.Build(validityStart: new DateOnly(2026, 1, 1));
+
+        var result = await scenario.UseCase().Execute(scenario.Request(new DateOnly(2026, 9, 1)));
+
+        result.Type.ShouldBe((CommunicationExpenseType)scenario.RecurringExpense.Type);
     }
 
     [Fact]

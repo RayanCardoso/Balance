@@ -1,6 +1,7 @@
 using Balance.Communication.Responses;
 using Balance.Domain.Repositories.RecurringExpenses;
 using Balance.Domain.Services.LoggedUser;
+using CommunicationExpenseType = Balance.Communication.Enums.ExpenseType;
 
 namespace Balance.Application.UseCases.RecurringExpenses.GetAll;
 
@@ -30,6 +31,7 @@ public class GetAllRecurringExpensesUseCase : IGetAllRecurringExpensesUseCase
                 Id = expense.Id,
                 Name = expense.Name,
                 PersonId = expense.PersonId,
+                Type = (CommunicationExpenseType)expense.Type,
                 CategoryId = expense.CategoryId,
                 AccountId = expense.AccountId,
                 DueDay = expense.DueDay,
