@@ -21,6 +21,7 @@ public static class ResourceErrorMessages
 
     public static string PERSON_NOT_FOUND => Get(nameof(PERSON_NOT_FOUND));
     public static string AMOUNT_GREATER_THAN_ZERO => Get(nameof(AMOUNT_GREATER_THAN_ZERO));
+    public static string ACCOUNT_REQUIRED_FOR_CREDIT => Get(nameof(ACCOUNT_REQUIRED_FOR_CREDIT));
     public static string EXPECTED_DAY_OUT_OF_RANGE => Get(nameof(EXPECTED_DAY_OUT_OF_RANGE));
     public static string VARIABLE_SOURCE_HAS_NO_VERSION => Get(nameof(VARIABLE_SOURCE_HAS_NO_VERSION));
     public static string INCOME_SOURCE_NOT_FOUND => Get(nameof(INCOME_SOURCE_NOT_FOUND));

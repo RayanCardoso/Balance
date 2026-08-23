@@ -42,6 +42,9 @@
   <data name="AMOUNT_GREATER_THAN_ZERO" xml:space="preserve">
     <value>The amount must be greater than zero.</value>
   </data>
+  <data name="ACCOUNT_REQUIRED_FOR_CREDIT" xml:space="preserve">
+    <value>An account is required for a credit expense.</value>
+  </data>
   <data name="EXPECTED_DAY_OUT_OF_RANGE" xml:space="preserve">
     <value>The expected day must be between 1 and 31.</value>
   </data>

@@ -149,6 +149,28 @@ public class RegisterExpenseTest : BalanceClassFixture
         errors.ShouldHaveSingleItem().GetString().ShouldBe(expected);
     }
 
+    [Theory]
+    [ClassData(typeof(CultureInlineDataTest))]
+    public async Task Error_Credit_Without_Account(string culture)
+    {
+        var caller = await NewAccount(closingDay: 20);
+
+        var request = RequestRegisterExpenseJsonBuilder.Build(caller.PersonId, caller.CategoryId, caller.AccountId);
+        request.Type = ExpenseType.Credit;
+        request.AccountId = null;
+
+        var response = await DoPost(EXPENSE, request, token: caller.Token, culture: culture);
+
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+
+        var errors = (await ReadJson(response)).GetProperty("errorMessages").EnumerateArray();
+
+        var expected = ResourceErrorMessages.ResourceManager.GetString(
+            nameof(ResourceErrorMessages.ACCOUNT_REQUIRED_FOR_CREDIT), new CultureInfo(culture));
+
+        errors.ShouldHaveSingleItem().GetString().ShouldBe(expected);
+    }
+
     [Fact]
     public async Task Register_Expense_Without_Token_Is_Unauthorized()
     {

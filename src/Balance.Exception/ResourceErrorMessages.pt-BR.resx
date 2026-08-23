@@ -42,6 +42,9 @@
   <data name="AMOUNT_GREATER_THAN_ZERO" xml:space="preserve">
     <value>O valor deve ser maior que zero.</value>
   </data>
+  <data name="ACCOUNT_REQUIRED_FOR_CREDIT" xml:space="preserve">
+    <value>Escolha a conta ou cartão de uma despesa no crédito.</value>
+  </data>
   <data name="EXPECTED_DAY_OUT_OF_RANGE" xml:space="preserve">
     <value>O dia esperado deve estar entre 1 e 31.</value>
   </data>
