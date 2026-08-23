@@ -148,6 +148,29 @@ public class GetMonthlyExpenseTest : BalanceClassFixture
     }
 
     /// <summary>
+    /// An expense without a registered account (Pix, debit) must report the absence as null on both
+    /// fields - never as an empty name, which would read as an account that simply has no name.
+    /// </summary>
+    [Fact]
+    public async Task Variable_Line_Without_Account_Has_No_Account_Name()
+    {
+        var caller = await NewAccount();
+
+        var request = RequestRegisterExpenseJsonBuilder.Build(caller.PersonId, caller.CategoryId, caller.AccountId);
+        request.Type = ExpenseType.Pix;
+        request.AccountId = null;
+        request.Date = new DateOnly(2026, 8, 5);
+
+        var response = await DoPost(EXPENSE, request, token: caller.Token);
+        response.StatusCode.ShouldBe(HttpStatusCode.Created);
+
+        var line = (await GetMonth(caller)).GetProperty("variableLines").EnumerateArray().ShouldHaveSingleItem();
+
+        line.GetProperty("accountId").ValueKind.ShouldBe(JsonValueKind.Null);
+        line.GetProperty("accountName").ValueKind.ShouldBe(JsonValueKind.Null);
+    }
+
+    /// <summary>
     /// VIEW AC3's second clause. The due day reaches the page, so a wrong value is user-visible; this
     /// asserts it survives the whole round trip rather than only the use case's projection.
     /// </summary>

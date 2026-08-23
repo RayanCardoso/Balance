@@ -37,8 +37,12 @@ public class ResponseVariableExpenseLineJson
     public Guid CategoryId { get; set; }
     public string CategoryName { get; set; } = string.Empty;
     public ExpensePriority CategoryPriority { get; set; }
-    public Guid AccountId { get; set; }
-    public string AccountName { get; set; } = string.Empty;
+    /// <summary>Null when the expense was not paid from a registered account.</summary>
+    public Guid? AccountId { get; set; }
+
+    /// <summary>Null when there is no account — never an empty string, which would read as a
+    /// nameless account rather than as no account at all.</summary>
+    public string? AccountName { get; set; }
 
     /// <summary>Null unless this expense is one installment of a plan.</summary>
     public int? InstallmentNumber { get; set; }
