@@ -35,9 +35,7 @@ public class GetMonthlyIncomeUseCase : IGetMonthlyIncomeUseCase
 
         foreach (var incomeSource in incomeSources)
         {
-            var version = incomeSource.Type == DomainIncomeType.Recurring
-                ? incomeSource.VersionInEffect(referenceMonth)
-                : null;
+            var version = incomeSource.VersionInEffect(referenceMonth);
 
             var receivedAmount = incomeSource.Payments.Sum(payment => payment.AmountReceived);
             var expectedAmount = version?.Amount;

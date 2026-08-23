@@ -49,22 +49,17 @@ public class RegisterIncomeSourceUseCase : IRegisterIncomeSourceUseCase
 
         await _writeOnlyRepository.Add(incomeSource);
 
-        IncomeSourceVersion? version = null;
-
-        if (incomeSource.Type == DomainIncomeType.Recurring)
+        IncomeSourceVersion version = new IncomeSourceVersion
         {
-            version = new IncomeSourceVersion
-            {
-                IncomeSourceId = incomeSource.Id,
-                Amount = request.Amount!.Value,
-                ExpectedDay = request.ExpectedDay!.Value,
-                ValidityStart = request.ValidityStart ?? DateOnly.FromDateTime(DateTime.UtcNow),
-                ValidityEnd = null,
-                ChangeReason = request.ChangeReason ?? string.Empty
-            };
+            IncomeSourceId = incomeSource.Id,
+            Amount = request.Amount!.Value,
+            ExpectedDay = request.ExpectedDay!.Value,
+            ValidityStart = request.ValidityStart ?? DateOnly.FromDateTime(DateTime.UtcNow),
+            ValidityEnd = DateOnly.FromDateTime(DateTime.UtcNow).AddDays(1),
+            ChangeReason = request.ChangeReason ?? string.Empty
+        };
 
-            await _writeOnlyRepository.AddVersion(version);
-        }
+        await _writeOnlyRepository.AddVersion(version);
 
         await _unitOfWork.Commit();
 

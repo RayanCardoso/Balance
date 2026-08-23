@@ -39,13 +39,23 @@ internal class IncomeSourceRepository :
     public async Task<List<IncomeSource>> GetForMonth(User user, DateOnly referenceMonth)
     {
         var firstDayOfMonth = new DateOnly(referenceMonth.Year, referenceMonth.Month, 1);
+        var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
 
         return await _dbContext
             .IncomeSources
             .AsNoTracking()
             .Include(source => source.Versions)
             .Include(source => source.Payments.Where(payment => payment.ReferenceMonth == firstDayOfMonth))
-            .Where(source => source.Person.UserId == user.Id && source.Archived == false)
+            .Where(source =>
+                source.Person.UserId == user.Id &&
+                !source.Archived &&
+                source.Versions
+                    .OrderByDescending(version => version.ValidityStart)
+                    .Any(version =>
+                        version.ValidityStart <= lastDayOfMonth &&
+                        (version.ValidityEnd == null || version.ValidityEnd >= firstDayOfMonth)
+                    )
+            )
             .OrderBy(source => source.Name)
             .ToListAsync();
     }

@@ -23,10 +23,5 @@ public class RegisterIncomeSourceValidator : AbstractValidator<RequestRegisterIn
                 .NotNull().WithMessage(ResourceErrorMessages.EXPECTED_DAY_OUT_OF_RANGE)
                 .InclusiveBetween(1, 31).WithMessage(ResourceErrorMessages.EXPECTED_DAY_OUT_OF_RANGE);
         });
-
-        RuleFor(source => source)
-            .Must(source => source.Amount is null && source.ExpectedDay is null)
-            .WithMessage(ResourceErrorMessages.VARIABLE_SOURCE_HAS_NO_VERSION)
-            .When(source => source.Type == IncomeType.Variable);
     }
 }
