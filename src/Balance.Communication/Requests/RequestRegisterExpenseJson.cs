@@ -14,7 +14,8 @@ public class RequestRegisterExpenseJson
 
     public Guid CategoryId { get; set; }
 
-    public Guid AccountId { get; set; }
+    /// <summary>Required for a credit expense; optional for debit and Pix.</summary>
+    public Guid? AccountId { get; set; }
 
     public DateOnly Date { get; set; }
 

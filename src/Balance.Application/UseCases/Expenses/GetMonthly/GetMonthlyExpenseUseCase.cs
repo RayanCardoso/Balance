@@ -66,7 +66,9 @@ public class GetMonthlyExpenseUseCase : IGetMonthlyExpenseUseCase
             CategoryId = expense.CategoryId,
             CategoryName = expense.Category?.Name ?? string.Empty,
             CategoryPriority = (CommunicationExpensePriority)(expense.Category?.Priority ?? default),
-            AccountId = expense.AccountId,
+            // ResponseVariableExpenseLineJson.AccountId stays non-nullable in this task; Task 3 is
+            // the one that makes the monthly-line response reflect an absent account.
+            AccountId = expense.AccountId ?? Guid.Empty,
             AccountName = expense.Account?.Name ?? string.Empty,
             InstallmentNumber = expense.InstallmentNumber,
             InstallmentCount = expense.InstallmentPlan?.InstallmentCount,

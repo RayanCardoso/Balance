@@ -27,8 +27,13 @@ public class Expense : BaseEntity
     public Guid CategoryId { get; set; }
     public Category Category { get; set; } = null!;
 
-    public Guid AccountId { get; set; }
-    public Account Account { get; set; } = null!;
+    /// <summary>
+    /// Null when the expense was not paid from a registered account — a Pix or a debit
+    /// purchase the user did not attach to one. A credit expense always carries an account:
+    /// it is that account's closing day that decides which month the purchase belongs to.
+    /// </summary>
+    public Guid? AccountId { get; set; }
+    public Account? Account { get; set; }
 
     public Guid? InstallmentPlanId { get; set; }
     public InstallmentPlan? InstallmentPlan { get; set; }
