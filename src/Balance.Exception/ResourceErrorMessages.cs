@@ -40,6 +40,15 @@ public static class ResourceErrorMessages
     public static string RECURRING_EXPENSE_NOT_FOUND => Get(nameof(RECURRING_EXPENSE_NOT_FOUND));
     public static string RECURRING_EXPENSE_PAYMENT_NOT_FOUND => Get(nameof(RECURRING_EXPENSE_PAYMENT_NOT_FOUND));
 
+    public static string CREDITOR_NOT_FOUND => Get(nameof(CREDITOR_NOT_FOUND));
+    public static string DEBT_NOT_FOUND => Get(nameof(DEBT_NOT_FOUND));
+    public static string DEBT_INSTALLMENT_NOT_FOUND => Get(nameof(DEBT_INSTALLMENT_NOT_FOUND));
+    public static string DEBT_PAYMENT_NOT_FOUND => Get(nameof(DEBT_PAYMENT_NOT_FOUND));
+    public static string DEBT_ARCHIVED => Get(nameof(DEBT_ARCHIVED));
+    public static string TOTAL_LESS_THAN_PRINCIPAL => Get(nameof(TOTAL_LESS_THAN_PRINCIPAL));
+    public static string SCHEDULE_REQUIRED => Get(nameof(SCHEDULE_REQUIRED));
+    public static string SCHEDULE_NOT_ALLOWED => Get(nameof(SCHEDULE_NOT_ALLOWED));
+
     private static string Get(string key) =>
         ResourceManager.GetString(key, CultureInfo.CurrentUICulture) ?? key;
 }

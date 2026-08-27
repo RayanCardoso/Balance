@@ -93,4 +93,28 @@
   <data name="RECURRING_EXPENSE_PAYMENT_NOT_FOUND" xml:space="preserve">
     <value>Pagamento de despesa recorrente não encontrado.</value>
   </data>
+  <data name="CREDITOR_NOT_FOUND" xml:space="preserve">
+    <value>Credor não encontrado.</value>
+  </data>
+  <data name="DEBT_NOT_FOUND" xml:space="preserve">
+    <value>Dívida não encontrada.</value>
+  </data>
+  <data name="DEBT_INSTALLMENT_NOT_FOUND" xml:space="preserve">
+    <value>Parcela da dívida não encontrada.</value>
+  </data>
+  <data name="DEBT_PAYMENT_NOT_FOUND" xml:space="preserve">
+    <value>Pagamento da dívida não encontrado.</value>
+  </data>
+  <data name="DEBT_ARCHIVED" xml:space="preserve">
+    <value>Esta dívida está arquivada.</value>
+  </data>
+  <data name="TOTAL_LESS_THAN_PRINCIPAL" xml:space="preserve">
+    <value>O valor total não pode ser menor que o principal.</value>
+  </data>
+  <data name="SCHEDULE_REQUIRED" xml:space="preserve">
+    <value>Uma dívida programada exige um dia de vencimento e um número de parcelas.</value>
+  </data>
+  <data name="SCHEDULE_NOT_ALLOWED" xml:space="preserve">
+    <value>Uma dívida sem prazo não deve ter dia de vencimento nem número de parcelas.</value>
+  </data>
 </root>

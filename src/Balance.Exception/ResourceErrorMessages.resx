@@ -93,4 +93,28 @@
   <data name="RECURRING_EXPENSE_PAYMENT_NOT_FOUND" xml:space="preserve">
     <value>Recurring expense payment not found.</value>
   </data>
+  <data name="CREDITOR_NOT_FOUND" xml:space="preserve">
+    <value>Creditor not found.</value>
+  </data>
+  <data name="DEBT_NOT_FOUND" xml:space="preserve">
+    <value>Debt not found.</value>
+  </data>
+  <data name="DEBT_INSTALLMENT_NOT_FOUND" xml:space="preserve">
+    <value>Debt installment not found.</value>
+  </data>
+  <data name="DEBT_PAYMENT_NOT_FOUND" xml:space="preserve">
+    <value>Debt payment not found.</value>
+  </data>
+  <data name="DEBT_ARCHIVED" xml:space="preserve">
+    <value>This debt is archived.</value>
+  </data>
+  <data name="TOTAL_LESS_THAN_PRINCIPAL" xml:space="preserve">
+    <value>The total amount must not be less than the principal.</value>
+  </data>
+  <data name="SCHEDULE_REQUIRED" xml:space="preserve">
+    <value>A scheduled debt requires a due day and a number of installments.</value>
+  </data>
+  <data name="SCHEDULE_NOT_ALLOWED" xml:space="preserve">
+    <value>An open-ended debt must not have a due day or a number of installments.</value>
+  </data>
 </root>
