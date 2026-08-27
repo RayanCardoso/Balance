@@ -46,4 +46,5 @@ public class ResponseDebtJson
     public bool IsSettled { get; set; }
 
     public List<ResponseDebtInstallmentJson> Installments { get; set; } = [];
+    public List<ResponseDebtPaymentJson> Payments { get; set; } = [];
 }
