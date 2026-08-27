@@ -2,7 +2,7 @@ using Balance.Domain.Entities;
 using Balance.Domain.Repositories.Debts;
 using Microsoft.EntityFrameworkCore;
 
-namespace Balance.Infrastructure.DataAccess.Repositories;
+namespace Balance.Infrastructure.DataAccess.Repositories.Debts;
 
 internal class DebtRepository :
     IDebtReadOnlyRepository,

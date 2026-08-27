@@ -2,7 +2,7 @@ using Balance.Domain.Entities;
 using Balance.Domain.Repositories.Creditors;
 using Microsoft.EntityFrameworkCore;
 
-namespace Balance.Infrastructure.DataAccess.Repositories;
+namespace Balance.Infrastructure.DataAccess.Repositories.Creditors;
 
 internal class CreditorRepository :
     ICreditorReadOnlyRepository,
