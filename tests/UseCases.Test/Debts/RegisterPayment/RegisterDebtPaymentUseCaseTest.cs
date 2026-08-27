@@ -217,6 +217,67 @@ public class RegisterDebtPaymentUseCaseTest
         });
     }
 
+    /// <summary>
+    /// FINDING 4: RegisterDebtPaymentUseCase used to branch only on whether the request supplied an
+    /// installment id, never on debt.Mode - so a Scheduled debt accepted an installment-less payment
+    /// that moved the balance but produced no monthly line at all (GetMonthlyDebtUseCase.BuildLines
+    /// iterates only debt.Installments for a Scheduled debt). The spec's Out of Scope table forbids
+    /// partial payment of an installment; this was an unspecified back door to it.
+    /// </summary>
+    [Fact]
+    public async Task Error_A_Scheduled_Debt_Payment_With_No_Installment_Id()
+    {
+        await WithInvariantCulture(async () =>
+        {
+            var scenario = Scenario.Build();
+            var debt = scenario.ScheduledDebt();
+            var installment = DebtInstallmentBuilder.Build(debt, number: 1, referenceMonth: new DateOnly(2026, 2, 1));
+            debt.Installments = [installment];
+
+            scenario.DebtRepository.GetById(scenario.User, debt);
+
+            var request = RequestRegisterDebtPaymentJsonBuilder.Build(debt.Id);
+
+            var act = async () => await scenario.UseCase().Execute(request);
+
+            var exception = await act.ShouldThrowAsync<ErrorOnValidationException>();
+
+            exception.GetErrors().ShouldHaveSingleItem()
+                .ShouldBe("A scheduled debt payment requires an installment id.");
+
+            scenario.PaymentRepository.Added.ShouldBeNull();
+            scenario.UnitOfWork.Commits.ShouldBe(0);
+        });
+    }
+
+    /// <summary>FINDING 4: the reverse direction - an OpenEnded debt has no installment to settle.</summary>
+    [Fact]
+    public async Task Error_An_OpenEnded_Debt_Payment_With_An_Installment_Id()
+    {
+        await WithInvariantCulture(async () =>
+        {
+            var scenario = Scenario.Build();
+            var scheduledDebt = scenario.ScheduledDebt();
+            var installment = DebtInstallmentBuilder.Build(scheduledDebt, number: 1, referenceMonth: new DateOnly(2026, 2, 1));
+            scheduledDebt.Installments = [installment];
+
+            var debt = scenario.OpenEndedDebt();
+            scenario.DebtRepository.GetById(scenario.User, debt);
+
+            var request = RequestRegisterDebtPaymentJsonBuilder.Build(debt.Id, installment.Id);
+
+            var act = async () => await scenario.UseCase().Execute(request);
+
+            var exception = await act.ShouldThrowAsync<ErrorOnValidationException>();
+
+            exception.GetErrors().ShouldHaveSingleItem()
+                .ShouldBe("An open-ended debt payment must not have an installment id.");
+
+            scenario.PaymentRepository.Added.ShouldBeNull();
+            scenario.UnitOfWork.Commits.ShouldBe(0);
+        });
+    }
+
     [Fact]
     public async Task Error_A_Debt_Not_Owned_By_The_Logged_User()
     {

@@ -120,4 +120,10 @@
   <data name="DEBT_INSTALLMENT_COUNT_INVALID" xml:space="preserve">
     <value>O número de parcelas deve ser ao menos 1.</value>
   </data>
+  <data name="DEBT_INSTALLMENT_ID_REQUIRED" xml:space="preserve">
+    <value>Um pagamento de dívida programada exige um id de parcela.</value>
+  </data>
+  <data name="DEBT_INSTALLMENT_ID_NOT_ALLOWED" xml:space="preserve">
+    <value>Um pagamento de dívida sem prazo não deve ter id de parcela.</value>
+  </data>
 </root>

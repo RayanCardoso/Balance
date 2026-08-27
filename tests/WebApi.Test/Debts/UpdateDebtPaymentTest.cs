@@ -105,6 +105,8 @@ public class UpdateDebtPaymentTest : BalanceClassFixture
 
     private sealed record Caller(string Token, Guid PersonId, Guid CategoryId, Guid CreditorId);
 
+    private sealed record RegisteredDebt(Guid Id, Guid FirstInstallmentId);
+
     private async Task<Caller> NewAccount()
     {
         var registerResponse = await DoPost(USER, RequestRegisterUserJsonBuilder.Build());
@@ -130,7 +132,7 @@ public class UpdateDebtPaymentTest : BalanceClassFixture
             (await ReadJson(creditorResponse)).GetProperty("id").GetGuid());
     }
 
-    private async Task<Guid> NewDebt(Caller caller)
+    private async Task<RegisteredDebt> NewDebt(Caller caller)
     {
         var request = RequestRegisterDebtJsonBuilder.BuildScheduled();
         request.CreditorId = caller.CreditorId;
@@ -145,15 +147,19 @@ public class UpdateDebtPaymentTest : BalanceClassFixture
         var response = await DoPost(DEBT, request, token: caller.Token);
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
 
-        return (await ReadJson(response)).GetProperty("id").GetGuid();
+        var body = await ReadJson(response);
+        var firstInstallment = body.GetProperty("installments").EnumerateArray().First();
+
+        return new RegisteredDebt(body.GetProperty("id").GetGuid(), firstInstallment.GetProperty("id").GetGuid());
     }
 
     private async Task<Guid> NewPayment(Caller caller)
     {
-        var debtId = await NewDebt(caller);
+        var debt = await NewDebt(caller);
 
         var request = RequestRegisterDebtPaymentJsonBuilder.Build(
-            debtId, accountId: null, type: CommunicationExpenseType.Pix);
+            debt.Id, debtInstallmentId: debt.FirstInstallmentId, accountId: null,
+            type: CommunicationExpenseType.Pix);
         request.AmountPaid = 150.00m;
 
         var response = await DoPost(PAYMENT, request, token: caller.Token);

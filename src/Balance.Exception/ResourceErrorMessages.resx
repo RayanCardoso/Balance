@@ -120,4 +120,10 @@
   <data name="DEBT_INSTALLMENT_COUNT_INVALID" xml:space="preserve">
     <value>The number of installments must be at least 1.</value>
   </data>
+  <data name="DEBT_INSTALLMENT_ID_REQUIRED" xml:space="preserve">
+    <value>A scheduled debt payment requires an installment id.</value>
+  </data>
+  <data name="DEBT_INSTALLMENT_ID_NOT_ALLOWED" xml:space="preserve">
+    <value>An open-ended debt payment must not have an installment id.</value>
+  </data>
 </root>

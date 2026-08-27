@@ -49,6 +49,8 @@ public static class ResourceErrorMessages
     public static string SCHEDULE_REQUIRED => Get(nameof(SCHEDULE_REQUIRED));
     public static string SCHEDULE_NOT_ALLOWED => Get(nameof(SCHEDULE_NOT_ALLOWED));
     public static string DEBT_INSTALLMENT_COUNT_INVALID => Get(nameof(DEBT_INSTALLMENT_COUNT_INVALID));
+    public static string DEBT_INSTALLMENT_ID_REQUIRED => Get(nameof(DEBT_INSTALLMENT_ID_REQUIRED));
+    public static string DEBT_INSTALLMENT_ID_NOT_ALLOWED => Get(nameof(DEBT_INSTALLMENT_ID_NOT_ALLOWED));
 
     private static string Get(string key) =>
         ResourceManager.GetString(key, CultureInfo.CurrentUICulture) ?? key;

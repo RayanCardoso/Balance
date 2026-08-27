@@ -95,6 +95,49 @@ public class RegisterDebtPaymentTest : BalanceClassFixture
         errors.ShouldHaveSingleItem().GetString().ShouldBe("A payment has already been recorded for this reference month.");
     }
 
+    /// <summary>
+    /// FINDING 4: a Scheduled debt must not accept a payment with no installment id - it would move
+    /// the balance but produce no monthly line at all, since GetMonthlyDebtUseCase.BuildLines
+    /// iterates only debt.Installments for a Scheduled debt.
+    /// </summary>
+    [Fact]
+    public async Task A_Scheduled_Debt_Payment_With_No_Installment_Id_Returns_400()
+    {
+        var caller = await NewAccount();
+        var debt = await NewDebt(caller);
+
+        var request = RequestRegisterDebtPaymentJsonBuilder.Build(debt.Id, accountId: null, type: CommunicationExpenseType.Pix);
+
+        var response = await DoPost(PAYMENT, request, token: caller.Token, culture: "en");
+
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+
+        var errors = (await ReadJson(response)).GetProperty("errorMessages").EnumerateArray();
+
+        errors.ShouldHaveSingleItem().GetString().ShouldBe("A scheduled debt payment requires an installment id.");
+    }
+
+    /// <summary>FINDING 4: the reverse direction - an OpenEnded debt has no installment to settle.</summary>
+    [Fact]
+    public async Task An_OpenEnded_Debt_Payment_With_An_Installment_Id_Returns_400()
+    {
+        var caller = await NewAccount();
+        var scheduled = await NewDebt(caller);
+        var openEnded = await NewOpenEndedDebt(caller);
+
+        var request = RequestRegisterDebtPaymentJsonBuilder.Build(
+            openEnded, debtInstallmentId: scheduled.FirstInstallmentId, accountId: null,
+            type: CommunicationExpenseType.Pix);
+
+        var response = await DoPost(PAYMENT, request, token: caller.Token, culture: "en");
+
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+
+        var errors = (await ReadJson(response)).GetProperty("errorMessages").EnumerateArray();
+
+        errors.ShouldHaveSingleItem().GetString().ShouldBe("An open-ended debt payment must not have an installment id.");
+    }
+
     [Fact]
     public async Task Register_Payment_Without_Token_Is_Unauthorized()
     {
@@ -156,6 +199,22 @@ public class RegisterDebtPaymentTest : BalanceClassFixture
             body.GetProperty("id").GetGuid(),
             firstInstallment.GetProperty("id").GetGuid(),
             DateOnly.Parse(firstInstallment.GetProperty("referenceMonth").GetString()!));
+    }
+
+    private async Task<Guid> NewOpenEndedDebt(Caller caller)
+    {
+        var request = RequestRegisterDebtJsonBuilder.BuildOpenEnded();
+        request.CreditorId = caller.CreditorId;
+        request.PersonId = caller.PersonId;
+        request.CategoryId = caller.CategoryId;
+        request.PrincipalAmount = 500.00m;
+        request.TotalAmount = 500.00m;
+        request.StartDate = new DateOnly(2026, 3, 20);
+
+        var response = await DoPost(DEBT, request, token: caller.Token);
+        response.StatusCode.ShouldBe(HttpStatusCode.Created);
+
+        return (await ReadJson(response)).GetProperty("id").GetGuid();
     }
 
     private static async Task<JsonElement> ReadJson(HttpResponseMessage response)

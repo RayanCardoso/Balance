@@ -1,6 +1,7 @@
 using Balance.Communication.Requests;
 using Balance.Communication.Responses;
 using Balance.Domain.Entities;
+using Balance.Domain.Enums;
 using Balance.Domain.Extensions;
 using Balance.Domain.Repositories;
 using Balance.Domain.Repositories.Accounts;
@@ -47,6 +48,20 @@ public class RegisterDebtPaymentUseCase : IRegisterDebtPaymentUseCase
         if (debt.Archived)
         {
             throw new ErrorOnValidationException([ResourceErrorMessages.DEBT_ARCHIVED]);
+        }
+
+        // The branch below only tells whether the request supplied an installment id, never whether
+        // it should have - a Scheduled debt without one moves the balance but produces no monthly
+        // line (GetMonthlyDebtUseCase.BuildLines iterates only debt.Installments), and an OpenEnded
+        // debt has no installment for the id to resolve against.
+        if (debt.Mode == DebtMode.Scheduled && request.DebtInstallmentId is null)
+        {
+            throw new ErrorOnValidationException([ResourceErrorMessages.DEBT_INSTALLMENT_ID_REQUIRED]);
+        }
+
+        if (debt.Mode == DebtMode.OpenEnded && request.DebtInstallmentId is not null)
+        {
+            throw new ErrorOnValidationException([ResourceErrorMessages.DEBT_INSTALLMENT_ID_NOT_ALLOWED]);
         }
 
         DateOnly referenceMonth;
