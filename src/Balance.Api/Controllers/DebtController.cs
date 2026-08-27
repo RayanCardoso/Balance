@@ -1,6 +1,7 @@
 using Balance.Application.UseCases.Debts.Archive;
 using Balance.Application.UseCases.Debts.GetAll;
 using Balance.Application.UseCases.Debts.GetById;
+using Balance.Application.UseCases.Debts.GetMonthly;
 using Balance.Application.UseCases.Debts.Register;
 using Balance.Application.UseCases.Debts.RegisterPayment;
 using Balance.Application.UseCases.Debts.UpdatePayment;
@@ -99,5 +100,19 @@ public class DebtController : ControllerBase
         await useCase.Execute(id, archived);
 
         return NoContent();
+    }
+
+    [HttpGet("{year:int}/{month:int}")]
+    [ProducesResponseType(typeof(ResponseMonthlyDebtJson), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> GetMonthly(
+        [FromRoute] int year,
+        [FromRoute] int month,
+        [FromServices] IGetMonthlyDebtUseCase useCase)
+    {
+        var response = await useCase.Execute(year, month);
+
+        return Ok(response);
     }
 }
