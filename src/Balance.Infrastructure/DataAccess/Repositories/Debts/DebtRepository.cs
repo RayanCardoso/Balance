@@ -30,6 +30,7 @@ internal class DebtRepository :
             .Include(debt => debt.Creditor)
             .Include(debt => debt.Category)
             .Include(debt => debt.Payments.OrderBy(payment => payment.PaymentDate))
+            .ThenInclude(payment => payment.Account)
             .Where(debt => debt.Person.UserId == user.Id);
 
         if (creditorId.HasValue)
@@ -58,6 +59,7 @@ internal class DebtRepository :
             .Include(debt => debt.Category)
             .Include(debt => debt.Installments.OrderBy(installment => installment.Number))
             .Include(debt => debt.Payments.OrderBy(payment => payment.PaymentDate))
+            .ThenInclude(payment => payment.Account)
             .FirstOrDefaultAsync(debt => debt.Id == id && debt.Person.UserId == user.Id);
 
     async Task<Debt?> IDebtUpdateOnlyRepository.GetById(User user, Guid id) =>
@@ -82,6 +84,7 @@ internal class DebtRepository :
             .Include(debt => debt.Payments
                 .Where(payment => payment.ReferenceMonth == firstDayOfMonth)
                 .OrderBy(payment => payment.PaymentDate))
+            .ThenInclude(payment => payment.Account)
             .Where(debt =>
                 debt.Person.UserId == user.Id
                 && debt.Archived == false

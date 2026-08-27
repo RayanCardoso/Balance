@@ -11,6 +11,7 @@ public class GetDebtByIdTest : BalanceClassFixture
     private const string PAYMENT = "api/Debt/payment";
     private const string CREDITOR = "api/Creditor";
     private const string CATEGORY = "api/category";
+    private const string ACCOUNT = "api/account";
     private const string PERSON = "api/person";
     private const string USER = "api/user";
 
@@ -64,6 +65,44 @@ public class GetDebtByIdTest : BalanceClassFixture
 
         body.GetProperty("outstandingBalance").GetDecimal().ShouldBe(1350.00m);
         body.GetProperty("isSettled").GetBoolean().ShouldBeFalse();
+    }
+
+    /// <summary>
+    /// FINDING 1: DebtRepository's GetAll/GetById/GetForMonth include Payments but, before the fix,
+    /// never ThenInclude'd the payment's Account - so AccountName came back null on every read no
+    /// matter what account paid. This is the real query end to end (AsNoTracking, no fixup), the
+    /// only level that could have caught the missing ThenInclude.
+    /// </summary>
+    [Fact]
+    public async Task Paying_From_A_Named_Account_Reports_That_Accounts_Name_On_Read_Back()
+    {
+        var caller = await NewAccount();
+        var debt = await NewDebt(caller);
+
+        var accountResponse = await DoPost(
+            ACCOUNT, RequestRegisterAccountJsonBuilder.Build(caller.PersonId), token: caller.Token);
+        accountResponse.StatusCode.ShouldBe(HttpStatusCode.Created);
+
+        var accountBody = await ReadJson(accountResponse);
+        var accountId = accountBody.GetProperty("id").GetGuid();
+        var accountName = accountBody.GetProperty("name").GetString();
+
+        var paymentRequest = RequestRegisterDebtPaymentJsonBuilder.Build(
+            debt.Id, debtInstallmentId: debt.FirstInstallmentId, accountId: accountId,
+            type: Balance.Communication.Enums.ExpenseType.Credit);
+        paymentRequest.AmountPaid = 150.00m;
+
+        var paymentResponse = await DoPost(PAYMENT, paymentRequest, token: caller.Token);
+        paymentResponse.StatusCode.ShouldBe(HttpStatusCode.Created);
+
+        var response = await DoGet($"{DEBT}/{debt.Id}", token: caller.Token);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+
+        var body = await ReadJson(response);
+        var payment = body.GetProperty("payments").EnumerateArray().ShouldHaveSingleItem();
+
+        payment.GetProperty("accountId").GetGuid().ShouldBe(accountId);
+        payment.GetProperty("accountName").GetString().ShouldBe(accountName);
     }
 
     /// <summary>
