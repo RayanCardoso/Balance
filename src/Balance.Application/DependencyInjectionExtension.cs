@@ -4,7 +4,6 @@ using Balance.Application.UseCases.Accounts.Register;
 using Balance.Application.UseCases.Dashboard.GetMonthly;
 using Balance.Application.UseCases.Categories.GetAll;
 using Balance.Application.UseCases.Categories.Register;
-using Balance.Application.UseCases.Creditors.Archive;
 using Balance.Application.UseCases.Creditors.GetAll;
 using Balance.Application.UseCases.Creditors.Register;
 using Balance.Application.UseCases.Expenses.GetMonthly;
@@ -55,7 +54,6 @@ public static class DependencyInjectionExtension
         services.AddScoped<IGetAllCategoriesUseCase, GetAllCategoriesUseCase>();
         services.AddScoped<IRegisterCreditorUseCase, RegisterCreditorUseCase>();
         services.AddScoped<IGetAllCreditorsUseCase, GetAllCreditorsUseCase>();
-        services.AddScoped<IArchiveCreditorUseCase, ArchiveCreditorUseCase>();
         services.AddScoped<IRegisterAccountUseCase, RegisterAccountUseCase>();
         services.AddScoped<IGetAllAccountsUseCase, GetAllAccountsUseCase>();
         services.AddScoped<IRegisterExpenseUseCase, RegisterExpenseUseCase>();
