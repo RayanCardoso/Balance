@@ -1,8 +1,5 @@
-using Balance.Exception;
-using CommonTestUtilities.Culture;
 using CommonTestUtilities.Requests;
 using Shouldly;
-using System.Globalization;
 using System.Net;
 using System.Text.Json;
 
@@ -39,25 +36,38 @@ public class RegisterCreditorTest : BalanceClassFixture
         body.GetProperty("archived").GetBoolean().ShouldBeFalse();
     }
 
-    [Theory]
-    [ClassData(typeof(CultureInlineDataTest))]
-    public async Task Error_Name_Empty(string culture)
+    [Fact]
+    public async Task Error_Name_Empty_Invariant_Culture()
     {
         var token = await NewAccountToken();
 
         var request = RequestRegisterCreditorJsonBuilder.Build();
         request.Name = string.Empty;
 
-        var response = await DoPost(CREDITOR, request, token: token, culture: culture);
+        var response = await DoPost(CREDITOR, request, token: token, culture: "en");
 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
         var errors = (await ReadJson(response)).GetProperty("errorMessages").EnumerateArray();
 
-        var expected = ResourceErrorMessages.ResourceManager.GetString(
-            nameof(ResourceErrorMessages.NAME_REQUIRED), new CultureInfo(culture));
+        errors.ShouldHaveSingleItem().GetString().ShouldBe("Name is required.");
+    }
 
-        errors.ShouldHaveSingleItem().GetString().ShouldBe(expected);
+    [Fact]
+    public async Task Error_Name_Empty_PtBr_Culture()
+    {
+        var token = await NewAccountToken();
+
+        var request = RequestRegisterCreditorJsonBuilder.Build();
+        request.Name = string.Empty;
+
+        var response = await DoPost(CREDITOR, request, token: token, culture: "pt-BR");
+
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+
+        var errors = (await ReadJson(response)).GetProperty("errorMessages").EnumerateArray();
+
+        errors.ShouldHaveSingleItem().GetString().ShouldBe("O nome é obrigatório.");
     }
 
     [Fact]
