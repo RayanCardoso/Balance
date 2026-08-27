@@ -14,8 +14,8 @@ public class GetMonthlyDashboardTest : BalanceClassFixture
     private const string INCOME = "api/income";
     private const string INCOME_PAYMENT = "api/income/payment";
     private const string EXPENSE = "api/expense";
-    private const string RECURRING_EXPENSE = "api/recurring-expense";
-    private const string PAYMENT = "api/recurring-expense/payment";
+    private const string RECURRING_EXPENSE = "api/RecurringExpense";
+    private const string PAYMENT = "api/RecurringExpense/payment";
     private const string CATEGORY = "api/category";
     private const string ACCOUNT = "api/account";
     private const string PERSON = "api/person";
