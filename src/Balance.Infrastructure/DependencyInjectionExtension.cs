@@ -1,6 +1,7 @@
 using Balance.Domain.Repositories;
 using Balance.Domain.Repositories.Accounts;
 using Balance.Domain.Repositories.Categories;
+using Balance.Domain.Repositories.Creditors;
 using Balance.Domain.Repositories.Expenses;
 using Balance.Domain.Repositories.Incomes;
 using Balance.Domain.Repositories.People;
@@ -10,6 +11,7 @@ using Balance.Domain.Security.Cryptography;
 using Balance.Domain.Security.Tokens;
 using Balance.Domain.Services.LoggedUser;
 using Balance.Infrastructure.DataAccess;
+using Balance.Infrastructure.DataAccess.Repositories;
 using Balance.Infrastructure.DataAccess.Repositories.Accounts;
 using Balance.Infrastructure.DataAccess.Repositories.Categories;
 using Balance.Infrastructure.DataAccess.Repositories.Expenses;
@@ -56,6 +58,9 @@ public static class DependencyInjectionExtension
         services.AddScoped<IIncomePaymentWriteOnlyRepository, IncomePaymentRepository>();
         services.AddScoped<ICategoryReadOnlyRepository, CategoryRepository>();
         services.AddScoped<ICategoryWriteOnlyRepository, CategoryRepository>();
+        services.AddScoped<ICreditorReadOnlyRepository, CreditorRepository>();
+        services.AddScoped<ICreditorWriteOnlyRepository, CreditorRepository>();
+        services.AddScoped<ICreditorUpdateOnlyRepository, CreditorRepository>();
         services.AddScoped<IAccountReadOnlyRepository, AccountRepository>();
         services.AddScoped<IAccountWriteOnlyRepository, AccountRepository>();
         services.AddScoped<IExpenseReadOnlyRepository, ExpenseRepository>();
