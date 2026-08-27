@@ -11,6 +11,7 @@ public class GetMonthlyDebtTest : BalanceClassFixture
     private const string PAYMENT = "api/Debt/payment";
     private const string CREDITOR = "api/Creditor";
     private const string CATEGORY = "api/category";
+    private const string ACCOUNT = "api/account";
     private const string PERSON = "api/person";
     private const string USER = "api/user";
 
@@ -58,6 +59,42 @@ public class GetMonthlyDebtTest : BalanceClassFixture
 
         // Nothing paid in month 2, so committed falls back to the expected amount.
         month2.GetProperty("totalCommitted").GetDecimal().ShouldBe(150.00m);
+    }
+
+    /// <summary>
+    /// FINDING 3 (DVEW-01 AC1): the monthly line must carry the payment's type and account name.
+    /// This is the real query end to end - the only level that could have caught GetForMonth's
+    /// missing ThenInclude on the payment's Account (FINDING 1).
+    /// </summary>
+    [Fact]
+    public async Task A_Paid_Installments_Line_Reports_The_Payment_Type_And_Account_Name()
+    {
+        var caller = await NewAccount();
+        var debt = await NewScheduledDebt(caller);
+
+        var accountResponse = await DoPost(
+            ACCOUNT, RequestRegisterAccountJsonBuilder.Build(caller.PersonId), token: caller.Token);
+        accountResponse.StatusCode.ShouldBe(HttpStatusCode.Created);
+
+        var accountBody = await ReadJson(accountResponse);
+        var accountId = accountBody.GetProperty("id").GetGuid();
+        var accountName = accountBody.GetProperty("name").GetString();
+
+        var paymentRequest = RequestRegisterDebtPaymentJsonBuilder.Build(
+            debt.Id, debtInstallmentId: debt.FirstInstallmentId, accountId: accountId,
+            type: Balance.Communication.Enums.ExpenseType.Credit);
+        paymentRequest.AmountPaid = 150.00m;
+        paymentRequest.PaymentDate = new DateOnly(2026, 1, 10);
+
+        var paymentResponse = await DoPost(PAYMENT, paymentRequest, token: caller.Token);
+        paymentResponse.StatusCode.ShouldBe(HttpStatusCode.Created);
+
+        var month = await GetMonth(caller, 2026, 1);
+        var line = month.GetProperty("lines").EnumerateArray().ShouldHaveSingleItem();
+
+        line.GetProperty("type").GetInt32().ShouldBe((int)Balance.Communication.Enums.ExpenseType.Credit);
+        line.GetProperty("accountId").GetGuid().ShouldBe(accountId);
+        line.GetProperty("accountName").GetString().ShouldBe(accountName);
     }
 
     /// <summary>

@@ -3,6 +3,7 @@ using Balance.Domain.Entities;
 using CommunicationCreditorType = Balance.Communication.Enums.CreditorType;
 using CommunicationDebtMode = Balance.Communication.Enums.DebtMode;
 using CommunicationExpenseStatus = Balance.Communication.Enums.ExpenseStatus;
+using CommunicationExpenseType = Balance.Communication.Enums.ExpenseType;
 
 namespace Balance.Application.UseCases.Debts.GetMonthly;
 
@@ -45,6 +46,9 @@ public static class DebtMonthLineBuilder
             AmountPaid = payment?.AmountPaid,
             PaymentDate = payment?.PaymentDate,
             PaymentId = payment?.Id,
+            Type = (CommunicationExpenseType?)payment?.Type,
+            AccountId = payment?.AccountId,
+            AccountName = payment?.Account?.Name,
             Notes = payment?.Notes,
             Status = status,
             // Pending and strictly before today - a due date landing exactly on today has not been
@@ -77,6 +81,9 @@ public static class DebtMonthLineBuilder
             AmountPaid = payment.AmountPaid,
             PaymentDate = payment.PaymentDate,
             PaymentId = payment.Id,
+            Type = (CommunicationExpenseType?)payment.Type,
+            AccountId = payment.AccountId,
+            AccountName = payment.Account?.Name,
             Notes = payment.Notes,
             Status = ResolveStatus(expectedAmount: null, payment.AmountPaid),
             IsOverdue = false

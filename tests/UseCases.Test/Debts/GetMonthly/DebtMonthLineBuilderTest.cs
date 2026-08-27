@@ -107,6 +107,46 @@ public class DebtMonthLineBuilderTest
         line.CategoryName.ShouldBe(scenario.Category.Name);
     }
 
+    /// <summary>
+    /// FINDING 3 (DVEW-01 AC1): the monthly line must carry the payment's type and account name,
+    /// not just its date and notes.
+    /// </summary>
+    [Fact]
+    public void BuildScheduled_The_Payment_Type_And_Account_Are_Carried_Through()
+    {
+        var scenario = Scenario.Build();
+        var debt = scenario.ScheduledDebt();
+        var installment = DebtInstallmentBuilder.Build(debt, expectedAmount: 100m);
+        var account = AccountBuilder.Build(scenario.Person);
+        var payment = DebtPaymentBuilder.Build(
+            debt, debtInstallmentId: installment.Id, amountPaid: 100m, accountId: account.Id,
+            type: ExpenseType.Pix);
+        payment.Account = account;
+
+        var line = DebtMonthLineBuilder.BuildScheduled(debt, installment, payment, today: Today);
+
+        line.Type.ShouldBe(Balance.Communication.Enums.ExpenseType.Pix);
+        line.AccountId.ShouldBe(account.Id);
+        line.AccountName.ShouldBe(account.Name);
+    }
+
+    /// <summary>
+    /// A Scheduled installment that has not been paid yet has no type or account to report.
+    /// </summary>
+    [Fact]
+    public void BuildScheduled_With_No_Payment_Has_A_Null_Type_And_Account()
+    {
+        var scenario = Scenario.Build();
+        var debt = scenario.ScheduledDebt();
+        var installment = DebtInstallmentBuilder.Build(debt);
+
+        var line = DebtMonthLineBuilder.BuildScheduled(debt, installment, payment: null, today: Today);
+
+        line.Type.ShouldBeNull();
+        line.AccountId.ShouldBeNull();
+        line.AccountName.ShouldBeNull();
+    }
+
     [Fact]
     public void BuildOpenEnded_Carries_A_Null_ExpectedAmount_A_Null_InstallmentNumber_Paid_And_Not_Overdue()
     {
@@ -134,6 +174,27 @@ public class DebtMonthLineBuilderTest
         line.CreditorName.ShouldBe(scenario.Creditor.Name);
         line.CreditorType.ShouldBe((Balance.Communication.Enums.CreditorType)scenario.Creditor.Type);
         line.CategoryName.ShouldBe(scenario.Category.Name);
+    }
+
+    /// <summary>
+    /// FINDING 3 (DVEW-01 AC1): the monthly line must carry the payment's type and account name,
+    /// not just its date and notes.
+    /// </summary>
+    [Fact]
+    public void BuildOpenEnded_The_Payment_Type_And_Account_Are_Carried_Through()
+    {
+        var scenario = Scenario.Build();
+        var debt = scenario.OpenEndedDebt();
+        var account = AccountBuilder.Build(scenario.Person);
+        var payment = DebtPaymentBuilder.Build(
+            debt, amountPaid: 250m, accountId: account.Id, type: ExpenseType.Credit);
+        payment.Account = account;
+
+        var line = DebtMonthLineBuilder.BuildOpenEnded(debt, payment);
+
+        line.Type.ShouldBe(Balance.Communication.Enums.ExpenseType.Credit);
+        line.AccountId.ShouldBe(account.Id);
+        line.AccountName.ShouldBe(account.Name);
     }
 
     [Fact]

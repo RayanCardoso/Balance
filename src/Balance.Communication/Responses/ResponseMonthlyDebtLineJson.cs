@@ -50,6 +50,13 @@ public class ResponseMonthlyDebtLineJson
     /// </summary>
     public Guid? PaymentId { get; set; }
 
+    /// <summary>How it was paid. Null when there is no payment yet, or the caller did not record it.</summary>
+    public ExpenseType? Type { get; set; }
+
+    /// <summary>Null when there is no payment yet, or it did not come out of a registered account.</summary>
+    public Guid? AccountId { get; set; }
+    public string? AccountName { get; set; }
+
     public string? Notes { get; set; }
 
     public ExpenseStatus Status { get; set; }
