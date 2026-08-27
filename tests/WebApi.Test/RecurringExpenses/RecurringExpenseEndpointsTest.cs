@@ -10,8 +10,8 @@ namespace WebApi.Test.RecurringExpenses;
 
 public class RecurringExpenseEndpointsTest : BalanceClassFixture
 {
-    private const string RECURRING_EXPENSE = "api/recurring-expense";
-    private const string CHANGE_VALUE = "api/recurring-expense/value";
+    private const string RECURRING_EXPENSE = "api/RecurringExpense";
+    private const string CHANGE_VALUE = "api/RecurringExpense/value";
     private const string CATEGORY = "api/category";
     private const string ACCOUNT = "api/account";
     private const string PERSON = "api/person";
