@@ -41,7 +41,7 @@ interface and nothing else in income or expenses changes behaviour.
 | Gate | Command |
 | ---- | ------- |
 | `build` | `dotnet build Balance.sln --nologo` — zero errors, zero warnings |
-| `test` | `dotnet test Balance.sln --nologo` — every test green, including all 349 pre-existing ones |
+| `test` | `dotnet test Balance.sln --nologo` — every test green. Baseline is 371 green as of the fix/api-baseline merge; before it, 55 failed |
 | `commit` | `"C:\Program Files\LibreOffice\program\python.exe" .claude/skills/tlc-spec-driven/scripts/check_commit.py --message "<msg>"` |
 | `migration` | `dotnet ef migrations list --project src/Balance.Infrastructure --startup-project src/Balance.Api` |
 
@@ -149,7 +149,7 @@ a **unique** index on `DebtPayment.DebtInstallmentId`. The income and expense bl
 **Requirement**: DEBT-01, DPAY-01
 **Tests**: schema-shape layer per the coverage matrix — verified by reading the migration in T34; the
 uniqueness rule it backs is separately enforced and unit-tested in T21
-**Gate**: `test` — all 349 existing tests must stay green through the context change
+**Gate**: `test` — all 371 existing tests must stay green through the context change
 **Commit**: `feat: configure the debt entities in the database context`
 
 ---
