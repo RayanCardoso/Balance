@@ -12,9 +12,12 @@ public class ResponseMonthlyDashboardJson
 
     public ResponseMonthlyExpenseJson Expenses { get; set; } = new();
 
+    public ResponseMonthlyDebtJson Debts { get; set; } = new();
+
     /// <summary>
     /// What is left of the month: the income actually received minus what the month costs, counting a
-    /// recurring bill at its paid amount once it has arrived and at its estimate while it has not.
+    /// recurring bill at its paid amount once it has arrived and at its estimate while it has not, and
+    /// minus what the month's debt installments already commit.
     /// </summary>
     public decimal Balance { get; set; }
 }
