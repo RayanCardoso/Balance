@@ -34,5 +34,14 @@ public class DebtReadOnlyRepositoryBuilder
         return this;
     }
 
+    public DebtReadOnlyRepositoryBuilder GetForMonth(User user, DateOnly competenceMonth, List<Debt> debts)
+    {
+        _repository
+            .Setup(repository => repository.GetForMonth(user, competenceMonth))
+            .ReturnsAsync(debts);
+
+        return this;
+    }
+
     public IDebtReadOnlyRepository Build() => _repository.Object;
 }
