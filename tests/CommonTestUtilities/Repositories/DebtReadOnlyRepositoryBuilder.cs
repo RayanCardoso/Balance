@@ -15,5 +15,24 @@ public class DebtReadOnlyRepositoryBuilder
         return this;
     }
 
+    public DebtReadOnlyRepositoryBuilder GetAll(
+        User user, Guid? creditorId, Guid? personId, bool includeInactive, List<Debt> debts)
+    {
+        _repository
+            .Setup(repository => repository.GetAll(user, creditorId, personId, includeInactive))
+            .ReturnsAsync(debts);
+
+        return this;
+    }
+
+    public DebtReadOnlyRepositoryBuilder GetByCreditor(User user, Guid creditorId, List<Debt> debts)
+    {
+        _repository
+            .Setup(repository => repository.GetByCreditor(user, creditorId))
+            .ReturnsAsync(debts);
+
+        return this;
+    }
+
     public IDebtReadOnlyRepository Build() => _repository.Object;
 }
