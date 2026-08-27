@@ -102,6 +102,7 @@ public class GetDebtByIdUseCaseTest
         result.CreditorId.ShouldBe(scenario.Creditor.Id);
         result.CreditorName.ShouldBe(scenario.Creditor.Name);
         result.CreditorType.ShouldBe((Balance.Communication.Enums.CreditorType)scenario.Creditor.Type);
+        result.CategoryName.ShouldBe(scenario.Category.Name);
     }
 
     [Fact]
