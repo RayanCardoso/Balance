@@ -1,3 +1,4 @@
+using Balance.Application.UseCases.Debts.GetMonthly;
 using Balance.Communication.Responses;
 using Balance.Domain.Entities;
 using Balance.Domain.Extensions;
@@ -7,7 +8,6 @@ using Balance.Exception;
 using Balance.Exception.ExceptionBase;
 using CommunicationCreditorType = Balance.Communication.Enums.CreditorType;
 using CommunicationDebtMode = Balance.Communication.Enums.DebtMode;
-using CommunicationExpenseStatus = Balance.Communication.Enums.ExpenseStatus;
 using CommunicationExpenseType = Balance.Communication.Enums.ExpenseType;
 
 namespace Balance.Application.UseCases.Debts.GetById;
@@ -81,7 +81,7 @@ public class GetDebtByIdUseCase : IGetDebtByIdUseCase
             ExpectedAmount = installment.ExpectedAmount,
             AmountPaid = payment?.AmountPaid,
             PaymentId = payment?.Id,
-            Status = ResolveStatus(installment.ExpectedAmount, payment?.AmountPaid)
+            Status = DebtMonthLineBuilder.ResolveStatus(installment.ExpectedAmount, payment?.AmountPaid)
         };
     }
 
@@ -98,20 +98,4 @@ public class GetDebtByIdUseCase : IGetDebtByIdUseCase
         AccountName = payment.Account?.Name,
         Notes = payment.Notes
     };
-
-    /// <summary>
-    /// Mirrors GetMonthlyExpenseUseCase's rule: nothing paid is Pending, and a paid installment
-    /// diverges only when the amount does not match what was expected.
-    /// </summary>
-    private static CommunicationExpenseStatus ResolveStatus(decimal expectedAmount, decimal? actualAmount)
-    {
-        if (actualAmount is null)
-        {
-            return CommunicationExpenseStatus.Pending;
-        }
-
-        return actualAmount == expectedAmount
-            ? CommunicationExpenseStatus.Paid
-            : CommunicationExpenseStatus.Divergent;
-    }
 }
