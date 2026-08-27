@@ -223,7 +223,7 @@ public class RegisterDebtValidatorTest
 
             result.IsValid.ShouldBeFalse();
             result.Errors.ShouldContain(error =>
-                error.ErrorMessage == "The number of installments must be at least 2.");
+                error.ErrorMessage == "The number of installments must be at least 1.");
         });
     }
 
@@ -239,7 +239,7 @@ public class RegisterDebtValidatorTest
 
             result.IsValid.ShouldBeFalse();
             result.Errors.ShouldContain(error =>
-                error.ErrorMessage == "O número de parcelas deve ser ao menos 2.");
+                error.ErrorMessage == "O número de parcelas deve ser ao menos 1.");
         });
     }
 

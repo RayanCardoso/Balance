@@ -33,7 +33,7 @@ public class RegisterDebtValidator : AbstractValidator<RequestRegisterDebtJson>
 
             RuleFor(debt => debt.InstallmentCount!.Value)
                 .GreaterThanOrEqualTo(1)
-                .WithMessage(ResourceErrorMessages.INSTALLMENT_COUNT_INVALID)
+                .WithMessage(ResourceErrorMessages.DEBT_INSTALLMENT_COUNT_INVALID)
                 .When(debt => debt.InstallmentCount is not null);
 
             RuleFor(debt => debt.DueDay!.Value)

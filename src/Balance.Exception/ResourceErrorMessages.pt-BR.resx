@@ -117,4 +117,7 @@
   <data name="SCHEDULE_NOT_ALLOWED" xml:space="preserve">
     <value>Uma dívida sem prazo não deve ter dia de vencimento nem número de parcelas.</value>
   </data>
+  <data name="DEBT_INSTALLMENT_COUNT_INVALID" xml:space="preserve">
+    <value>O número de parcelas deve ser ao menos 1.</value>
+  </data>
 </root>

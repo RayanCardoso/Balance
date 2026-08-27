@@ -117,4 +117,7 @@
   <data name="SCHEDULE_NOT_ALLOWED" xml:space="preserve">
     <value>An open-ended debt must not have a due day or a number of installments.</value>
   </data>
+  <data name="DEBT_INSTALLMENT_COUNT_INVALID" xml:space="preserve">
+    <value>The number of installments must be at least 1.</value>
+  </data>
 </root>
