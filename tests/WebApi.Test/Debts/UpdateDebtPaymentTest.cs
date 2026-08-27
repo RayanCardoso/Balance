@@ -12,6 +12,7 @@ public class UpdateDebtPaymentTest : BalanceClassFixture
     private const string PAYMENT = "api/Debt/payment";
     private const string CREDITOR = "api/Creditor";
     private const string CATEGORY = "api/category";
+    private const string ACCOUNT = "api/account";
     private const string PERSON = "api/person";
     private const string USER = "api/user";
 
@@ -45,6 +46,33 @@ public class UpdateDebtPaymentTest : BalanceClassFixture
         body.GetProperty("notes").GetString().ShouldBe("corrected after the bill was re-read");
         body.GetProperty("type").GetInt32().ShouldBe((int)CommunicationExpenseType.Debit);
         body.GetProperty("accountId").ValueKind.ShouldBe(JsonValueKind.Null);
+    }
+
+    /// <summary>
+    /// FINDING 2: UpdateDebtPaymentUseCase used to assign request.AccountId with no ownership check,
+    /// so a caller's own payment id combined with another account's accountId would satisfy the
+    /// foreign key and persist silently. It must now 404, exactly like registering a new payment does.
+    /// </summary>
+    [Fact]
+    public async Task Correcting_With_Another_Accounts_Id_Returns_404_ACCOUNT_NOT_FOUND()
+    {
+        var first = await NewAccount();
+        var second = await NewAccount();
+
+        var paymentId = await NewPayment(first);
+
+        var secondsAccountResponse = await DoPost(
+            ACCOUNT, RequestRegisterAccountJsonBuilder.Build(second.PersonId), token: second.Token);
+        secondsAccountResponse.StatusCode.ShouldBe(HttpStatusCode.Created);
+
+        var secondsAccountId = (await ReadJson(secondsAccountResponse)).GetProperty("id").GetGuid();
+
+        var request = RequestUpdateDebtPaymentJsonBuilder.Build(
+            amountPaid: 172.40m, accountId: secondsAccountId);
+
+        var response = await DoPut($"{PAYMENT}/{paymentId}", request, token: first.Token);
+
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
 
     /// <summary>

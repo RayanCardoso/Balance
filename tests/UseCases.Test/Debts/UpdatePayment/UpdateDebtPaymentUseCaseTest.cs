@@ -36,12 +36,13 @@ public class UpdateDebtPaymentUseCaseTest
     public async Task Success_Overwrites_The_Amount_Date_Type_Account_And_Notes()
     {
         var scenario = Scenario.Build();
-        var payingAccount = Guid.NewGuid();
+        var payingAccount = AccountBuilder.Build(scenario.Person);
+        scenario.AccountRepository.GetById(scenario.User, payingAccount);
 
         var request = RequestUpdateDebtPaymentJsonBuilder.Build(
             amountPaid: 172.40m,
             paymentDate: new DateOnly(2026, 3, 15),
-            accountId: payingAccount,
+            accountId: payingAccount.Id,
             type: CommunicationExpenseType.Pix);
         request.Notes = "corrected after the bill was re-read";
 
@@ -50,17 +51,43 @@ public class UpdateDebtPaymentUseCaseTest
         scenario.Payment.AmountPaid.ShouldBe(172.40m);
         scenario.Payment.PaymentDate.ShouldBe(new DateOnly(2026, 3, 15));
         scenario.Payment.Type.ShouldBe(DomainExpenseType.Pix);
-        scenario.Payment.AccountId.ShouldBe(payingAccount);
+        scenario.Payment.AccountId.ShouldBe(payingAccount.Id);
         scenario.Payment.Notes.ShouldBe("corrected after the bill was re-read");
 
         result.Id.ShouldBe(scenario.Payment.Id);
         result.AmountPaid.ShouldBe(172.40m);
         result.PaymentDate.ShouldBe(new DateOnly(2026, 3, 15));
         result.Type.ShouldBe(CommunicationExpenseType.Pix);
-        result.AccountId.ShouldBe(payingAccount);
+        result.AccountId.ShouldBe(payingAccount.Id);
+        result.AccountName.ShouldBe(payingAccount.Name);
         result.Notes.ShouldBe("corrected after the bill was re-read");
 
         scenario.UnitOfWork.Commits.ShouldBe(1);
+    }
+
+    /// <summary>
+    /// FINDING 2: the account id must resolve through the logged user, exactly like
+    /// RegisterDebtPaymentUseCase - an id that satisfies the foreign key but belongs to someone
+    /// else's account must 404, never be silently assigned.
+    /// </summary>
+    [Fact]
+    public async Task Error_Correcting_With_An_Account_Not_Owned_By_The_Logged_User()
+    {
+        await WithInvariantCulture(async () =>
+        {
+            var scenario = Scenario.Build();
+
+            var request = RequestUpdateDebtPaymentJsonBuilder.Build(
+                amountPaid: 172.40m, accountId: Guid.NewGuid());
+
+            var act = async () => await scenario.UseCase().Execute(scenario.Payment.Id, request);
+
+            var exception = await act.ShouldThrowAsync<NotFoundException>();
+
+            exception.GetErrors().ShouldContain("Account not found.");
+
+            scenario.UnitOfWork.Commits.ShouldBe(0);
+        });
     }
 
     [Fact]
@@ -114,6 +141,7 @@ public class UpdateDebtPaymentUseCaseTest
 
             var useCase = new UpdateDebtPaymentUseCase(
                 new DebtPaymentRepositoryBuilder().GetById(otherUser, foreignPayment).Build(),
+                new AccountReadOnlyRepositoryBuilder().Build(),
                 unitOfWork.BuildCounting(),
                 LoggedUserBuilder.Build(loggedUser));
 
@@ -172,9 +200,11 @@ public class UpdateDebtPaymentUseCaseTest
     private sealed class Scenario
     {
         public required User User { get; init; }
+        public required Person Person { get; init; }
         public required Debt Debt { get; init; }
         public required DebtPayment Payment { get; init; }
 
+        public AccountReadOnlyRepositoryBuilder AccountRepository { get; } = new();
         public UnitOfWorkBuilder UnitOfWork { get; } = new();
 
         public static Scenario Build(Guid? accountId = null, DomainExpenseType? type = null)
@@ -197,6 +227,7 @@ public class UpdateDebtPaymentUseCaseTest
             return new Scenario
             {
                 User = user,
+                Person = person,
                 Debt = debt,
                 Payment = payment
             };
@@ -205,6 +236,7 @@ public class UpdateDebtPaymentUseCaseTest
         public UpdateDebtPaymentUseCase UseCase() =>
             new(
                 new DebtPaymentRepositoryBuilder().GetById(User, Payment).Build(),
+                AccountRepository.Build(),
                 UnitOfWork.BuildCounting(),
                 LoggedUserBuilder.Build(User));
     }
