@@ -146,6 +146,34 @@ public class GetMonthlyDebtUseCaseTest
     }
 
     /// <summary>
+    /// FINDING 6: the spec requires that "IF an open-ended debt receives two payments in the same
+    /// month THEN the system SHALL accept both and return two lines for that month" - only the
+    /// single-payment case was tested before this.
+    /// </summary>
+    [Fact]
+    public async Task An_OpenEnded_Debt_With_Two_Payments_In_The_Same_Month_Reports_Two_Lines()
+    {
+        var (user, person, creditor, category) = NewOwner();
+
+        var debt = DebtBuilder.Build(person, creditor, category, DebtMode.OpenEnded);
+        var firstPayment = DebtPaymentBuilder.Build(debt, referenceMonth: August, amountPaid: 100m);
+        var secondPayment = DebtPaymentBuilder.Build(debt, referenceMonth: August, amountPaid: 60m);
+        debt.Payments.Add(firstPayment);
+        debt.Payments.Add(secondPayment);
+
+        var useCase = BuildUseCase(user, debts: [debt]);
+
+        var result = await useCase.Execute(2026, 8);
+
+        result.Lines.Count.ShouldBe(2);
+        result.Lines.Select(line => line.PaymentId).ShouldBe([firstPayment.Id, secondPayment.Id], ignoreOrder: true);
+
+        result.TotalExpected.ShouldBe(0m);
+        result.TotalPaid.ShouldBe(160m);
+        result.TotalCommitted.ShouldBe(160m);
+    }
+
+    /// <summary>
     /// Archived debts are excluded by the repository (GetForMonth), never re-filtered here - this
     /// pins that a debt the repository does not hand back contributes no line and no total.
     /// </summary>
