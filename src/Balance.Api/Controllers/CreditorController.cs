@@ -1,5 +1,6 @@
 using Balance.Application.UseCases.Creditors.Archive;
 using Balance.Application.UseCases.Creditors.GetAll;
+using Balance.Application.UseCases.Creditors.GetSummary;
 using Balance.Application.UseCases.Creditors.Register;
 using Balance.Communication.Requests;
 using Balance.Communication.Responses;
@@ -51,5 +52,18 @@ public class CreditorController : ControllerBase
         await useCase.Execute(id, archived);
 
         return NoContent();
+    }
+
+    [HttpGet("{id:guid}/summary")]
+    [ProducesResponseType(typeof(ResponseCreditorSummaryJson), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> GetSummary(
+        [FromRoute] Guid id,
+        [FromServices] IGetCreditorSummaryUseCase useCase)
+    {
+        var response = await useCase.Execute(id);
+
+        return Ok(response);
     }
 }
