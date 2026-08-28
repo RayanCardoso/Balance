@@ -21,6 +21,10 @@ public class BalanceDbContext : DbContext
     public DbSet<RecurringExpense> RecurringExpenses { get; set; }
     public DbSet<RecurringExpenseVersion> RecurringExpenseVersions { get; set; }
     public DbSet<RecurringExpensePayment> RecurringExpensePayments { get; set; }
+    public DbSet<Creditor> Creditors { get; set; }
+    public DbSet<Debt> Debts { get; set; }
+    public DbSet<DebtInstallment> DebtInstallments { get; set; }
+    public DbSet<DebtPayment> DebtPayments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -195,6 +199,75 @@ public class BalanceDbContext : DbContext
             payment.HasOne(p => p.Version)
                 .WithMany()
                 .HasForeignKey(p => p.RecurringExpenseVersionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            payment.HasOne(p => p.Account)
+                .WithMany()
+                .HasForeignKey(p => p.AccountId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<Creditor>(creditor =>
+        {
+            creditor.HasIndex(c => c.UserId);
+
+            creditor.HasOne(c => c.User)
+                .WithMany()
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<Debt>(debt =>
+        {
+            debt.Property(d => d.PrincipalAmount).HasPrecision(18, 2);
+            debt.Property(d => d.TotalAmount).HasPrecision(18, 2);
+
+            debt.HasIndex(d => d.CreditorId);
+            debt.HasIndex(d => d.PersonId);
+
+            debt.HasOne(d => d.Creditor)
+                .WithMany()
+                .HasForeignKey(d => d.CreditorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            debt.HasOne(d => d.Person)
+                .WithMany()
+                .HasForeignKey(d => d.PersonId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            debt.HasOne(d => d.Category)
+                .WithMany()
+                .HasForeignKey(d => d.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<DebtInstallment>(installment =>
+        {
+            installment.Property(i => i.ExpectedAmount).HasPrecision(18, 2);
+
+            installment.HasIndex(i => new { i.DebtId, i.ReferenceMonth });
+
+            installment.HasOne(i => i.Debt)
+                .WithMany(d => d.Installments)
+                .HasForeignKey(i => i.DebtId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<DebtPayment>(payment =>
+        {
+            payment.Property(p => p.AmountPaid).HasPrecision(18, 2);
+
+            payment.HasIndex(p => new { p.DebtId, p.ReferenceMonth });
+            payment.HasIndex(p => p.DebtInstallmentId).IsUnique();
+
+            payment.HasOne(p => p.Debt)
+                .WithMany(d => d.Payments)
+                .HasForeignKey(p => p.DebtId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            payment.HasOne(p => p.DebtInstallment)
+                .WithMany()
+                .HasForeignKey(p => p.DebtInstallmentId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             payment.HasOne(p => p.Account)

@@ -119,8 +119,7 @@ public class RegisterInstallmentPlanUseCase : IRegisterInstallmentPlanUseCase
         DateOnly firstCompetenceMonth)
     {
         var count = request.InstallmentCount;
-        var each = Math.Round(request.TotalAmount / count, 2, MidpointRounding.AwayFromZero);
-        var residual = request.TotalAmount - each * (count - 1);
+        var amounts = InstallmentAmountCalculator.Split(request.TotalAmount, count);
 
         var installments = new List<Expense>(count);
 
@@ -130,7 +129,7 @@ public class RegisterInstallmentPlanUseCase : IRegisterInstallmentPlanUseCase
             {
                 Name = request.Name,
                 Type = ExpenseType.Credit,
-                Amount = number == count ? residual : each,
+                Amount = amounts[number - 1],
                 Date = request.StartDate,
                 CompetenceMonth = firstCompetenceMonth.AddMonths(number - 1),
                 InstallmentNumber = number,

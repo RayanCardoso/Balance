@@ -14,8 +14,10 @@ public class GetMonthlyDashboardTest : BalanceClassFixture
     private const string INCOME = "api/income";
     private const string INCOME_PAYMENT = "api/income/payment";
     private const string EXPENSE = "api/expense";
-    private const string RECURRING_EXPENSE = "api/recurring-expense";
-    private const string PAYMENT = "api/recurring-expense/payment";
+    private const string RECURRING_EXPENSE = "api/RecurringExpense";
+    private const string PAYMENT = "api/RecurringExpense/payment";
+    private const string DEBT = "api/Debt";
+    private const string CREDITOR = "api/Creditor";
     private const string CATEGORY = "api/category";
     private const string ACCOUNT = "api/account";
     private const string PERSON = "api/person";
@@ -51,6 +53,31 @@ public class GetMonthlyDashboardTest : BalanceClassFixture
 
         dashboard.GetProperty("income").GetRawText().ShouldBe(income.GetRawText());
         dashboard.GetProperty("expenses").GetRawText().ShouldBe(expenses.GetRawText());
+    }
+
+    /// <summary>
+    /// DDSH-01/DDSH-02: the dashboard's debt block is identical to what the debt endpoint returns
+    /// for the same month, and the month's committed debt installment is subtracted from the
+    /// balance alongside income and expenses.
+    /// </summary>
+    [Fact]
+    public async Task The_Debt_Block_Is_Carried_Alongside_Income_And_Expenses_And_Reduces_The_Balance()
+    {
+        var caller = await NewAccount();
+
+        await NewIncomeWithPayment(caller, amountReceived: 5000.00m);
+        await NewExpense(caller, amount: 80.00m);
+        await NewScheduledDebtDueThisMonth(caller, installmentAmount: 150.00m);
+
+        var dashboard = await GetDashboard(caller);
+
+        var debts = await ReadJson(await DoGet($"{DEBT}/2026/8", token: caller.Token));
+
+        dashboard.GetProperty("debts").GetRawText().ShouldBe(debts.GetRawText());
+        dashboard.GetProperty("debts").GetProperty("totalCommitted").GetDecimal().ShouldBe(150.00m);
+
+        // 5000 received minus 80 committed expense minus 150 committed debt installment.
+        dashboard.GetProperty("balance").GetDecimal().ShouldBe(4770.00m);
     }
 
     [Fact]
@@ -223,6 +250,30 @@ public class GetMonthlyDashboardTest : BalanceClassFixture
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
 
         return (await ReadJson(response)).GetProperty("id").GetGuid();
+    }
+
+    private async Task NewScheduledDebtDueThisMonth(Caller caller, decimal installmentAmount)
+    {
+        var creditorResponse = await DoPost(
+            CREDITOR, RequestRegisterCreditorJsonBuilder.Build(), token: caller.Token);
+
+        creditorResponse.StatusCode.ShouldBe(HttpStatusCode.Created);
+
+        var creditorId = (await ReadJson(creditorResponse)).GetProperty("id").GetGuid();
+
+        var request = RequestRegisterDebtJsonBuilder.BuildScheduled();
+        request.CreditorId = creditorId;
+        request.PersonId = caller.PersonId;
+        request.CategoryId = caller.CategoryId;
+        request.PrincipalAmount = installmentAmount;
+        request.TotalAmount = installmentAmount;
+        // On or before the due day, so the schedule's first competence month is August itself.
+        request.StartDate = new DateOnly(2026, 8, 5);
+        request.DueDay = 10;
+        request.InstallmentCount = 1;
+
+        var response = await DoPost(DEBT, request, token: caller.Token);
+        response.StatusCode.ShouldBe(HttpStatusCode.Created);
     }
 
     private async Task PayBill(Caller caller, Guid recurringExpenseId, decimal amountPaid)

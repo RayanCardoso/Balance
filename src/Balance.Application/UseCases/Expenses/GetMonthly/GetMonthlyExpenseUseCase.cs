@@ -67,7 +67,7 @@ public class GetMonthlyExpenseUseCase : IGetMonthlyExpenseUseCase
             CategoryName = expense.Category?.Name ?? string.Empty,
             CategoryPriority = (CommunicationExpensePriority)(expense.Category?.Priority ?? default),
             AccountId = expense.AccountId,
-            AccountName = expense.Account?.Name ?? string.Empty,
+            AccountName = expense.Account?.Name,
             InstallmentNumber = expense.InstallmentNumber,
             InstallmentCount = expense.InstallmentPlan?.InstallmentCount,
             InstallmentPlanId = expense.InstallmentPlanId

@@ -56,9 +56,16 @@ public class RegisterExpenseUseCase : IRegisterExpenseUseCase
         var category = await _categoryReadOnlyRepository.GetById(loggedUser, request.CategoryId)
             ?? throw new NotFoundException(ResourceErrorMessages.CATEGORY_NOT_FOUND);
 
-        // The account may belong to a different Person of the same user (EXPN-01 AC7).
-        var account = await _accountReadOnlyRepository.GetById(loggedUser, request.AccountId)
-            ?? throw new NotFoundException(ResourceErrorMessages.ACCOUNT_NOT_FOUND);
+        // The account may belong to a different Person of the same user (EXPN-01 AC7), and may be
+        // absent altogether: a Pix or a debit purchase does not have to come out of a registered
+        // account. Mirrors RegisterRecurringExpenseUseCase, where the account is already optional.
+        Account? account = null;
+
+        if (request.AccountId is not null)
+        {
+            account = await _accountReadOnlyRepository.GetById(loggedUser, request.AccountId.Value)
+                ?? throw new NotFoundException(ResourceErrorMessages.ACCOUNT_NOT_FOUND);
+        }
 
         var type = (ExpenseType)request.Type;
 
@@ -69,10 +76,10 @@ public class RegisterExpenseUseCase : IRegisterExpenseUseCase
             Amount = request.Amount,
             Date = request.Date,
             CompetenceMonth = request.CompetenceMonth?.FirstDayOfMonth()
-                ?? CompetenceMonthResolver.Resolve(type, account.ClosingDay, request.Date),
+                ?? CompetenceMonthResolver.Resolve(type, account?.ClosingDay, request.Date),
             PersonId = person.Id,
             CategoryId = category.Id,
-            AccountId = account.Id
+            AccountId = account?.Id
         };
 
         await _writeOnlyRepository.Add(expense);

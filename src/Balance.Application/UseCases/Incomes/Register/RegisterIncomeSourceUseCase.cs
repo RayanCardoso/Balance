@@ -49,17 +49,30 @@ public class RegisterIncomeSourceUseCase : IRegisterIncomeSourceUseCase
 
         await _writeOnlyRepository.Add(incomeSource);
 
-        IncomeSourceVersion version = new IncomeSourceVersion
-        {
-            IncomeSourceId = incomeSource.Id,
-            Amount = request.Amount!.Value,
-            ExpectedDay = request.ExpectedDay!.Value,
-            ValidityStart = request.ValidityStart ?? DateOnly.FromDateTime(DateTime.UtcNow),
-            ValidityEnd = DateOnly.FromDateTime(DateTime.UtcNow).AddDays(1),
-            ChangeReason = request.ChangeReason ?? string.Empty
-        };
+        IncomeSourceVersion? version = null;
 
-        await _writeOnlyRepository.AddVersion(version);
+        // Only a Recurring source has an amount to version. The validator requires Amount and
+        // ExpectedDay under `When(Type == Recurring)` alone, so dereferencing them for a Variable
+        // source throws - and the mobile client models the two as a discriminated union in which a
+        // Variable source sends neither.
+        if (incomeSource.Type == DomainIncomeType.Recurring)
+        {
+            version = new IncomeSourceVersion
+            {
+                IncomeSourceId = incomeSource.Id,
+                Amount = request.Amount!.Value,
+                ExpectedDay = request.ExpectedDay!.Value,
+                ValidityStart = request.ValidityStart ?? DateOnly.FromDateTime(DateTime.UtcNow),
+                // Null, per IncomeSourceVersion's contract: "Null while this is the version
+                // currently in effect." An end date here retires the version the day after it is
+                // created, so VersionInEffect stops finding it and a re-price is rejected as an
+                // overlap.
+                ValidityEnd = null,
+                ChangeReason = request.ChangeReason ?? string.Empty
+            };
+
+            await _writeOnlyRepository.AddVersion(version);
+        }
 
         await _unitOfWork.Commit();
 

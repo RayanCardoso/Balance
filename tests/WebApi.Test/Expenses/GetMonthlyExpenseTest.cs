@@ -13,8 +13,8 @@ public class GetMonthlyExpenseTest : BalanceClassFixture
 {
     private const string EXPENSE = "api/expense";
     private const string INSTALLMENT_PLAN = "api/expense/installment-plan";
-    private const string RECURRING_EXPENSE = "api/recurring-expense";
-    private const string PAYMENT = "api/recurring-expense/payment";
+    private const string RECURRING_EXPENSE = "api/RecurringExpense";
+    private const string PAYMENT = "api/RecurringExpense/payment";
     private const string CATEGORY = "api/category";
     private const string ACCOUNT = "api/account";
     private const string PERSON = "api/person";
@@ -145,6 +145,29 @@ public class GetMonthlyExpenseTest : BalanceClassFixture
 
         // Only installment 1 falls in August; the other two are in later competence months.
         month.GetProperty("totalVariable").GetDecimal().ShouldBe(100.00m);
+    }
+
+    /// <summary>
+    /// An expense without a registered account (Pix, debit) must report the absence as null on both
+    /// fields - never as an empty name, which would read as an account that simply has no name.
+    /// </summary>
+    [Fact]
+    public async Task Variable_Line_Without_Account_Has_No_Account_Name()
+    {
+        var caller = await NewAccount();
+
+        var request = RequestRegisterExpenseJsonBuilder.Build(caller.PersonId, caller.CategoryId, caller.AccountId);
+        request.Type = ExpenseType.Pix;
+        request.AccountId = null;
+        request.Date = new DateOnly(2026, 8, 5);
+
+        var response = await DoPost(EXPENSE, request, token: caller.Token);
+        response.StatusCode.ShouldBe(HttpStatusCode.Created);
+
+        var line = (await GetMonth(caller)).GetProperty("variableLines").EnumerateArray().ShouldHaveSingleItem();
+
+        line.GetProperty("accountId").ValueKind.ShouldBe(JsonValueKind.Null);
+        line.GetProperty("accountName").ValueKind.ShouldBe(JsonValueKind.Null);
     }
 
     /// <summary>

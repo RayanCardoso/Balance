@@ -10,7 +10,7 @@ public class ResponseExpenseJson
     public ExpenseType Type { get; set; }
     public decimal Amount { get; set; }
     public Guid CategoryId { get; set; }
-    public Guid AccountId { get; set; }
+    public Guid? AccountId { get; set; }
     public DateOnly Date { get; set; }
 
     /// <summary>The month this expense belongs to, normalised to the first day.</summary>

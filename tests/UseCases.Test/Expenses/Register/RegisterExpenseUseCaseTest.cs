@@ -126,6 +126,39 @@ public class RegisterExpenseUseCaseTest
     }
 
     [Fact]
+    public async Task Success_Pix_Without_Account()
+    {
+        // Arrange: same setup as the existing success test, but the account repository
+        // must not be consulted, so GetById is not configured for it.
+        var user = UserBuilder.Build();
+        var person = PersonBuilder.Build(user);
+        var category = CategoryBuilder.Build(user);
+
+        var writeRepository = new ExpenseWriteOnlyRepositoryBuilder();
+
+        var useCase = new RegisterExpenseUseCase(
+            writeRepository.Build(),
+            new PersonReadOnlyRepositoryBuilder().GetById(user, person).Build(),
+            new CategoryReadOnlyRepositoryBuilder().GetById(user, category).Build(),
+            new AccountReadOnlyRepositoryBuilder().Build(),
+            UnitOfWorkBuilder.Build(),
+            LoggedUserBuilder.Build(user));
+
+        var request = RequestRegisterExpenseJsonBuilder.Build(person.Id, category.Id, Guid.NewGuid());
+        request.Type = ExpenseType.Pix;
+        request.AccountId = null;
+        request.Date = new DateOnly(2026, 8, 21);
+
+        // Act
+        var result = await useCase.Execute(request);
+
+        // Assert
+        result.AccountId.ShouldBeNull();
+        // Pix never rolls to the next month, regardless of the day.
+        result.CompetenceMonth.ShouldBe(new DateOnly(2026, 8, 1));
+    }
+
+    [Fact]
     public async Task Accepts_An_Account_Of_Another_Person_Of_The_Same_User()
     {
         var user = UserBuilder.Build();
