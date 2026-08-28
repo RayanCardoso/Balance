@@ -26,6 +26,14 @@ public class ResponseMonthlyDebtLineJson
     public Guid CategoryId { get; set; }
     public string CategoryName { get; set; } = string.Empty;
 
+    /// <summary>
+    /// The installment this line reports. Null on an OpenEnded line, which settles no particular
+    /// installment. A client needs it to pay the line without first fetching the whole debt:
+    /// <c>POST api/Debt/payment</c> identifies a scheduled payment by installment id, and
+    /// <see cref="InstallmentNumber"/> alone does not.
+    /// </summary>
+    public Guid? InstallmentId { get; set; }
+
     /// <summary>Null on an OpenEnded line, which has no installment to number.</summary>
     public int? InstallmentNumber { get; set; }
 

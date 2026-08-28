@@ -62,6 +62,60 @@ public class GetMonthlyDebtTest : BalanceClassFixture
     }
 
     /// <summary>
+    /// A client looking at the month must be able to pay the line it is looking at. The line's
+    /// installment id is the only thing that makes that reachable: POST api/Debt/payment identifies
+    /// a scheduled payment by installment id, and the line's number - the "4" of 4/10 - is not one.
+    /// Without this the mobile month view would have to fetch the whole debt first, purely to
+    /// translate a number it already displays into an id it never received.
+    /// </summary>
+    [Fact]
+    public async Task An_Installment_Can_Be_Paid_Using_Only_The_Id_The_Monthly_Line_Reports()
+    {
+        var caller = await NewAccount();
+        var debt = await NewScheduledDebt(caller);
+
+        var month = await GetMonth(caller, 2026, 1);
+        var line = month.GetProperty("lines").EnumerateArray().ShouldHaveSingleItem();
+
+        var installmentId = line.GetProperty("installmentId").GetGuid();
+
+        var paymentRequest = RequestRegisterDebtPaymentJsonBuilder.Build(
+            debt.Id, debtInstallmentId: installmentId, accountId: null);
+        paymentRequest.AmountPaid = 150.00m;
+        paymentRequest.PaymentDate = new DateOnly(2026, 1, 10);
+
+        var paymentResponse = await DoPost(PAYMENT, paymentRequest, token: caller.Token);
+
+        paymentResponse.StatusCode.ShouldBe(HttpStatusCode.Created);
+
+        var paidMonth = await GetMonth(caller, 2026, 1);
+        var paidLine = paidMonth.GetProperty("lines").EnumerateArray().ShouldHaveSingleItem();
+
+        paidLine.GetProperty("status").GetInt32().ShouldBe((int)Balance.Communication.Enums.ExpenseStatus.Paid);
+    }
+
+    /// <summary>An OpenEnded line settles no particular installment, so it reports no id.</summary>
+    [Fact]
+    public async Task An_OpenEnded_Line_Reports_A_Null_Installment_Id()
+    {
+        var caller = await NewAccount();
+        var debtId = await NewOpenEndedDebt(caller);
+
+        var paymentRequest = RequestRegisterDebtPaymentJsonBuilder.Build(
+            debtId, debtInstallmentId: null, accountId: null);
+        paymentRequest.AmountPaid = 100.00m;
+        paymentRequest.PaymentDate = new DateOnly(2026, 1, 10);
+
+        (await DoPost(PAYMENT, paymentRequest, token: caller.Token))
+            .StatusCode.ShouldBe(HttpStatusCode.Created);
+
+        var month = await GetMonth(caller, 2026, 1);
+        var line = month.GetProperty("lines").EnumerateArray().ShouldHaveSingleItem();
+
+        line.GetProperty("installmentId").ValueKind.ShouldBe(JsonValueKind.Null);
+    }
+
+    /// <summary>
     /// FINDING 3 (DVEW-01 AC1): the monthly line must carry the payment's type and account name.
     /// This is the real query end to end - the only level that could have caught GetForMonth's
     /// missing ThenInclude on the payment's Account (FINDING 1).
@@ -216,6 +270,22 @@ public class GetMonthlyDebtTest : BalanceClassFixture
         return new RegisteredDebt(
             body.GetProperty("id").GetGuid(),
             firstInstallment.GetProperty("id").GetGuid());
+    }
+
+    private async Task<Guid> NewOpenEndedDebt(Caller caller)
+    {
+        var request = RequestRegisterDebtJsonBuilder.BuildOpenEnded();
+        request.CreditorId = caller.CreditorId;
+        request.PersonId = caller.PersonId;
+        request.CategoryId = caller.CategoryId;
+        request.PrincipalAmount = 500.00m;
+        request.TotalAmount = 500.00m;
+        request.StartDate = new DateOnly(2026, 1, 5);
+
+        var response = await DoPost(DEBT, request, token: caller.Token);
+        response.StatusCode.ShouldBe(HttpStatusCode.Created);
+
+        return (await ReadJson(response)).GetProperty("id").GetGuid();
     }
 
     private static async Task<JsonElement> ReadJson(HttpResponseMessage response)

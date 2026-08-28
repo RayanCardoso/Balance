@@ -27,6 +27,23 @@ public class DebtMonthLineBuilderTest
         line.AmountPaid.ShouldBeNull();
     }
 
+    /// <summary>
+    /// The id, not just the number. `POST api/Debt/payment` identifies a scheduled payment by
+    /// installment id, so a client that only had the number would have to fetch the whole debt
+    /// before it could pay a line it is already looking at.
+    /// </summary>
+    [Fact]
+    public void BuildScheduled_Carries_The_Installment_Id_So_The_Line_Can_Be_Paid_Directly()
+    {
+        var scenario = Scenario.Build();
+        var debt = scenario.ScheduledDebt();
+        var installment = DebtInstallmentBuilder.Build(debt, dueDate: Today.AddDays(5), expectedAmount: 100m);
+
+        var line = DebtMonthLineBuilder.BuildScheduled(debt, installment, payment: null, today: Today);
+
+        line.InstallmentId.ShouldBe(installment.Id);
+    }
+
     [Fact]
     public void BuildScheduled_A_Payment_Equal_To_The_Expected_Amount_Is_Paid()
     {
@@ -157,6 +174,7 @@ public class DebtMonthLineBuilderTest
         var line = DebtMonthLineBuilder.BuildOpenEnded(debt, payment);
 
         line.ExpectedAmount.ShouldBeNull();
+        line.InstallmentId.ShouldBeNull();
         line.InstallmentNumber.ShouldBeNull();
         line.Status.ShouldBe(CommunicationExpenseStatus.Paid);
         line.IsOverdue.ShouldBeFalse();
